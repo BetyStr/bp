@@ -12,8 +12,32 @@ public class Board {
     public final static int SIZE = 8;
     private final static char SPACE = '\u2003';
     private final static char SEPARATOR = '|';
+
     private final ChessPiece[][] board = new ChessPiece[SIZE][SIZE];
 
+
+    // todo static class chess notation
+    /**
+     * Chess notation
+     * @param x 0-7 => 1-8
+     * @param y 0-7 => a-h
+     * @return xy example c3
+     */
+    public static String getNotationOfCoordinates(int x, int y){
+        var i = (char)(97 + x);
+        return i + String.valueOf(y + 1);
+    }
+
+    /**
+     * Chess notation REVERSE (wrong javadoc below)
+     * @param x 0-7 => 1-8
+     * @param y 0-7 => a-h
+     * @return xy example c3
+     */
+    public static Coordinates getCoordinatesOfNotation(char x, int y){
+        var i = (int)x - 97;
+        return new Coordinates(i,y - 1);
+    }
 
     public void putPieceOnBoard(int letterNumber, int number, ChessPiece piece) {
         board[letterNumber][number] = piece;
@@ -56,41 +80,18 @@ public class Board {
     }
 
     // todo specificke pre sach treba mozno dat prec
-    // plus je taam kusokz notacie sachovej
-    // todo vyhodenie ..odstranit tu figurku
+    // plus je taam kusokz notacie sachovej..todo class sachova notacia
+    // todo vyhodenie ..odstranit tu figurku...maybe?
     public String move(Coordinates oldPosition, Coordinates newPosition) {
-        var vyhodena = board[newPosition.getLetterNumber()][newPosition.getNumber()];
+        var fired = board[newPosition.getLetterNumber()][newPosition.getNumber()];
         var piece = getPiece(oldPosition);
         piece.setLetterNumber(newPosition.getLetterNumber());
         piece.setNumber(newPosition.getNumber());
         board[newPosition.getLetterNumber()][newPosition.getNumber()] = board[oldPosition.getLetterNumber()][oldPosition.getNumber()];
         board[oldPosition.getLetterNumber()][oldPosition.getNumber()] = null;
         return board[newPosition.getLetterNumber()][newPosition.getNumber()].getChessNotation() +
-                (vyhodena == null ? "" : "x") +
+                (fired == null ? "" : "x") +
                 Board.getNotationOfCoordinates(newPosition.getLetterNumber(), newPosition.getNumber());
-    }
-
-    // todo static class chess notation
-    /**
-     * Chess notation
-     * @param x 0-7 => 1-8
-     * @param y 0-7 => a-h
-     * @return xy example c3
-     */
-    public static String getNotationOfCoordinates(int x, int y){
-        var i = (char)(97 + x);
-        return i + String.valueOf(y + 1);
-    }
-
-    /**
-     * Chess notation REVERSE (wrong javadoc below)
-     * @param x 0-7 => 1-8
-     * @param y 0-7 => a-h
-     * @return xy example c3
-     */
-    public static Coordinates getCoordinatesOfNotation(char x, int y){
-        var i = (int)x - 97;
-        return new Coordinates(i,y - 1);
     }
 
     @Override
