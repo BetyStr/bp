@@ -1,4 +1,4 @@
-package cz.muni.fi.pb162.newProject;
+package cz.muni.fi.pb162.project.enums.and.interfaces;
 
 
 /**
@@ -9,7 +9,7 @@ package cz.muni.fi.pb162.newProject;
  * Every implementation of this interface should contain at least one method to fill up the builder with the data.
  *
  * @param <T> represents a type which should be built.
- * @author Alzbeta Strompova
+ * @author not Alzbeta Strompova
  */
 
 public interface Buildable<T> {
