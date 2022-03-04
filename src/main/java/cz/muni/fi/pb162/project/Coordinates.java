@@ -7,10 +7,19 @@ import java.util.Objects;
  */
 public class Coordinates {
 
+    private static final int UNICODE_VALUE_FOR_A = 97;
+
     private final int letterNumber;
     private final int number;
 
-    private static final int UNICODE_VALUE_FOR_A = 97;
+    public Coordinates(int letterNumber, int number) {
+        this.letterNumber = letterNumber;
+        this.number = number;
+    }
+
+    public Coordinates(char letterNumber, int number) {
+        this(getNumberFromLetter(letterNumber), number);
+    }
 
     // todo maybe static class
     // Chess notation
@@ -22,19 +31,9 @@ public class Coordinates {
         return (int) letter - UNICODE_VALUE_FOR_A;
     }
 
-    public Coordinates(int letterNumber, int number) {
-        this.letterNumber = letterNumber;
-        this.number = number;
-    }
-
-    public Coordinates(char letterNumber, int number) {
-        this(getNumberFromLetter(letterNumber), number);
-    }
-
     public int getLetterNumber() {
         return letterNumber;
     }
-
 
     public int getNumber() {
         return number;
