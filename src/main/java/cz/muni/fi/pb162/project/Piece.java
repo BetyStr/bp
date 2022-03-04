@@ -11,23 +11,23 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public abstract class Piece {
 
-    private final Color color;
     private final long id;
+    private final Color color;
 
     private int letterNumber;
     private int number;
 
     private static final AtomicLong idCounter = new AtomicLong();
-    private static long createID() {
-        return idCounter.getAndIncrement();
-    }
-
 
     public Piece(Color color, int letterNumber, int number) {
         id = createID();
         this.color = color;
         this.letterNumber = letterNumber;
         this.number = number;
+    }
+
+    private static long createID() {
+        return idCounter.getAndIncrement();
     }
 
     public Color getColor() {
@@ -49,7 +49,6 @@ public abstract class Piece {
     public void setNumber(int number) {
         this.number = number;
     }
-
 
     public abstract Set<Coordinates> getAllPossibleMoves(Board board);
 
