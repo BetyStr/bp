@@ -22,8 +22,6 @@ import java.util.Set;
  */
 public class ChessPiece extends Piece {
 
-    private final ChessPieces type;
-
     private final static Map<ChessPieces, List<AllowedMoves>> allowedMovesMap;
     static {
         allowedMovesMap = new HashMap<>();
@@ -35,18 +33,15 @@ public class ChessPiece extends Piece {
         allowedMovesMap.put(ChessPieces.Pawn, List.of(new Pawn()));
     }
 
+    private final ChessPieces type;
+
+
     public ChessPiece(Color color, int letterNumber, int number, ChessPieces type) {
         super(color, letterNumber, number);
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        return ChessPieces.figures.get(Pair.of(this.type, getColor()));
-    }
-
-
-    // todo notation
+    // todo notation class
     public String getChessNotation() {
         return type.toString() + Board.getNotationOfCoordinates(getLetterNumber(), getNumber());
     }
@@ -59,6 +54,11 @@ public class ChessPiece extends Piece {
             result.addAll(strategy.getAllowedMoves(board, new Coordinates(getLetterNumber(), getNumber())));
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return ChessPieces.figures.get(Pair.of(this.type, getColor()));
     }
 
     @Override
