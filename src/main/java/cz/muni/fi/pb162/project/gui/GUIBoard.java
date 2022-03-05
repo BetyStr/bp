@@ -5,6 +5,7 @@ import cz.muni.fi.pb162.project.Board;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.util.stream.DoubleStream;
 
 
 /**
@@ -12,11 +13,11 @@ import java.awt.event.MouseListener;
  */
 public class GUIBoard extends JFrame {
 
+    private final static int SIZE_OF_WINDOW = (int) (Math.min(Toolkit.getDefaultToolkit().getScreenSize().height,
+                Toolkit.getDefaultToolkit().getScreenSize().width) * 0.8);
     private final MouseListener mouseListener = new MyMouseListener();
     public static ChessLabel[][] LABELS = new ChessLabel[9][9];
-// todo add letter and number
-// todo do it automatic
-// click new screen
+    // todo click new screen
 
     public void display(Board board)
     {
@@ -58,10 +59,7 @@ public class GUIBoard extends JFrame {
 //        b.setBounds(130,100,100, 40);//x axis, y axis, width, height
 //        add(b);
         contentPane.addMouseListener(mouseListener);
-
-
-        var size = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize((int) (Math.min(size.width, size.height) * 0.8), (int) (Math.min(size.width, size.height)  * 0.8));
+        setSize(SIZE_OF_WINDOW, SIZE_OF_WINDOW);
        // setLocationRelativeTo(null);
         setVisible(true);
     }

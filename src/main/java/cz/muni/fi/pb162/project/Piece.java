@@ -14,6 +14,7 @@ public abstract class Piece {
     private final long id;
     private final Color color;
 
+    // todo maybe delete because is duplicate from board
     private int letterNumber;
     private int number;
 
@@ -48,6 +49,11 @@ public abstract class Piece {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public void fired() {
+        letterNumber = Integer.MAX_VALUE;
+        number = Integer.MAX_VALUE;
     }
 
     public abstract Set<Coordinates> getAllPossibleMoves(Board board);

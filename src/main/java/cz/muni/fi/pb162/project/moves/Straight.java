@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author Alzbeta Strompova
  */
-public class Straight implements AllowedMoves {
+public class Straight implements Move {
 
     private int step = Board.SIZE;
 
@@ -26,45 +26,48 @@ public class Straight implements AllowedMoves {
         var color = board.getPiece(position).getColor();
 
         for (int i = 1; i <= step ; i++) {
-            if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber() + i, position.getNumber()))) {
+            if (board.getColor(position.getLetterNumber() + i, position.getNumber()) == null) {
+                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber()));
+            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber() + i, position.getNumber()))) {
                 result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber()));
                 break;
-            }
-            if (board.getColor(position.getLetterNumber() + i, position.getNumber()).getOppositeColor() == null) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber()));
+            } else {
+                break;
             }
         }
 
         for (int i = 1; i <= step ; i++) {
-            if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber() - i, position.getNumber()))) {
+            if (board.getColor(position.getLetterNumber() - i, position.getNumber()) == null) {
+                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber()));
+            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber() - i, position.getNumber()))) {
                 result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber()));
                 break;
-            }
-            if (board.getColor(position.getLetterNumber() - i, position.getNumber()).getOppositeColor() == null) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber()));
+            } else {
+                break;
             }
         }
 
         for (int i = 1; i <= step ; i++) {
-            if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber(), position.getNumber() + i))) {
+            if (board.getColor(position.getLetterNumber(), position.getNumber() + i) == null) {
+                result.add(new Coordinates(position.getLetterNumber(), position.getNumber() + i));
+            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber(), position.getNumber() + i))) {
                 result.add(new Coordinates(position.getLetterNumber(), position.getNumber() + i));
                 break;
-            }
-            if (board.getColor(position.getLetterNumber(), position.getNumber() + i).getOppositeColor() == null) {
-                result.add(new Coordinates(position.getLetterNumber(), position.getNumber() + i));
+            } else {
+                break;
             }
         }
 
         for (int i = 1; i <= step ; i++) {
-            if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber(), position.getNumber() - i))) {
+            if (board.getColor(position.getLetterNumber(), position.getNumber() - i) == null) {
+                result.add(new Coordinates(position.getLetterNumber(), position.getNumber() - i));
+            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber(), position.getNumber() - i))) {
                 result.add(new Coordinates(position.getLetterNumber(), position.getNumber() - i));
                 break;
-            }
-            if (board.getColor(position.getLetterNumber(), position.getNumber() - i).getOppositeColor() == null) {
-                result.add(new Coordinates(position.getLetterNumber(), position.getNumber() - i));
+            } else {
+                break;
             }
         }
-
         return result;
     }
 

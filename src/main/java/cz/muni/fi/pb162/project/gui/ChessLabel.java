@@ -13,7 +13,7 @@ public class ChessLabel extends JLabel {
     public static final Font FONT = new Font("Serif", Font.PLAIN, 48);
     public static final Color LIGHT_SQUARE = new Color(255, 255, 255);
     public static final Color DARK_SQUARE = new Color(100, 100, 255);
-    public static final Color BASE = new Color(150, 150, 150);
+    public static final Color BASE = new Color(155, 155, 155);
 
     public ChessLabel(String s) {
         super(s);
@@ -26,7 +26,7 @@ public class ChessLabel extends JLabel {
     public void setSquare(int x, int y) {
         setFont(FONT);
         setOpaque(true);
-        setBackground((x + y) % 2 == 0 ? LIGHT_SQUARE : DARK_SQUARE);
+        setBackground((x + y) % 2 == 0 ? DARK_SQUARE : LIGHT_SQUARE);
         setHorizontalAlignment(CENTER);
     }
 

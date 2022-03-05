@@ -3,7 +3,7 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.enums.and.interfaces.ChessNotation;
 import cz.muni.fi.pb162.project.enums.and.interfaces.ChessPieces;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
-import cz.muni.fi.pb162.project.moves.AllowedMoves;
+import cz.muni.fi.pb162.project.moves.Move;
 import cz.muni.fi.pb162.project.moves.Diagonal;
 import cz.muni.fi.pb162.project.moves.Knight;
 import cz.muni.fi.pb162.project.moves.Pawn;
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -23,7 +24,7 @@ import java.util.Set;
  */
 public class ChessPiece extends Piece {
 
-    private final static Map<ChessPieces, List<AllowedMoves>> allowedMovesMap;
+    private final static Map<ChessPieces, List<Move>> allowedMovesMap;
     static {
         allowedMovesMap = new HashMap<>();
         allowedMovesMap.put(ChessPieces.King, List.of(new Straight(1), new Diagonal(1)));
@@ -44,17 +45,17 @@ public class ChessPiece extends Piece {
 
     // todo notation class
     public String getChessNotation() {
-        return type.toString() + Board.getNotationOfCoordinates(getLetterNumber(), getNumber());
+        return type.toString();
     }
 
     @Override
     public Set<Coordinates> getAllPossibleMoves(Board board) {
         var strategies = allowedMovesMap.get(type);
         var result = new HashSet<Coordinates>();
-        for (AllowedMoves strategy: strategies) {
+        for (Move strategy: strategies) {
             result.addAll(strategy.getAllowedMoves(board, new Coordinates(getLetterNumber(), getNumber())));
         }
-        return result;
+        return result.stream().filter(board::inRange).collect(Collectors.toSet());
     }
 
     @Override

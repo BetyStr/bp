@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * @author Alzbeta Strompova
  */
-public class Pawn implements AllowedMoves {
+public class Pawn implements Move {
 
     @Override
     public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
@@ -22,11 +22,13 @@ public class Pawn implements AllowedMoves {
             if (position.getNumber() == 1){
                 result.add(new Coordinates(position.getLetterNumber(), 3));
             }
-            if (board.getPiece(position.getLetterNumber() + 1,
+            if (!board.isEmpty(position.getLetterNumber() + 1, position.getNumber() + 1)
+                    && board.getPiece(position.getLetterNumber() + 1,
                     position.getNumber() + 1).getColor().equals(Color.Black)){
                 result.add(new Coordinates(position.getLetterNumber() + 1, position.getNumber() + 1));
             }
-            if (board.getPiece(position.getLetterNumber() - 1,
+            if (!board.isEmpty(position.getLetterNumber() - 1, position.getNumber() + 1)
+                    && board.getPiece(position.getLetterNumber() - 1,
                     position.getNumber() + 1).getColor().equals(Color.Black)){
                 result.add(new Coordinates(position.getLetterNumber() - 1, position.getNumber() + 1));
             }
@@ -36,16 +38,18 @@ public class Pawn implements AllowedMoves {
             if (position.getNumber() == 6){
                 result.add(new Coordinates(position.getLetterNumber(), 4));
             }
-            if (board.getPiece(position.getLetterNumber() + 1,
+            if (!board.isEmpty(position.getLetterNumber() + 1, position.getNumber() - 1)
+                    && board.getPiece(position.getLetterNumber() + 1,
                     position.getNumber() - 1).getColor().equals(Color.White)){
                 result.add(new Coordinates(position.getLetterNumber() + 1, position.getNumber() - 1));
             }
-            if (board.getPiece(position.getLetterNumber() - 1,
+            if (!board.isEmpty(position.getLetterNumber() - 1, position.getNumber() - 1)
+                    && board.getPiece(position.getLetterNumber() - 1,
                     position.getNumber() - 1).getColor().equals(Color.White)){
                 result.add(new Coordinates(position.getLetterNumber() - 1, position.getNumber() - 1));
             }
         }
-        // todo en passaint
+        // todo en passaint..memento
         return result;
     }
 }

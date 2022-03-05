@@ -1,5 +1,6 @@
 package cz.muni.fi.pb162.project.enums.and.interfaces;
 
+import cz.muni.fi.pb162.project.Coordinates;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.HashMap;
@@ -31,5 +32,28 @@ public final class ChessNotation {
 
     // due to a ban on implementation
     private ChessNotation() {
+    }
+
+
+    /**
+     * Chess notation
+     * @param x 0-7 => a-h
+     * @param y 0-7 => 1-8
+     * @return 04 example a5
+     */
+    public static String getNotationOfCoordinates(int x, int y){
+        var i = (char)(97 + x);
+        return i + String.valueOf(y + 1);
+    }
+
+    /**
+     * Chess notation REVERSE
+     * @param x a-h => 0-7
+     * @param y 1-8 => 0-7
+     * @return a5 example 04
+     */
+    public static Coordinates getCoordinatesOfNotation(char x, int y){
+        var i = (int)x - 97;
+        return new Coordinates(i,y - 1);
     }
 }

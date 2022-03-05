@@ -1,5 +1,7 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.enums.and.interfaces.Buildable;
+import cz.muni.fi.pb162.project.enums.and.interfaces.ChessNotation;
 import cz.muni.fi.pb162.project.enums.and.interfaces.ChessPieces;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
@@ -7,7 +9,6 @@ import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +31,7 @@ public class Game {
 
     /**
      * Constructor who sets the first player according to the color of the players
+     *
      * @param playerOne first of two players needed to play chess
      * @param playerTwo second of two players needed to play chess
      */
@@ -67,45 +69,54 @@ public class Game {
         return board;
     }
 
-    // todo
+        // todo
     private Boolean isEnd() {
-        // king is dead
+        // king is dead, one step before
         // not existing move
         // can not win
         // same move again and again
         return false;
     }
 
-    private void play() throws NotAllowedMoveException {
+    // todo exception
+    private void play() throws Exception {
         while (!isEnd()) {
-            System.out.println("Hraje " + next + "zadaj odkial kam");
-            var x = scanner.next().charAt(0);
-            var y = scanner.nextInt();
-            var xx = scanner.next().charAt(0);
-            var yy = scanner.nextInt();
-            var oldPosition = Board.getCoordinatesOfNotation(x, y);
-            var newPosition = Board.getCoordinatesOfNotation(xx, yy);
-            var piece = board.getPiece(oldPosition);
+            System.out.println(String.format("Next one is %s", next) + System.lineSeparator());
+            var fromPosition = getInputFromPlayer();
+            var toPosition = getInputFromPlayer();
+            var piece = board.getPiece(fromPosition);
+
             if (piece == null) {
-                // todo rename exception
-                throw new RuntimeException("on" + newPosition + " is not any piece");
+                throw new RuntimeException("on" + fromPosition + " is not any piece");
             }
-            if (!piece.getAllPossibleMoves(board).contains(newPosition)) {
-                throw new NotAllowedMoveException(piece.getChessNotation() + "can move to " + newPosition);
+            if (!piece.getAllPossibleMoves(board).contains(toPosition)) {
+                throw new NotAllowedMoveException(piece.getChessNotation() + "can move to " + toPosition);
             }
             round += 1;
-            System.out.println(board.move(oldPosition, newPosition));
+            System.out.println(board.move(fromPosition, toPosition));
             next = next.equals(playerOne) ? playerTwo : playerOne;
+            System.out.println(board);
         }
     }
 
+    private Coordinates getInputFromPlayer() throws Exception {
+        var position = scanner.next().trim();
+        if (position.length() != 2 ) {
+            throw new Exception("");
+        }
+        var letterNumber = position.charAt(0);
+        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        return ChessNotation.getCoordinatesOfNotation(letterNumber, number);
+    }
+
+
     // todo builder first then read
-    public void playNewGame() throws NotAllowedMoveException {
+    public void playNewGame() throws Exception {
         board = setInitialSet();
         play();
     }
 
-    public void playGameFromFile(InputStream is) throws IOException, NotAllowedMoveException {
+    public void playGameFromFile(InputStream is) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
         while (br.ready()) {
             // todo nastavit board
@@ -118,7 +129,7 @@ public class Game {
         play();
     }
 
-    public void playGameFromFile(File file) throws IOException, NotAllowedMoveException {
+    public void playGameFromFile(File file) throws Exception {
         try (FileInputStream fis = new FileInputStream(file)) {
             playGameFromFile(fis);
         }

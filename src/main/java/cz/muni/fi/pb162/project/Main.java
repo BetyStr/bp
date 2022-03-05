@@ -1,6 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
+import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.gui.GUIBoard;
 
 import java.time.LocalTime;
@@ -12,7 +13,7 @@ import java.util.Locale;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("Hello world!");
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("B");
@@ -27,8 +28,9 @@ public class Main {
 
         var board = chess.setInitialSet();
         System.out.println(board);
-        var guiBoard = new GUIBoard();
-        guiBoard.display(board);
+        chess.playNewGame();
+//        var guiBoard = new GUIBoard();
+//        guiBoard.display(board);
 
     }
 

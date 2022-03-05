@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author Alzbeta Strompova
  */
-public class Knight implements AllowedMoves {
+public class Knight implements Move {
 
     @Override
     public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
@@ -18,33 +18,25 @@ public class Knight implements AllowedMoves {
 
         if (board.getColor(position.getLetterNumber() + 2, position.getNumber() + 1) == null) {
             result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() + 1));
-        }
-
-        if (color.equals(board.getColor(position.getLetterNumber() + 2, position.getNumber() + 1).getOppositeColor())) {
+        } else if (color.equals(board.getColor(position.getLetterNumber() + 2, position.getNumber() + 1).getOppositeColor())) {
             result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() + 1));
         }
 
 
         if (board.getColor(position.getLetterNumber() + 2, position.getNumber() - 1) == null) {
             result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() - 1));
-        }
-
-        if (color.equals(board.getColor(position.getLetterNumber() + 2, position.getNumber() - 1).getOppositeColor())) {
+        } else if (color.equals(board.getColor(position.getLetterNumber() + 2, position.getNumber() - 1).getOppositeColor())) {
             result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() - 1));
         }
 
         if (board.getColor(position.getLetterNumber() - 2, position.getNumber() + 1) == null) {
             result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() + 1));
-        }
-
-        if (color.equals(board.getColor(position.getLetterNumber() - 2, position.getNumber() + 1).getOppositeColor())) {
+        } else if (color.equals(board.getColor(position.getLetterNumber() - 2, position.getNumber() + 1).getOppositeColor())) {
             result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() + 1));
         }
         if (board.getColor(position.getLetterNumber() - 2, position.getNumber() - 1) == null) {
             result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() - 1));
-        }
-
-        if (color.equals(board.getColor(position.getLetterNumber() - 2, position.getNumber() - 1).getOppositeColor())) {
+        } else if (color.equals(board.getColor(position.getLetterNumber() - 2, position.getNumber() - 1).getOppositeColor())) {
             result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() - 1));
         }
 

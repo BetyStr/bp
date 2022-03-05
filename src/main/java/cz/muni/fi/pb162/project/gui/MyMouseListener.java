@@ -10,21 +10,13 @@ import java.awt.event.MouseListener;
 public class MyMouseListener implements MouseListener {
 
     private boolean firstClick = true;
-    private Point piece;
 
-
+    // todo  klikanie pohyb
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (firstClick) {
-            var point = e.getPoint();
-            piece = point;
-            System.out.println(point.x);
-            System.out.println(point.y);
-        } else {
-            var point = e.getPoint();
-            System.out.println(point.x);
-            System.out.println(point.y);
-        }
+        var point = e.getPoint();
+        System.out.println(point.x);
+        System.out.println(point.y);
         firstClick = !firstClick;
     }
 

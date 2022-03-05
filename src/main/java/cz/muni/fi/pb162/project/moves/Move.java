@@ -10,7 +10,7 @@ import java.util.Set;
  * Design pattern strategy
  * @author Alzbeta Strompova
  */
-public interface AllowedMoves {
+public interface Move {
 
     /**
      * todo vracia aj suradnice mimo board ...inRange in board mozno pomoze
