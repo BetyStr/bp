@@ -37,7 +37,6 @@ public class ChessPiece extends Piece {
 
     private final ChessPieces type;
 
-
     public ChessPiece(Color color, int letterNumber, int number, ChessPieces type) {
         super(color, letterNumber, number);
         this.type = type;
@@ -53,7 +52,7 @@ public class ChessPiece extends Piece {
         var strategies = allowedMovesMap.get(type);
         var result = new HashSet<Coordinates>();
         for (Move strategy: strategies) {
-            result.addAll(strategy.getAllowedMoves(board, new Coordinates(getLetterNumber(), getNumber())));
+            result.addAll(strategy.getAllowedMoves(board, board.findCoordinatesOfChessPieceById(getId())));
         }
         return result.stream().filter(board::inRange).collect(Collectors.toSet());
     }

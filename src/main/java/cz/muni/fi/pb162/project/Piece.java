@@ -15,16 +15,16 @@ public abstract class Piece {
     private final Color color;
 
     // todo maybe delete because is duplicate from board
-    private int letterNumber;
-    private int number;
+//    private int letterNumber;
+//    private int number;
 
     private static final AtomicLong idCounter = new AtomicLong();
 
     public Piece(Color color, int letterNumber, int number) {
         id = createID();
         this.color = color;
-        this.letterNumber = letterNumber;
-        this.number = number;
+//        this.letterNumber = letterNumber;
+//        this.number = number;
     }
 
     private static long createID() {
@@ -35,26 +35,22 @@ public abstract class Piece {
         return color;
     }
 
-    public int getLetterNumber() {
-        return letterNumber;
-    }
+//    public int getLetterNumber() {
+//        return letterNumber;
+//    }
+//
+//    public void setLetterNumber(int letterNumber) {
+//        this.letterNumber = letterNumber;
+//    }
+//
+//    public int getNumber() {
+//        return number;
+//    }
+//
+//    public void setNumber(int number) {
+//        this.number = number;
+//    }
 
-    public void setLetterNumber(int letterNumber) {
-        this.letterNumber = letterNumber;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public void fired() {
-        letterNumber = Integer.MAX_VALUE;
-        number = Integer.MAX_VALUE;
-    }
 
     public abstract Set<Coordinates> getAllPossibleMoves(Board board);
 
@@ -67,12 +63,16 @@ public abstract class Piece {
             return false;
         }
         Piece piece = (Piece) o;
-        return id == piece.id && letterNumber == piece.letterNumber &&
-                number == piece.number && color == piece.color;
+        return id == piece.id //&& letterNumber == piece.letterNumber && number == piece.number
+                 && color == piece.color;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(color, id, letterNumber, number);
+        return Objects.hash(color, id); // letterNumber, number);
+    }
+
+    public long getId() {
+        return id;
     }
 }

@@ -18,6 +18,17 @@ public class Board {
     // nie je to moc oop kedze tu nemoze byt piece lebo potrebujem type
     private final ChessPiece[][] board = new ChessPiece[SIZE][SIZE];
 
+    public Coordinates findCoordinatesOfChessPieceById(long id) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (board[i][j].getId() == id) {
+                    return new Coordinates(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * @param letterNumber first coordinate to put piece 0-7
      * @param number second coordinate to put piece 0-7
@@ -72,8 +83,8 @@ public class Board {
     public String move(Coordinates oldPosition, Coordinates newPosition) {
         var fired = getPiece(newPosition);
         var piece = getPiece(oldPosition);
-        piece.setLetterNumber(newPosition.getLetterNumber());
-        piece.setNumber(newPosition.getNumber());
+//        piece.setLetterNumber(newPosition.getLetterNumber());
+//        piece.setNumber(newPosition.getNumber());
         board[newPosition.getLetterNumber()][newPosition.getNumber()] = board[oldPosition.getLetterNumber()][oldPosition.getNumber()];
         board[oldPosition.getLetterNumber()][oldPosition.getNumber()] = null;
         // todo vyhodenie ..odstranit tu figurku...maybe? pozor moze byt null
