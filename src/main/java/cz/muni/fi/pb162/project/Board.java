@@ -5,12 +5,13 @@ import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
 
 
 /**
+ * todo memento maybe
  * @author Alzbeta Strompova
  */
 public class Board {
 
     public final static int SIZE = 8;
-    private final static char SPACE = '\u2003';
+    public final static char SPACE = '\u2003';
     private final static char SEPARATOR = '|';
 
     private final ChessPiece[][] board = new ChessPiece[SIZE][SIZE];

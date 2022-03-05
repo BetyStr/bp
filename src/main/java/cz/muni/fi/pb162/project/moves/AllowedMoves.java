@@ -7,7 +7,7 @@ import cz.muni.fi.pb162.project.Board;
 import java.util.Set;
 
 /**
- * Strategy
+ * Design pattern strategy
  * @author Alzbeta Strompova
  */
 public interface AllowedMoves {

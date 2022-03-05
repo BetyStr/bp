@@ -1,5 +1,6 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.enums.and.interfaces.ChessNotation;
 import cz.muni.fi.pb162.project.enums.and.interfaces.ChessPieces;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
 import cz.muni.fi.pb162.project.moves.AllowedMoves;
@@ -58,7 +59,7 @@ public class ChessPiece extends Piece {
 
     @Override
     public String toString() {
-        return ChessPieces.figures.get(Pair.of(this.type, getColor()));
+        return ChessNotation.figures.get(Pair.of(this.type, getColor()));
     }
 
     @Override

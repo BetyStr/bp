@@ -16,28 +16,31 @@ import java.util.Scanner;
 
 /**
  * @author Alzbeta Strompova
- * todo interface read
+ * todo add interface read a write
  * long algebraic notation
  */
 public class Game {
 
+    private final static Scanner scanner = new Scanner(System.in);
     private final Player playerOne;
     private final Player playerTwo;
-    // todo not public
-    public Board board = setInitialSet();
+    public Board board; // todo not public
     private Player next;
     private int round;
 
-    private final static Scanner scanner = new Scanner(System.in);
-
-    public Game(Player playerOne, Player playerTwo){
+    /**
+     * Constructor who sets the first player according to the color of the players
+     * @param playerOne first of two players needed to play chess
+     * @param playerTwo second of two players needed to play chess
+     */
+    public Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
     }
 
     //todo set private
-    public Board setInitialSet(){
+    public Board setInitialSet() {
         board = new Board();
         board.putPieceOnBoard(4, 0, new ChessPiece(Color.White, 4, 0, ChessPieces.King));
         board.putPieceOnBoard(3, 0, new ChessPiece(Color.White, 3, 0, ChessPieces.Queen));
@@ -65,12 +68,16 @@ public class Game {
     }
 
     // todo
-    private Boolean isEnd(){
+    private Boolean isEnd() {
+        // king is dead
+        // not existing move
+        // can not win
+        // same move again and again
         return false;
     }
 
     private void play() throws NotAllowedMoveException {
-        while (!isEnd()){
+        while (!isEnd()) {
             System.out.println("Hraje " + next + "zadaj odkial kam");
             var x = scanner.next().charAt(0);
             var y = scanner.nextInt();
@@ -92,6 +99,7 @@ public class Game {
         }
     }
 
+    // todo builder first then read
     public void playNewGame() throws NotAllowedMoveException {
         board = setInitialSet();
         play();
@@ -115,4 +123,6 @@ public class Game {
             playGameFromFile(fis);
         }
     }
+
+
 }
