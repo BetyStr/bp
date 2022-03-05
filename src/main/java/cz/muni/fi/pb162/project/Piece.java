@@ -52,7 +52,7 @@ public abstract class Piece {
 //    }
 
 
-    public abstract Set<Coordinates> getAllPossibleMoves(Board board);
+    public abstract Set<Coordinates> getAllPossibleMoves(Game game);
 
     @Override
     public boolean equals(Object o) {

@@ -48,13 +48,13 @@ public class ChessPiece extends Piece {
     }
 
     @Override
-    public Set<Coordinates> getAllPossibleMoves(Board board) {
+    public Set<Coordinates> getAllPossibleMoves(Game game) {
         var strategies = allowedMovesMap.get(type);
         var result = new HashSet<Coordinates>();
         for (Move strategy: strategies) {
-            result.addAll(strategy.getAllowedMoves(board, board.findCoordinatesOfChessPieceById(getId())));
+            result.addAll(strategy.getAllowedMoves(game, game.findCoordinatesOfPieceById(getId())));
         }
-        return result.stream().filter(board::inRange).collect(Collectors.toSet());
+        return result.stream().filter(game::inRange).collect(Collectors.toSet());
     }
 
     @Override

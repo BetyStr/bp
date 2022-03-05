@@ -1,6 +1,6 @@
 package cz.muni.fi.pb162.project.moves;
 
-import cz.muni.fi.pb162.project.Board;
+import cz.muni.fi.pb162.project.Game;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
 
@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class Diagonal implements Move {
 
-    private int step = Board.SIZE;
+    private int step = Game.SIZE;
 
     /**
      * Constructor
@@ -29,56 +29,56 @@ public class Diagonal implements Move {
     }
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
+    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
 
         var result = new HashSet<Coordinates>();
-        var color = board.getPiece(position).getColor();
+        var color = game.getPiece(position).getColor();
         Color goal;
         for (int i = 1; i <= step ; i++) {
-
-            goal = board.getColor(position.getLetterNumber() + i, position.getNumber() + i);
-            if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() + i));
-                break;
-            }
+            goal = game.getColor(position.getLetterNumber() + i, position.getNumber() + i);
             if (goal == null) {
                 result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() + i));
-            }
-        }
-
-        for (int i = 1; i <= step ; i++) {
-            goal = board.getColor(position.getLetterNumber() - i, position.getNumber() + i);
-            if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() + i));
+            } else if (color.getOppositeColor().equals(goal)) {
+                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() + i));
+                break;
+            } else {
                 break;
             }
+        }
+        for (int i = 1; i <= step ; i++) {
+            goal = game.getColor(position.getLetterNumber() - i, position.getNumber() + i);
             if (goal == null) {
                 result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() + i));
-            }
-        }
-
-        for (int i = 1; i <= step ; i++) {
-            goal = board.getColor(position.getLetterNumber() - i, position.getNumber() - i);
-            if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() - i));
+            } else if (color.getOppositeColor().equals(goal)) {
+                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() + i));
+                break;
+            } else {
                 break;
             }
+        }
+        for (int i = 1; i <= step ; i++) {
+            goal = game.getColor(position.getLetterNumber() - i, position.getNumber() - i);
             if (goal == null) {
                 result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() - i));
-            }
-        }
-
-        for (int i = 1; i <= step ; i++) {
-            goal = board.getColor(position.getLetterNumber() + i, position.getNumber() - i);
-            if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() - i));
+            } else if (color.getOppositeColor().equals(goal)) {
+                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() - i));
+                break;
+            } else {
                 break;
             }
+        }
+        for (int i = 1; i <= step ; i++) {
+            goal = game.getColor(position.getLetterNumber() + i, position.getNumber() - i);
             if (goal == null) {
                 result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() - i));
+            } else if (color.getOppositeColor().equals(goal)) {
+                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() - i));
+                break;
+            } else {
+                break;
             }
         }
-
         return result;
     }
+
 }

@@ -1,6 +1,6 @@
 package cz.muni.fi.pb162.project.moves;
 
-import cz.muni.fi.pb162.project.Board;
+import cz.muni.fi.pb162.project.Game;
 import cz.muni.fi.pb162.project.Coordinates;
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public class Straight implements Move {
 
-    private int step = Board.SIZE;
+    private int step = Game.SIZE;
 
     public Straight() {
     }
@@ -21,14 +21,14 @@ public class Straight implements Move {
     }
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
+    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
         var result = new HashSet<Coordinates>();
-        var color = board.getPiece(position).getColor();
+        var color = game.getPiece(position).getColor();
 
         for (int i = 1; i <= step ; i++) {
-            if (board.getColor(position.getLetterNumber() + i, position.getNumber()) == null) {
+            if (game.getColor(position.getLetterNumber() + i, position.getNumber()) == null) {
                 result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber()));
-            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber() + i, position.getNumber()))) {
+            } else if (color.getOppositeColor().equals(game.getColor(position.getLetterNumber() + i, position.getNumber()))) {
                 result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber()));
                 break;
             } else {
@@ -37,9 +37,9 @@ public class Straight implements Move {
         }
 
         for (int i = 1; i <= step ; i++) {
-            if (board.getColor(position.getLetterNumber() - i, position.getNumber()) == null) {
+            if (game.getColor(position.getLetterNumber() - i, position.getNumber()) == null) {
                 result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber()));
-            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber() - i, position.getNumber()))) {
+            } else if (color.getOppositeColor().equals(game.getColor(position.getLetterNumber() - i, position.getNumber()))) {
                 result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber()));
                 break;
             } else {
@@ -48,9 +48,9 @@ public class Straight implements Move {
         }
 
         for (int i = 1; i <= step ; i++) {
-            if (board.getColor(position.getLetterNumber(), position.getNumber() + i) == null) {
+            if (game.getColor(position.getLetterNumber(), position.getNumber() + i) == null) {
                 result.add(new Coordinates(position.getLetterNumber(), position.getNumber() + i));
-            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber(), position.getNumber() + i))) {
+            } else if (color.getOppositeColor().equals(game.getColor(position.getLetterNumber(), position.getNumber() + i))) {
                 result.add(new Coordinates(position.getLetterNumber(), position.getNumber() + i));
                 break;
             } else {
@@ -59,9 +59,9 @@ public class Straight implements Move {
         }
 
         for (int i = 1; i <= step ; i++) {
-            if (board.getColor(position.getLetterNumber(), position.getNumber() - i) == null) {
+            if (game.getColor(position.getLetterNumber(), position.getNumber() - i) == null) {
                 result.add(new Coordinates(position.getLetterNumber(), position.getNumber() - i));
-            } else if (color.getOppositeColor().equals(board.getColor(position.getLetterNumber(), position.getNumber() - i))) {
+            } else if (color.getOppositeColor().equals(game.getColor(position.getLetterNumber(), position.getNumber() - i))) {
                 result.add(new Coordinates(position.getLetterNumber(), position.getNumber() - i));
                 break;
             } else {
