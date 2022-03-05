@@ -1,33 +1,26 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.enums.and.interfaces.Buildable;
-import cz.muni.fi.pb162.project.enums.and.interfaces.ChessNotation;
-import cz.muni.fi.pb162.project.enums.and.interfaces.ChessPieces;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import cz.muni.fi.pb162.project.enums.and.interfaces.GameReadable;
+import cz.muni.fi.pb162.project.enums.and.interfaces.GameWritable;
 
 
 /**
  * @author Alzbeta Strompova
- * todo add interface read a write
- * long algebraic notation
  */
-public class Game {
+public abstract class Game implements GameReadable, GameWritable {
 
-    private final static Scanner scanner = new Scanner(System.in);
+    private final static char SEPARATOR = '|';
+    public final static int SIZE = 8;
+    public final static char SPACE = '\u2003';
+
     private final Player playerOne;
     private final Player playerTwo;
-    public Board board; // todo not public
     private Player next;
     private int round;
+
+    protected Piece[][] board;
+
 
     /**
      * Constructor who sets the first player according to the color of the players
@@ -41,99 +34,110 @@ public class Game {
         next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
     }
 
-    //todo set private
-    public Board setInitialSet() {
-        board = new Board();
-        board.putPieceOnBoard(4, 0, new ChessPiece(Color.White, 4, 0, ChessPieces.King));
-        board.putPieceOnBoard(3, 0, new ChessPiece(Color.White, 3, 0, ChessPieces.Queen));
-        board.putPieceOnBoard(0, 0, new ChessPiece(Color.White, 0, 0, ChessPieces.Rook));
-        board.putPieceOnBoard(7, 0, new ChessPiece(Color.White, 7, 0, ChessPieces.Rook));
-        board.putPieceOnBoard(1, 0, new ChessPiece(Color.White, 1, 0, ChessPieces.Knight));
-        board.putPieceOnBoard(6, 0, new ChessPiece(Color.White, 6, 0, ChessPieces.Knight));
-        board.putPieceOnBoard(2, 0, new ChessPiece(Color.White, 2, 0, ChessPieces.Bishop));
-        board.putPieceOnBoard(5, 0, new ChessPiece(Color.White, 5, 0, ChessPieces.Bishop));
 
-        board.putPieceOnBoard(4, 7, new ChessPiece(Color.Black, 4, 7, ChessPieces.King));
-        board.putPieceOnBoard(3, 7, new ChessPiece(Color.Black, 3, 7, ChessPieces.Queen));
-        board.putPieceOnBoard(0, 7, new ChessPiece(Color.Black, 0, 7, ChessPieces.Rook));
-        board.putPieceOnBoard(7, 7, new ChessPiece(Color.Black, 7, 7, ChessPieces.Rook));
-        board.putPieceOnBoard(1, 7, new ChessPiece(Color.Black, 1, 7, ChessPieces.Knight));
-        board.putPieceOnBoard(6, 7, new ChessPiece(Color.Black, 6, 7, ChessPieces.Knight));
-        board.putPieceOnBoard(2, 7, new ChessPiece(Color.Black, 2, 7, ChessPieces.Bishop));
-        board.putPieceOnBoard(5, 7, new ChessPiece(Color.Black, 5, 7, ChessPieces.Bishop));
 
-        for (int i = 0; i < 8; i++) {
-            board.putPieceOnBoard(i, 1, new ChessPiece(Color.White, i, 1, ChessPieces.Pawn));
-            board.putPieceOnBoard(i, 6, new ChessPiece(Color.Black, i, 6, ChessPieces.Pawn));
+    public Player getNext() {
+        return next;
+    }
+
+    public void nextTurn() {
+        next = next.equals(playerOne) ? playerTwo : playerOne;
+    }
+
+    public int getRound() {
+        return round;
+    }
+
+    public void nextRound() {
+        round += 1;
+    }
+
+    public Color getColor(int letterNumber, int number) {
+        if (isEmpty(letterNumber, number)){
+            return null;
         }
-        return board;
+        return board[letterNumber][number].getColor();
     }
 
-        // todo
-    private Boolean isEnd() {
-        // king is dead, one step before
-        // not existing move
-        // can not win
-        // same move again and again
-        return false;
+    public Color getColor(Coordinates position) {
+        return getColor(position.getLetterNumber(), position.getNumber());
     }
 
-    // todo exception
-    private void play() throws Exception {
-        while (!isEnd()) {
-            System.out.println(String.format("Next one is %s", next) + System.lineSeparator());
-            var fromPosition = getInputFromPlayer();
-            var toPosition = getInputFromPlayer();
-            var piece = board.getPiece(fromPosition);
+    public Piece getPiece(int letterNumber, int number) {
+        if (isEmpty(letterNumber, number)){
+            return null;
+        }
+        return board[letterNumber][number];
+    }
 
-            if (piece == null) {
-                throw new RuntimeException("on" + fromPosition + " is not any piece");
+    public Piece getPiece(Coordinates position) {
+        return getPiece(position.getLetterNumber(), position.getNumber());
+    }
+
+    /**
+     * @param letterNumber first coordinate to put piece 0-7
+     * @param number second coordinate to put piece 0-7
+     * @param piece ChessPiece which we want to put on board
+     */
+    public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
+        assert inRange(letterNumber, number);
+        board[letterNumber][number] = piece;
+    }
+
+    public abstract void setInitialSet();
+
+    public Coordinates findCoordinatesOfPieceById(long id) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (board[i][j].getId() == id) {
+                    return new Coordinates(i, j);
+                }
             }
-            if (!piece.getAllPossibleMoves(board).contains(toPosition)) {
-                throw new NotAllowedMoveException(piece.getChessNotation() + "can move to " + toPosition);
+        }
+        return null;
+    }
+
+    private boolean inRange(int x, int y) {
+        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
+    }
+
+    public boolean inRange(Coordinates coordinates) {
+        return inRange(coordinates.getLetterNumber(), coordinates.getNumber());
+    }
+
+    public boolean isEmpty(Coordinates position) {
+        return isEmpty(position.getLetterNumber(), position.getNumber());
+    }
+
+    public boolean isEmpty(int x, int y) {
+        return !inRange(x, y) || board[x][y] == null;
+    }
+
+    public abstract String move(Coordinates oldPosition, Coordinates newPosition);
+
+    public String printBoardToConsole() {
+        var result = new StringBuilder();
+        result.append(" ").append(SPACE);
+        // numbers
+        for (int i = 0; i < SIZE; i++) {
+            result.append(SPACE).append(SPACE).append(i + 1).append(SPACE);
+        }
+        result.append(System.lineSeparator());
+
+        for (int i = 0; i < SIZE; i++) {
+            // board
+            result.append("   ").append("-".repeat(47));
+            result.append(System.lineSeparator());
+            // letters
+            result.append((char) (65 + i));
+            // pieces
+            for (int j = 0; j < SIZE; j++) {
+                result.append(SPACE).append(SEPARATOR).append(SPACE)
+                        .append(board[i][j] == null ? SPACE : board[i][j]);
             }
-            round += 1;
-            System.out.println(board.move(fromPosition, toPosition));
-            next = next.equals(playerOne) ? playerTwo : playerOne;
-            System.out.println(board);
+            result.append(SPACE).append(SEPARATOR).append(System.lineSeparator());
         }
+        return result.append("   ").append("-".repeat(47)).toString();
     }
-
-    private Coordinates getInputFromPlayer() throws Exception {
-        var position = scanner.next().trim();
-        if (position.length() != 2 ) {
-            throw new Exception("");
-        }
-        var letterNumber = position.charAt(0);
-        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        return ChessNotation.getCoordinatesOfNotation(letterNumber, number);
-    }
-
-
-    // todo builder first then read
-    public void playNewGame() throws Exception {
-        board = setInitialSet();
-        play();
-    }
-
-    public void playGameFromFile(InputStream is) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-        while (br.ready()) {
-            // todo nastavit board
-//            String[] data = br.readLine().split(" ", 3);
-//            if (data.length != 3) {
-//                throw new IOException("Invalid data (some information might be missing)");
-//            }
-
-        }
-        play();
-    }
-
-    public void playGameFromFile(File file) throws Exception {
-        try (FileInputStream fis = new FileInputStream(file)) {
-            playGameFromFile(fis);
-        }
-    }
-
 
 }

@@ -30,10 +30,9 @@ public final class ChessNotation {
         figures.put(Pair.of(ChessPieces.Pawn, Color.Black), "\u265F");
     }
 
-    // due to a ban on implementation
+    // to prevent implementation
     private ChessNotation() {
     }
-
 
     /**
      * Chess notation

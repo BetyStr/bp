@@ -10,10 +10,10 @@ import java.awt.*;
  */
 public class ChessLabel extends JLabel {
 
-    public static final Font FONT = new Font("Serif", Font.PLAIN, 48);
-    public static final Color LIGHT_SQUARE = new Color(255, 255, 255);
-    public static final Color DARK_SQUARE = new Color(100, 100, 255);
     public static final Color BASE = new Color(155, 155, 155);
+    public static final Color DARK_SQUARE = new Color(100, 100, 255);
+    public static final Color LIGHT_SQUARE = new Color(255, 255, 255);
+    public static final Font FONT = new Font("Serif", Font.PLAIN, 48);
 
     public ChessLabel(String s) {
         super(s);
