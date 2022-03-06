@@ -33,29 +33,35 @@ public class Chess extends Game {
         super(playerOne, playerTwo);
     }
 
+    public Chess(Game target) {
+        super(target);
+    }
+
+
+    @Override
     public void setInitialSet() {
         board = new ChessPiece[8][8];
-        putPieceOnBoard(4, 0, new ChessPiece(Color.White, 4, 0, ChessPieces.King));
-        putPieceOnBoard(3, 0, new ChessPiece(Color.White, 3, 0, ChessPieces.Queen));
-        putPieceOnBoard(0, 0, new ChessPiece(Color.White, 0, 0, ChessPieces.Rook));
-        putPieceOnBoard(7, 0, new ChessPiece(Color.White, 7, 0, ChessPieces.Rook));
-        putPieceOnBoard(1, 0, new ChessPiece(Color.White, 1, 0, ChessPieces.Knight));
-        putPieceOnBoard(6, 0, new ChessPiece(Color.White, 6, 0, ChessPieces.Knight));
-        putPieceOnBoard(2, 0, new ChessPiece(Color.White, 2, 0, ChessPieces.Bishop));
-        putPieceOnBoard(5, 0, new ChessPiece(Color.White, 5, 0, ChessPieces.Bishop));
+        putPieceOnBoard(4, 0, new ChessPiece(Color.White, ChessPieces.King));
+        putPieceOnBoard(3, 0, new ChessPiece(Color.White, ChessPieces.Queen));
+        putPieceOnBoard(0, 0, new ChessPiece(Color.White, ChessPieces.Rook));
+        putPieceOnBoard(7, 0, new ChessPiece(Color.White, ChessPieces.Rook));
+        putPieceOnBoard(1, 0, new ChessPiece(Color.White, ChessPieces.Knight));
+        putPieceOnBoard(6, 0, new ChessPiece(Color.White, ChessPieces.Knight));
+        putPieceOnBoard(2, 0, new ChessPiece(Color.White, ChessPieces.Bishop));
+        putPieceOnBoard(5, 0, new ChessPiece(Color.White, ChessPieces.Bishop));
 
-        putPieceOnBoard(4, 7, new ChessPiece(Color.Black, 4, 7, ChessPieces.King));
-        putPieceOnBoard(3, 7, new ChessPiece(Color.Black, 3, 7, ChessPieces.Queen));
-        putPieceOnBoard(0, 7, new ChessPiece(Color.Black, 0, 7, ChessPieces.Rook));
-        putPieceOnBoard(7, 7, new ChessPiece(Color.Black, 7, 7, ChessPieces.Rook));
-        putPieceOnBoard(1, 7, new ChessPiece(Color.Black, 1, 7, ChessPieces.Knight));
-        putPieceOnBoard(6, 7, new ChessPiece(Color.Black, 6, 7, ChessPieces.Knight));
-        putPieceOnBoard(2, 7, new ChessPiece(Color.Black, 2, 7, ChessPieces.Bishop));
-        putPieceOnBoard(5, 7, new ChessPiece(Color.Black, 5, 7, ChessPieces.Bishop));
+        putPieceOnBoard(4, 7, new ChessPiece(Color.Black, ChessPieces.King));
+        putPieceOnBoard(3, 7, new ChessPiece(Color.Black, ChessPieces.Queen));
+        putPieceOnBoard(0, 7, new ChessPiece(Color.Black, ChessPieces.Rook));
+        putPieceOnBoard(7, 7, new ChessPiece(Color.Black, ChessPieces.Rook));
+        putPieceOnBoard(1, 7, new ChessPiece(Color.Black, ChessPieces.Knight));
+        putPieceOnBoard(6, 7, new ChessPiece(Color.Black, ChessPieces.Knight));
+        putPieceOnBoard(2, 7, new ChessPiece(Color.Black, ChessPieces.Bishop));
+        putPieceOnBoard(5, 7, new ChessPiece(Color.Black, ChessPieces.Bishop));
 
         for (int i = 0; i < 8; i++) {
-            putPieceOnBoard(i, 1, new ChessPiece(Color.White, i, 1, ChessPieces.Pawn));
-            putPieceOnBoard(i, 6, new ChessPiece(Color.Black, i, 6, ChessPieces.Pawn));
+            putPieceOnBoard(i, 1, new ChessPiece(Color.White, ChessPieces.Pawn));
+            putPieceOnBoard(i, 6, new ChessPiece(Color.Black, ChessPieces.Pawn));
         }
     }
 
@@ -66,7 +72,6 @@ public class Chess extends Game {
         var piece = getPiece(oldPosition);
         board[newPosition.getLetterNumber()][newPosition.getNumber()] = board[oldPosition.getLetterNumber()][oldPosition.getNumber()];
         board[oldPosition.getLetterNumber()][oldPosition.getNumber()] = null;
-        // todo vyhodenie ..odstranit tu figurku...maybe? pozor moze byt null
         return ((ChessPiece)piece).getChessNotation() +
                 ChessNotation.getNotationOfCoordinates(oldPosition.getLetterNumber(), oldPosition.getNumber()) +
                 (fired == null ? "" : "x") +
@@ -107,6 +112,7 @@ public class Chess extends Game {
     }
 
     /// region IO
+    //todo IO
 
     @Override
     public GameReadable read(InputStream is) throws IOException {
@@ -163,4 +169,8 @@ public class Chess extends Game {
         return false;
     }
 
+    @Override
+    public Game clone() {
+        return new Chess(this);
+    }
 }

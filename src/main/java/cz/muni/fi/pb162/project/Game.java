@@ -3,19 +3,20 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
 import cz.muni.fi.pb162.project.enums.and.interfaces.GameReadable;
 import cz.muni.fi.pb162.project.enums.and.interfaces.GameWritable;
+import cz.muni.fi.pb162.project.enums.and.interfaces.Prototype;
 
 
 /**
  * @author Alzbeta Strompova
  */
-public abstract class Game implements GameReadable, GameWritable {
+public abstract class Game implements GameReadable, GameWritable, Prototype<Game> {
 
     private final static char SEPARATOR = '|';
     public final static int SIZE = 8;
     public final static char SPACE = '\u2003';
 
-    private final Player playerOne;
-    private final Player playerTwo;
+    private Player playerOne;
+    private Player playerTwo;
     private Player next;
     private int round;
 
@@ -32,6 +33,17 @@ public abstract class Game implements GameReadable, GameWritable {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
+    }
+
+    /**
+     * Constructor because Prototype
+     */
+    public Game(Game target) {
+        if (target != null) {
+            playerOne = target.playerOne;
+            playerTwo = target.playerTwo;
+            next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
+        }
     }
 
 

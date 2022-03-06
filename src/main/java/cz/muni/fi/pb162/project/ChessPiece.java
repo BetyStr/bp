@@ -35,10 +35,17 @@ public class ChessPiece extends Piece {
         allowedMovesMap.put(ChessPieces.Pawn, List.of(new Pawn()));
     }
 
-    private final ChessPieces type;
+    private ChessPieces type;
 
-    public ChessPiece(Color color, int letterNumber, int number, ChessPieces type) {
-        super(color, letterNumber, number);
+    //todo maybe choose type
+    public void promotion() {
+        if (type.equals(ChessPieces.Pawn)) {
+            type = ChessPieces.Queen;
+        }
+    }
+
+    public ChessPiece(Color color, ChessPieces type) {
+        super(color);
         this.type = type;
     }
 

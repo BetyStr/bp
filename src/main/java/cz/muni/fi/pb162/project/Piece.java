@@ -14,17 +14,11 @@ public abstract class Piece {
     private final long id;
     private final Color color;
 
-    // todo maybe delete because is duplicate from board
-//    private int letterNumber;
-//    private int number;
-
     private static final AtomicLong idCounter = new AtomicLong();
 
-    public Piece(Color color, int letterNumber, int number) {
+    public Piece(Color color) {
         id = createID();
         this.color = color;
-//        this.letterNumber = letterNumber;
-//        this.number = number;
     }
 
     private static long createID() {
@@ -34,22 +28,6 @@ public abstract class Piece {
     public Color getColor() {
         return color;
     }
-
-//    public int getLetterNumber() {
-//        return letterNumber;
-//    }
-//
-//    public void setLetterNumber(int letterNumber) {
-//        this.letterNumber = letterNumber;
-//    }
-//
-//    public int getNumber() {
-//        return number;
-//    }
-//
-//    public void setNumber(int number) {
-//        this.number = number;
-//    }
 
 
     public abstract Set<Coordinates> getAllPossibleMoves(Game game);
