@@ -1,7 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.enums.and.interfaces.Caretaker;
-
 import java.util.Stack;
 
 /**

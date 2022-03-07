@@ -1,8 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
-import cz.muni.fi.pb162.project.gui.GUIBoard;
-
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;

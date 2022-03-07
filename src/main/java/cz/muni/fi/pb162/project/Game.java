@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.enums.and.interfaces.*;
 
 
 /**
@@ -95,7 +94,7 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     }
 
     public Color getColor(Coordinates position) {
-        return getColor(position.getLetterNumber(), position.getNumber());
+        return getColor(position.letterNumber(), position.number());
     }
 
     public Piece getPiece(int letterNumber, int number) {
@@ -106,7 +105,7 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     }
 
     public Piece getPiece(Coordinates position) {
-        return getPiece(position.getLetterNumber(), position.getNumber());
+        return getPiece(position.letterNumber(), position.number());
     }
 
     /**
@@ -137,11 +136,11 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     }
 
     public boolean inRange(Coordinates coordinates) {
-        return inRange(coordinates.getLetterNumber(), coordinates.getNumber());
+        return inRange(coordinates.letterNumber(), coordinates.number());
     }
 
     public boolean isEmpty(Coordinates position) {
-        return isEmpty(position.getLetterNumber(), position.getNumber());
+        return isEmpty(position.letterNumber(), position.number());
     }
 
     public boolean isEmpty(int x, int y) {

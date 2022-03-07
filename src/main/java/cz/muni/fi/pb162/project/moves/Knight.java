@@ -16,28 +16,28 @@ public class Knight implements Move {
         var result = new HashSet<Coordinates>();
         var color = game.getPiece(position).getColor();
 
-        if (game.getColor(position.getLetterNumber() + 2, position.getNumber() + 1) == null) {
-            result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() + 1));
-        } else if (color.equals(game.getColor(position.getLetterNumber() + 2, position.getNumber() + 1).getOppositeColor())) {
-            result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() + 1));
+        if (game.getColor(position.letterNumber() + 2, position.number() + 1) == null) {
+            result.add(new Coordinates(position.letterNumber() + 2, position.number() + 1));
+        } else if (color.equals(game.getColor(position.letterNumber() + 2, position.number() + 1).getOppositeColor())) {
+            result.add(new Coordinates(position.letterNumber() + 2, position.number() + 1));
         }
 
 
-        if (game.getColor(position.getLetterNumber() + 2, position.getNumber() - 1) == null) {
-            result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() - 1));
-        } else if (color.equals(game.getColor(position.getLetterNumber() + 2, position.getNumber() - 1).getOppositeColor())) {
-            result.add(new Coordinates(position.getLetterNumber() + 2, position.getNumber() - 1));
+        if (game.getColor(position.letterNumber() + 2, position.number() - 1) == null) {
+            result.add(new Coordinates(position.letterNumber() + 2, position.number() - 1));
+        } else if (color.equals(game.getColor(position.letterNumber() + 2, position.number() - 1).getOppositeColor())) {
+            result.add(new Coordinates(position.letterNumber() + 2, position.number() - 1));
         }
 
-        if (game.getColor(position.getLetterNumber() - 2, position.getNumber() + 1) == null) {
-            result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() + 1));
-        } else if (color.equals(game.getColor(position.getLetterNumber() - 2, position.getNumber() + 1).getOppositeColor())) {
-            result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() + 1));
+        if (game.getColor(position.letterNumber() - 2, position.number() + 1) == null) {
+            result.add(new Coordinates(position.letterNumber() - 2, position.number() + 1));
+        } else if (color.equals(game.getColor(position.letterNumber() - 2, position.number() + 1).getOppositeColor())) {
+            result.add(new Coordinates(position.letterNumber() - 2, position.number() + 1));
         }
-        if (game.getColor(position.getLetterNumber() - 2, position.getNumber() - 1) == null) {
-            result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() - 1));
-        } else if (color.equals(game.getColor(position.getLetterNumber() - 2, position.getNumber() - 1).getOppositeColor())) {
-            result.add(new Coordinates(position.getLetterNumber() - 2, position.getNumber() - 1));
+        if (game.getColor(position.letterNumber() - 2, position.number() - 1) == null) {
+            result.add(new Coordinates(position.letterNumber() - 2, position.number() - 1));
+        } else if (color.equals(game.getColor(position.letterNumber() - 2, position.number() - 1).getOppositeColor())) {
+            result.add(new Coordinates(position.letterNumber() - 2, position.number() - 1));
         }
 
         return result;

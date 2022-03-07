@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.enums.and.interfaces.*;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 
 import java.io.BufferedReader;
@@ -77,8 +76,8 @@ public class Chess extends Game implements GameWritable {
     public String move(Coordinates oldPosition, Coordinates newPosition) {
         var fired = getPiece(newPosition);
         var piece = getPiece(oldPosition);
-        board[newPosition.getLetterNumber()][newPosition.getNumber()] = board[oldPosition.getLetterNumber()][oldPosition.getNumber()];
-        board[oldPosition.getLetterNumber()][oldPosition.getNumber()] = null;
+        board[newPosition.letterNumber()][newPosition.number()] = board[oldPosition.letterNumber()][oldPosition.number()];
+        board[oldPosition.letterNumber()][oldPosition.number()] = null;
         if (fired != null && fired.getType().equals(TypeOfPiece.King)) {
             setStateOfGame((fired).getColor().equals(Color.Black)
                     ? StateOfGame.WhitePlayerWin
@@ -86,9 +85,9 @@ public class Chess extends Game implements GameWritable {
         }
         // todo chess notation
         return ChessNotation.getNotation(piece.getType()) +
-                ChessNotation.getNotationOfCoordinates(oldPosition.getLetterNumber(), oldPosition.getNumber()) +
+                ChessNotation.getNotationOfCoordinates(oldPosition.letterNumber(), oldPosition.number()) +
                 (fired == null ? "" : "x") +
-                ChessNotation.getNotationOfCoordinates(newPosition.getLetterNumber(), newPosition.getNumber());
+                ChessNotation.getNotationOfCoordinates(newPosition.letterNumber(), newPosition.number());
     }
 
     private Coordinates getInputFromPlayer() {
@@ -201,7 +200,7 @@ public class Chess extends Game implements GameWritable {
 
         public Builder addPieceToBoard(Piece piece, char letterNumber, int number) {
             var position = ChessNotation.getCoordinatesOfNotation(letterNumber, number);
-            board[position.getLetterNumber()][position.getNumber()] = piece;
+            board[position.letterNumber()][position.number()] = piece;
             return this;
         }
 

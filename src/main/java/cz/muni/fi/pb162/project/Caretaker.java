@@ -1,4 +1,4 @@
-package cz.muni.fi.pb162.project.enums.and.interfaces;
+package cz.muni.fi.pb162.project;
 
 /**
  * Interface to help implement design pattern Memento

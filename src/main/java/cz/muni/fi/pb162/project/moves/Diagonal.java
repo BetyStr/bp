@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Game;
 import cz.muni.fi.pb162.project.Coordinates;
-import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
+import cz.muni.fi.pb162.project.Color;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,44 +35,44 @@ public class Diagonal implements Move {
         var color = game.getPiece(position).getColor();
         Color goal;
         for (int i = 1; i <= step ; i++) {
-            goal = game.getColor(position.getLetterNumber() + i, position.getNumber() + i);
+            goal = game.getColor(position.letterNumber() + i, position.number() + i);
             if (goal == null) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() + i));
+                result.add(new Coordinates(position.letterNumber() + i, position.number() + i));
             } else if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() + i));
+                result.add(new Coordinates(position.letterNumber() + i, position.number() + i));
                 break;
             } else {
                 break;
             }
         }
         for (int i = 1; i <= step ; i++) {
-            goal = game.getColor(position.getLetterNumber() - i, position.getNumber() + i);
+            goal = game.getColor(position.letterNumber() - i, position.number() + i);
             if (goal == null) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() + i));
+                result.add(new Coordinates(position.letterNumber() - i, position.number() + i));
             } else if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() + i));
+                result.add(new Coordinates(position.letterNumber() - i, position.number() + i));
                 break;
             } else {
                 break;
             }
         }
         for (int i = 1; i <= step ; i++) {
-            goal = game.getColor(position.getLetterNumber() - i, position.getNumber() - i);
+            goal = game.getColor(position.letterNumber() - i, position.number() - i);
             if (goal == null) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() - i));
+                result.add(new Coordinates(position.letterNumber() - i, position.number() - i));
             } else if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() - i, position.getNumber() - i));
+                result.add(new Coordinates(position.letterNumber() - i, position.number() - i));
                 break;
             } else {
                 break;
             }
         }
         for (int i = 1; i <= step ; i++) {
-            goal = game.getColor(position.getLetterNumber() + i, position.getNumber() - i);
+            goal = game.getColor(position.letterNumber() + i, position.number() - i);
             if (goal == null) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() - i));
+                result.add(new Coordinates(position.letterNumber() + i, position.number() - i));
             } else if (color.getOppositeColor().equals(goal)) {
-                result.add(new Coordinates(position.getLetterNumber() + i, position.getNumber() - i));
+                result.add(new Coordinates(position.letterNumber() + i, position.number() - i));
                 break;
             } else {
                 break;
