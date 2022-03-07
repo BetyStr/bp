@@ -123,7 +123,7 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (board[i][j].getId() == id) {
+                if (board[i][j] != null && board[i][j].getId() == id) {
                     return new Coordinates(i, j);
                 }
             }
