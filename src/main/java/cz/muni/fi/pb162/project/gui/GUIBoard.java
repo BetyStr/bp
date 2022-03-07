@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.gui;
 
 import cz.muni.fi.pb162.project.Game;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -29,9 +29,13 @@ public class GUIBoard extends JFrame {
         GridLayout gridLayout = new GridLayout(9, 9);
         contentPane.setLayout(gridLayout);
 
-        LABELS[0][0] = new ChessLabel(String.valueOf(Game.SPACE));
-        LABELS[0][0].setBase();
-        contentPane.add(LABELS[0][0]);
+        JButton b=new JButton("Undo");//creating instance of JButton
+        b.setBounds(0,0,SIZE_OF_WINDOW / 18, SIZE_OF_WINDOW / 18);//x axis, y axis, width, height
+        add(b);
+
+//        LABELS[0][0] = new ChessLabel(String.valueOf(Game.SPACE));
+//        LABELS[0][0].setBase();
+//        contentPane.add(LABELS[0][0]);
         //add numbers
         for (int i = 1; i < 9; i++) {
             LABELS[0][i] = new ChessLabel(String.valueOf(i));
@@ -56,9 +60,7 @@ public class GUIBoard extends JFrame {
             }
         }
 
-//        JButton b=new JButton("click");//creating instance of JButton
-//        b.setBounds(130,100,100, 40);//x axis, y axis, width, height
-//        add(b);
+
         contentPane.addMouseListener(mouseListener);
         setSize(SIZE_OF_WINDOW, SIZE_OF_WINDOW);
        // setLocationRelativeTo(null);

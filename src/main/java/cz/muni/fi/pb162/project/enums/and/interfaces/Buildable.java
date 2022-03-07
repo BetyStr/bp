@@ -11,7 +11,6 @@ package cz.muni.fi.pb162.project.enums.and.interfaces;
  * @param <T> represents a type which should be built.
  * @author not Alzbeta Strompova
  */
-
 public interface Buildable<T> {
 
     /**

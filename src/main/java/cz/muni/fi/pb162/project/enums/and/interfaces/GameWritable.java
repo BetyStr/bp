@@ -1,8 +1,6 @@
 package cz.muni.fi.pb162.project.enums.and.interfaces;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Interface for data export.
@@ -28,5 +26,20 @@ public interface GameWritable {
      * @throws IOException on write error
      */
     void write(File file) throws IOException;
+
+// todo look at it
+//    static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+
+//    /**
+//     * Writes json to the output stream.
+//     *
+//     * @param os output stream
+//     * @throws IOException if IO problem occurs
+//     */
+//    default void writeJson(OutputStream os, Object object) throws IOException {
+//        Writer w = new OutputStreamWriter(os);
+//        w.write(GSON.toJson(object));
+//        w.flush();
+//    }
 
 }

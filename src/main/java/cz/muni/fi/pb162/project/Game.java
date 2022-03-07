@@ -1,15 +1,13 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
-import cz.muni.fi.pb162.project.enums.and.interfaces.GameReadable;
-import cz.muni.fi.pb162.project.enums.and.interfaces.GameWritable;
-import cz.muni.fi.pb162.project.enums.and.interfaces.Prototype;
+import cz.muni.fi.pb162.project.enums.and.interfaces.*;
 
 
 /**
  * @author Alzbeta Strompova
+ * todo read and write
  */
-public abstract class Game implements GameReadable, GameWritable, Prototype<Game> {
+public abstract class Game implements Prototype<Game>, Originator<Game.GameState> {
 
     private final static char SEPARATOR = '|';
     public final static int SIZE = 8;
@@ -18,8 +16,10 @@ public abstract class Game implements GameReadable, GameWritable, Prototype<Game
     private Player playerOne;
     private Player playerTwo;
     private Player next;
+    private StateOfGame stateOfGame = StateOfGame.Playing;
     private int round;
 
+    protected History history;
     protected Piece[][] board;
 
 
@@ -32,24 +32,51 @@ public abstract class Game implements GameReadable, GameWritable, Prototype<Game
     public Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
+        history = new History(this);
         next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
     }
 
     /**
      * Constructor because Prototype
      */
-    public Game(Game target) {
+    protected Game(Game target) {
         if (target != null) {
             playerOne = target.playerOne;
             playerTwo = target.playerTwo;
-            next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
+            next = target.next;
+            board = target.board;
+            round  = target.round;
+            history = target.history;
+            stateOfGame = target.stateOfGame;
         }
     }
 
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
+    }
 
+    public void setStateOfGame(StateOfGame stateOfGame) {
+        this.stateOfGame = stateOfGame;
+    }
+
+    public Player getPlayerOne() {
+        return playerOne;
+    }
+
+    public Player getPlayerTwo() {
+        return playerTwo;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
 
     public Player getNext() {
         return next;
+    }
+
+    public void setNext(Player next) {
+        this.next = next;
     }
 
     public void nextTurn() {
@@ -58,10 +85,6 @@ public abstract class Game implements GameReadable, GameWritable, Prototype<Game
 
     public int getRound() {
         return round;
-    }
-
-    public void nextRound() {
-        round += 1;
     }
 
     public Color getColor(int letterNumber, int number) {
@@ -151,5 +174,36 @@ public abstract class Game implements GameReadable, GameWritable, Prototype<Game
         }
         return result.append("   ").append("-".repeat(47)).toString();
     }
+
+    //musi to tu byt inak error kvoli tomu ze object obsahuje metodu clone
+    @Override
+    public abstract Game clone();
+
+    ///region Memento
+    public class GameState {
+
+        private final int round;
+        private final Piece[][] board;
+        private final Player next;
+
+        public GameState(Player next, int round, Piece[][] board) {
+            this.next = next;
+            this.round = round;
+            this.board = board;
+        }
+
+        public int getRound() {
+            return round;
+        }
+
+        public Piece[][] getBoard() {
+            return board;
+        }
+
+        public Player getNext() {
+            return next;
+        }
+    }
+    ///endregion Memento
 
 }

@@ -13,7 +13,7 @@ public record Player(String name, Color color) {
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", name, color);
+        return String.format("%s-%s", name, color);
     }
 }
 

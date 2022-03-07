@@ -1,15 +1,12 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.enums.and.interfaces.ChessNotation;
-import cz.muni.fi.pb162.project.enums.and.interfaces.ChessPieces;
+import cz.muni.fi.pb162.project.enums.and.interfaces.TypeOfChessPieces;
 import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
-import cz.muni.fi.pb162.project.moves.Move;
-import cz.muni.fi.pb162.project.moves.Diagonal;
-import cz.muni.fi.pb162.project.moves.Knight;
-import cz.muni.fi.pb162.project.moves.Pawn;
-import cz.muni.fi.pb162.project.moves.Straight;
+import cz.muni.fi.pb162.project.moves.*;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.swing.text.TableView;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,27 +21,27 @@ import java.util.stream.Collectors;
  */
 public class ChessPiece extends Piece {
 
-    private final static Map<ChessPieces, List<Move>> allowedMovesMap;
+    private final static Map<TypeOfChessPieces, List<Move>> allowedMovesMap;
     static {
         allowedMovesMap = new HashMap<>();
-        allowedMovesMap.put(ChessPieces.King, List.of(new Straight(1), new Diagonal(1)));
-        allowedMovesMap.put(ChessPieces.Queen, List.of(new Straight(), new Diagonal()));
-        allowedMovesMap.put(ChessPieces.Bishop, List.of(new Diagonal()));
-        allowedMovesMap.put(ChessPieces.Rook, List.of(new Straight()));
-        allowedMovesMap.put(ChessPieces.Knight, List.of(new Knight()));
-        allowedMovesMap.put(ChessPieces.Pawn, List.of(new Pawn()));
+        allowedMovesMap.put(TypeOfChessPieces.King, List.of(new Straight(1), new Diagonal(1), new Castling()));
+        allowedMovesMap.put(TypeOfChessPieces.Queen, List.of(new Straight(), new Diagonal()));
+        allowedMovesMap.put(TypeOfChessPieces.Bishop, List.of(new Diagonal()));
+        allowedMovesMap.put(TypeOfChessPieces.Rook, List.of(new Straight()));
+        allowedMovesMap.put(TypeOfChessPieces.Knight, List.of(new Knight()));
+        allowedMovesMap.put(TypeOfChessPieces.Pawn, List.of(new Pawn()));
     }
 
-    private ChessPieces type;
+    private TypeOfChessPieces type;
 
     //todo maybe choose type
     public void promotion() {
-        if (type.equals(ChessPieces.Pawn)) {
-            type = ChessPieces.Queen;
+        if (type.equals(TypeOfChessPieces.Pawn)) {
+            type = TypeOfChessPieces.Queen;
         }
     }
 
-    public ChessPiece(Color color, ChessPieces type) {
+    public ChessPiece(Color color, TypeOfChessPieces type) {
         super(color);
         this.type = type;
     }
@@ -52,6 +49,10 @@ public class ChessPiece extends Piece {
     // todo notation class
     public String getChessNotation() {
         return type.toString();
+    }
+
+    public TypeOfChessPieces getType() {
+        return type;
     }
 
     @Override

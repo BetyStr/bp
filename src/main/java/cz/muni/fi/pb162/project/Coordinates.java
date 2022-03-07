@@ -1,13 +1,13 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.enums.and.interfaces.ChessNotation;
+
 import java.util.Objects;
 
 /**
  * @author Alzbeta Strompova
  */
 public class Coordinates {
-
-    private static final int UNICODE_VALUE_FOR_A = 97;
 
     private final int letterNumber;
     private final int number;
@@ -17,19 +17,6 @@ public class Coordinates {
         this.number = number;
     }
 
-    public Coordinates(char letterNumber, int number) {
-        this(getNumberFromLetter(letterNumber), number);
-    }
-
-    // todo maybe static class
-    // Chess notation
-    public static char getLetterFromNumber(int number) {
-        return (char) (number + UNICODE_VALUE_FOR_A);
-    }
-
-    public static int getNumberFromLetter(char letter) {
-        return (int) letter - UNICODE_VALUE_FOR_A;
-    }
 
     public int getLetterNumber() {
         return letterNumber;
@@ -41,7 +28,7 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return getLetterFromNumber(letterNumber) + String.valueOf(number);
+        return ChessNotation.getNotationOfCoordinates(letterNumber, number);
     }
 
     @Override

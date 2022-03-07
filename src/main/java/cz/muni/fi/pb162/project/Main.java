@@ -27,8 +27,9 @@ public class Main {
         System.out.println(chess.printBoardToConsole());
         var guiBoard = new GUIBoard();
         guiBoard.display(chess);
-        chess.playNewGame();
-
+        chess.write(System.out);
+//        chess.playNewGame();
+//
 
     }
 

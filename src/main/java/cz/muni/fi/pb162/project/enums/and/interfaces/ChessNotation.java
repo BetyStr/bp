@@ -7,31 +7,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * "static" class
+ * "static" final class
  * @author Alzbeta Strompova
  */
 public final class ChessNotation {
 
-    public final static Map<Pair<ChessPieces, Color>, String> figures;
+    public final static Map<Pair<TypeOfChessPieces, Color>, String> figures;
     static {
         figures = new HashMap<>();
-        figures.put(Pair.of(ChessPieces.King, Color.White), "\u2654");
-        figures.put(Pair.of(ChessPieces.Queen, Color.White), "\u2655");
-        figures.put(Pair.of(ChessPieces.Bishop, Color.White), "\u2657");
-        figures.put(Pair.of(ChessPieces.Rook, Color.White), "\u2656");
-        figures.put(Pair.of(ChessPieces.Knight, Color.White), "\u2658");
-        figures.put(Pair.of(ChessPieces.Pawn, Color.White), "\u2659");
+        figures.put(Pair.of(TypeOfChessPieces.King, Color.White), "\u2654");
+        figures.put(Pair.of(TypeOfChessPieces.Queen, Color.White), "\u2655");
+        figures.put(Pair.of(TypeOfChessPieces.Bishop, Color.White), "\u2657");
+        figures.put(Pair.of(TypeOfChessPieces.Rook, Color.White), "\u2656");
+        figures.put(Pair.of(TypeOfChessPieces.Knight, Color.White), "\u2658");
+        figures.put(Pair.of(TypeOfChessPieces.Pawn, Color.White), "\u2659");
 
-        figures.put(Pair.of(ChessPieces.King, Color.Black), "\u265A");
-        figures.put(Pair.of(ChessPieces.Queen, Color.Black), "\u265B");
-        figures.put(Pair.of(ChessPieces.Bishop, Color.Black), "\u265D");
-        figures.put(Pair.of(ChessPieces.Rook, Color.Black), "\u265C");
-        figures.put(Pair.of(ChessPieces.Knight, Color.Black), "\u265E");
-        figures.put(Pair.of(ChessPieces.Pawn, Color.Black), "\u265F");
+        figures.put(Pair.of(TypeOfChessPieces.King, Color.Black), "\u265A");
+        figures.put(Pair.of(TypeOfChessPieces.Queen, Color.Black), "\u265B");
+        figures.put(Pair.of(TypeOfChessPieces.Bishop, Color.Black), "\u265D");
+        figures.put(Pair.of(TypeOfChessPieces.Rook, Color.Black), "\u265C");
+        figures.put(Pair.of(TypeOfChessPieces.Knight, Color.Black), "\u265E");
+        figures.put(Pair.of(TypeOfChessPieces.Pawn, Color.Black), "\u265F");
     }
 
-    // to prevent implementation
+    private static final int UNICODE_VALUE_FOR_A = 97;
+
+    /**
+     * Private constructor
+     * to prevent implementation
+     */
     private ChessNotation() {
+    }
+
+    private static char getLetterFromNumber(int number) {
+        return (char) (number + UNICODE_VALUE_FOR_A);
+    }
+
+    private static int getNumberFromLetter(char letter) {
+        return (int) letter - UNICODE_VALUE_FOR_A;
     }
 
     /**
@@ -41,8 +54,7 @@ public final class ChessNotation {
      * @return 04 example a5
      */
     public static String getNotationOfCoordinates(int x, int y){
-        var i = (char)(97 + x);
-        return i + String.valueOf(y + 1);
+        return getLetterFromNumber(x) + String.valueOf(y + 1);
     }
 
     /**
@@ -52,7 +64,6 @@ public final class ChessNotation {
      * @return a5 example 04
      */
     public static Coordinates getCoordinatesOfNotation(char x, int y){
-        var i = (int)x - 97;
-        return new Coordinates(i,y - 1);
+        return new Coordinates(getNumberFromLetter(x),y - 1);
     }
 }

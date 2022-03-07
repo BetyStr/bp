@@ -37,17 +37,16 @@ public abstract class Piece {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || getClass().isInstance(o.getClass())) {
             return false;
         }
         Piece piece = (Piece) o;
-        return id == piece.id //&& letterNumber == piece.letterNumber && number == piece.number
-                 && color == piece.color;
+        return id == piece.id && color == piece.color;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(color, id); // letterNumber, number);
+        return Objects.hash(id, color);
     }
 
     public long getId() {
