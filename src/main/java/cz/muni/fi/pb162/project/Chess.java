@@ -3,7 +3,6 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.enums.and.interfaces.*;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,10 +14,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
+ * todo maybe promotion
  * @author Alzbeta Strompova
  */
 public class Chess extends Game implements GameWritable {
@@ -41,35 +40,35 @@ public class Chess extends Game implements GameWritable {
     }
 
     // builder
-    private Chess(Player playerOne, Player playerTwo, ChessPiece[][] board) {
+    private Chess(Player playerOne, Player playerTwo, Piece[][] board) {
         super(playerOne, playerTwo);
         this.board = board;
     }
 
     @Override
     public void setInitialSet() {
-        board = new ChessPiece[8][8];
-        putPieceOnBoard(4, 0, new ChessPiece(Color.White, TypeOfChessPieces.King));
-        putPieceOnBoard(3, 0, new ChessPiece(Color.White, TypeOfChessPieces.Queen));
-        putPieceOnBoard(0, 0, new ChessPiece(Color.White, TypeOfChessPieces.Rook));
-        putPieceOnBoard(7, 0, new ChessPiece(Color.White, TypeOfChessPieces.Rook));
-        putPieceOnBoard(1, 0, new ChessPiece(Color.White, TypeOfChessPieces.Knight));
-        putPieceOnBoard(6, 0, new ChessPiece(Color.White, TypeOfChessPieces.Knight));
-        putPieceOnBoard(2, 0, new ChessPiece(Color.White, TypeOfChessPieces.Bishop));
-        putPieceOnBoard(5, 0, new ChessPiece(Color.White, TypeOfChessPieces.Bishop));
+        board = new Piece[8][8];
+        putPieceOnBoard(4, 0, new Piece(Color.White, TypeOfPieces.King));
+        putPieceOnBoard(3, 0, new Piece(Color.White, TypeOfPieces.Queen));
+        putPieceOnBoard(0, 0, new Piece(Color.White, TypeOfPieces.Rook));
+        putPieceOnBoard(7, 0, new Piece(Color.White, TypeOfPieces.Rook));
+        putPieceOnBoard(1, 0, new Piece(Color.White, TypeOfPieces.Knight));
+        putPieceOnBoard(6, 0, new Piece(Color.White, TypeOfPieces.Knight));
+        putPieceOnBoard(2, 0, new Piece(Color.White, TypeOfPieces.Bishop));
+        putPieceOnBoard(5, 0, new Piece(Color.White, TypeOfPieces.Bishop));
 
-        putPieceOnBoard(4, 7, new ChessPiece(Color.Black, TypeOfChessPieces.King));
-        putPieceOnBoard(3, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Queen));
-        putPieceOnBoard(0, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Rook));
-        putPieceOnBoard(7, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Rook));
-        putPieceOnBoard(1, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Knight));
-        putPieceOnBoard(6, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Knight));
-        putPieceOnBoard(2, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Bishop));
-        putPieceOnBoard(5, 7, new ChessPiece(Color.Black, TypeOfChessPieces.Bishop));
+        putPieceOnBoard(4, 7, new Piece(Color.Black, TypeOfPieces.King));
+        putPieceOnBoard(3, 7, new Piece(Color.Black, TypeOfPieces.Queen));
+        putPieceOnBoard(0, 7, new Piece(Color.Black, TypeOfPieces.Rook));
+        putPieceOnBoard(7, 7, new Piece(Color.Black, TypeOfPieces.Rook));
+        putPieceOnBoard(1, 7, new Piece(Color.Black, TypeOfPieces.Knight));
+        putPieceOnBoard(6, 7, new Piece(Color.Black, TypeOfPieces.Knight));
+        putPieceOnBoard(2, 7, new Piece(Color.Black, TypeOfPieces.Bishop));
+        putPieceOnBoard(5, 7, new Piece(Color.Black, TypeOfPieces.Bishop));
 
         for (int i = 0; i < 8; i++) {
-            putPieceOnBoard(i, 1, new ChessPiece(Color.White, TypeOfChessPieces.Pawn));
-            putPieceOnBoard(i, 6, new ChessPiece(Color.Black, TypeOfChessPieces.Pawn));
+            putPieceOnBoard(i, 1, new Piece(Color.White, TypeOfPieces.Pawn));
+            putPieceOnBoard(i, 6, new Piece(Color.Black, TypeOfPieces.Pawn));
         }
     }
 
@@ -80,12 +79,13 @@ public class Chess extends Game implements GameWritable {
         var piece = getPiece(oldPosition);
         board[newPosition.getLetterNumber()][newPosition.getNumber()] = board[oldPosition.getLetterNumber()][oldPosition.getNumber()];
         board[oldPosition.getLetterNumber()][oldPosition.getNumber()] = null;
-        if (fired != null && ((ChessPiece) fired).getType().equals(TypeOfChessPieces.King)) {
+        if (fired != null && fired.getType().equals(TypeOfPieces.King)) {
             setStateOfGame((fired).getColor().equals(Color.Black)
                     ? StateOfGame.WhitePlayerWin
                     : StateOfGame.BlackPlayerWin);
         }
-        return ((ChessPiece)piece).getChessNotation() +
+        // todo chess notation
+        return piece +
                 ChessNotation.getNotationOfCoordinates(oldPosition.getLetterNumber(), oldPosition.getNumber()) +
                 (fired == null ? "" : "x") +
                 ChessNotation.getNotationOfCoordinates(newPosition.getLetterNumber(), newPosition.getNumber());
@@ -163,7 +163,7 @@ public class Chess extends Game implements GameWritable {
         br.newLine();
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                var piece = (ChessPiece) getPiece(i, j);
+                var piece = getPiece(i, j);
                 if (piece == null) {
                     br.write("_");
                 } else {
@@ -188,7 +188,7 @@ public class Chess extends Game implements GameWritable {
     ///region Builder
     public static class Builder implements Buildable<Chess>, GameReadable {
 
-        private ChessPiece[][] board = new ChessPiece[SIZE][SIZE];
+        private Piece[][] board = new Piece[SIZE][SIZE];
         private Player playerOne;
         private Player playerTwo;
 
@@ -201,7 +201,7 @@ public class Chess extends Game implements GameWritable {
             return this;
         }
 
-        public Builder addPieceToBoard(ChessPiece piece, char letterNumber, int number) {
+        public Builder addPieceToBoard(Piece piece, char letterNumber, int number) {
             var position = ChessNotation.getCoordinatesOfNotation(letterNumber, number);
             board[position.getLetterNumber()][position.getNumber()] = piece;
             return this;
@@ -214,7 +214,7 @@ public class Chess extends Game implements GameWritable {
 
         @Override
         public Builder read(InputStream is) throws IOException {
-            ChessPiece[][] board = new ChessPiece[SIZE][SIZE];
+            Piece[][] board = new Piece[SIZE][SIZE];
             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
             var count = 0;
@@ -230,9 +230,9 @@ public class Chess extends Game implements GameWritable {
                             throw new IOException("Invalid data (some information might be missing)");
                         }
                         try {
-                            var type = TypeOfChessPieces.valueOf(piece[0]);
+                            var type = TypeOfPieces.valueOf(piece[0]);
                             var color = Color.valueOf(piece[1]);
-                            board[count][i] = new ChessPiece(color, type);
+                            board[count][i] = new Piece(color, type);
                         }  catch (IllegalArgumentException ex) {
                             throw new IOException("Bad input", ex);
                         }

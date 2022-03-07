@@ -1,16 +1,9 @@
 package cz.muni.fi.pb162.project.moves;
 
-import cz.muni.fi.pb162.project.ChessPiece;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
-import cz.muni.fi.pb162.project.enums.and.interfaces.Color;
-import cz.muni.fi.pb162.project.enums.and.interfaces.TypeOfChessPieces;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author Alzbeta Strompova
