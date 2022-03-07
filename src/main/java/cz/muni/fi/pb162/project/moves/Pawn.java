@@ -49,6 +49,7 @@ public class Pawn implements Move {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() - 1));
             }
         }
+
         // todo en passaint..memento
         return result;
     }

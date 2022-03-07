@@ -1,3 +1,27 @@
+# Ignore everything...
+*
+
+# ...except directories
+!*/
+
+# ...and these files
+!*.java
+!.gitignore
+!README.md
+!pb162_codestyle.xml
+!pom.xml
+!.gitlab-ci.yml
+
+# From directories, ignore...
+### Idea:
 .idea/
+.idea_modules/
+/out/
+
+### Maven template
 target/
-*.iml
+
+### Eclipse template
+bin/
+tmp/
+.settings/
