@@ -152,7 +152,7 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
 
     public String printBoardToConsole() {
         var result = new StringBuilder();
-        result.append(" ").append(SPACE);
+        result.append(SPACE).append(SPACE);
         // numbers
         for (int i = 0; i < SIZE; i++) {
             result.append(SPACE).append(SPACE).append(i + 1).append(SPACE);
@@ -180,30 +180,29 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     public abstract Game clone();
 
     ///region Memento
-    public class GameState {
+    public record GameState(Player next, int round, Piece[][] board) { }
 
-        private final int round;
-        private final Piece[][] board;
-        private final Player next;
-
-        public GameState(Player next, int round, Piece[][] board) {
-            this.next = next;
-            this.round = round;
-            this.board = board;
-        }
-
-        public int getRound() {
-            return round;
-        }
-
-        public Piece[][] getBoard() {
-            return board;
-        }
-
-        public Player getNext() {
-            return next;
-        }
-    }
+    //        private final int round;
+    //        private final Piece[][] board;
+    //        private final Player next;
+    //
+    //        public GameState(Player next, int round, Piece[][] board) {
+    //            this.next = next;
+    //            this.round = round;
+    //            this.board = board;
+    //        }
+    //
+    //        public int getRound() {
+    //            return round;
+    //        }
+    //
+    //        public Piece[][] getBoard() {
+    //            return board;
+    //        }
+    //
+    //        public Player getNext() {
+    //            return next;
+    //        }
     ///endregion Memento
 
 }

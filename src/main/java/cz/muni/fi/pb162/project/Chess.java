@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
- * todo maybe promotion
+ * todo promotion
  * @author Alzbeta Strompova
  */
 public class Chess extends Game implements GameWritable {
@@ -47,28 +47,28 @@ public class Chess extends Game implements GameWritable {
 
     @Override
     public void setInitialSet() {
-        board = new Piece[8][8];
-        putPieceOnBoard(4, 0, new Piece(Color.White, TypeOfPieces.King));
-        putPieceOnBoard(3, 0, new Piece(Color.White, TypeOfPieces.Queen));
-        putPieceOnBoard(0, 0, new Piece(Color.White, TypeOfPieces.Rook));
-        putPieceOnBoard(7, 0, new Piece(Color.White, TypeOfPieces.Rook));
-        putPieceOnBoard(1, 0, new Piece(Color.White, TypeOfPieces.Knight));
-        putPieceOnBoard(6, 0, new Piece(Color.White, TypeOfPieces.Knight));
-        putPieceOnBoard(2, 0, new Piece(Color.White, TypeOfPieces.Bishop));
-        putPieceOnBoard(5, 0, new Piece(Color.White, TypeOfPieces.Bishop));
+        board = new Piece[SIZE][SIZE];
+        putPieceOnBoard(4, 0, new Piece(Color.White, TypeOfPiece.King));
+        putPieceOnBoard(3, 0, new Piece(Color.White, TypeOfPiece.Queen));
+        putPieceOnBoard(0, 0, new Piece(Color.White, TypeOfPiece.Rook));
+        putPieceOnBoard(7, 0, new Piece(Color.White, TypeOfPiece.Rook));
+        putPieceOnBoard(1, 0, new Piece(Color.White, TypeOfPiece.Knight));
+        putPieceOnBoard(6, 0, new Piece(Color.White, TypeOfPiece.Knight));
+        putPieceOnBoard(2, 0, new Piece(Color.White, TypeOfPiece.Bishop));
+        putPieceOnBoard(5, 0, new Piece(Color.White, TypeOfPiece.Bishop));
 
-        putPieceOnBoard(4, 7, new Piece(Color.Black, TypeOfPieces.King));
-        putPieceOnBoard(3, 7, new Piece(Color.Black, TypeOfPieces.Queen));
-        putPieceOnBoard(0, 7, new Piece(Color.Black, TypeOfPieces.Rook));
-        putPieceOnBoard(7, 7, new Piece(Color.Black, TypeOfPieces.Rook));
-        putPieceOnBoard(1, 7, new Piece(Color.Black, TypeOfPieces.Knight));
-        putPieceOnBoard(6, 7, new Piece(Color.Black, TypeOfPieces.Knight));
-        putPieceOnBoard(2, 7, new Piece(Color.Black, TypeOfPieces.Bishop));
-        putPieceOnBoard(5, 7, new Piece(Color.Black, TypeOfPieces.Bishop));
+        putPieceOnBoard(4, 7, new Piece(Color.Black, TypeOfPiece.King));
+        putPieceOnBoard(3, 7, new Piece(Color.Black, TypeOfPiece.Queen));
+        putPieceOnBoard(0, 7, new Piece(Color.Black, TypeOfPiece.Rook));
+        putPieceOnBoard(7, 7, new Piece(Color.Black, TypeOfPiece.Rook));
+        putPieceOnBoard(1, 7, new Piece(Color.Black, TypeOfPiece.Knight));
+        putPieceOnBoard(6, 7, new Piece(Color.Black, TypeOfPiece.Knight));
+        putPieceOnBoard(2, 7, new Piece(Color.Black, TypeOfPiece.Bishop));
+        putPieceOnBoard(5, 7, new Piece(Color.Black, TypeOfPiece.Bishop));
 
-        for (int i = 0; i < 8; i++) {
-            putPieceOnBoard(i, 1, new Piece(Color.White, TypeOfPieces.Pawn));
-            putPieceOnBoard(i, 6, new Piece(Color.Black, TypeOfPieces.Pawn));
+        for (int i = 0; i < SIZE; i++) {
+            putPieceOnBoard(i, 1, new Piece(Color.White, TypeOfPiece.Pawn));
+            putPieceOnBoard(i, 6, new Piece(Color.Black, TypeOfPiece.Pawn));
         }
     }
 
@@ -79,13 +79,13 @@ public class Chess extends Game implements GameWritable {
         var piece = getPiece(oldPosition);
         board[newPosition.getLetterNumber()][newPosition.getNumber()] = board[oldPosition.getLetterNumber()][oldPosition.getNumber()];
         board[oldPosition.getLetterNumber()][oldPosition.getNumber()] = null;
-        if (fired != null && fired.getType().equals(TypeOfPieces.King)) {
+        if (fired != null && fired.getType().equals(TypeOfPiece.King)) {
             setStateOfGame((fired).getColor().equals(Color.Black)
                     ? StateOfGame.WhitePlayerWin
                     : StateOfGame.BlackPlayerWin);
         }
         // todo chess notation
-        return piece +
+        return ChessNotation.getNotation(piece.getType()) +
                 ChessNotation.getNotationOfCoordinates(oldPosition.getLetterNumber(), oldPosition.getNumber()) +
                 (fired == null ? "" : "x") +
                 ChessNotation.getNotationOfCoordinates(newPosition.getLetterNumber(), newPosition.getNumber());
@@ -103,7 +103,7 @@ public class Chess extends Game implements GameWritable {
     }
 
     // todo exception
-    private void play() throws Exception {
+    public void play() throws Exception {
         while (!isEnd()) {
             System.out.println(String.format("Next one is %s", getNext()) + System.lineSeparator());
             var fromPosition = getInputFromPlayer();
@@ -148,14 +148,13 @@ public class Chess extends Game implements GameWritable {
 
     @Override
     public void restore(GameState save) {
-        setNext(save.getNext());
-        setRound(save.getRound());
-        board = save.getBoard();
+        setNext(save.next());
+        setRound(save.round());
+        board = save.board();
     }
     ///endregion Originator
 
     ///region Writable
-
     @Override
     public void write(OutputStream os) throws IOException {
         BufferedWriter br = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
@@ -182,7 +181,6 @@ public class Chess extends Game implements GameWritable {
             write(fos);
         }
     }
-
     ///endregion Writable
 
     ///region Builder
@@ -230,7 +228,7 @@ public class Chess extends Game implements GameWritable {
                             throw new IOException("Invalid data (some information might be missing)");
                         }
                         try {
-                            var type = TypeOfPieces.valueOf(piece[0]);
+                            var type = TypeOfPiece.valueOf(piece[0]);
                             var color = Color.valueOf(piece[1]);
                             board[count][i] = new Piece(color, type);
                         }  catch (IllegalArgumentException ex) {

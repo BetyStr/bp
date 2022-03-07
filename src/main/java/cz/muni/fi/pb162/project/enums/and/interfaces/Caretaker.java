@@ -9,4 +9,5 @@ public interface Caretaker {
     void hitSave();
 
     void hitUndo();
+
 }

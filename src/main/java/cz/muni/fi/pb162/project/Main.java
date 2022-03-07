@@ -25,11 +25,12 @@ public class Main {
 
         chess.setInitialSet();
         System.out.println(chess.printBoardToConsole());
-        var guiBoard = new GUIBoard();
-        guiBoard.display(chess);
-        chess.write(System.out);
-//        chess.playNewGame();
-//
+//        var guiBoard = new GUIBoard();
+//        guiBoard.display(chess);
+
+//        chess.write(System.out);
+        chess.play();
+
 
     }
 

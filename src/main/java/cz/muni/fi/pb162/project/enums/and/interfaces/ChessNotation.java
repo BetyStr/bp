@@ -3,7 +3,7 @@ package cz.muni.fi.pb162.project.enums.and.interfaces;
 import cz.muni.fi.pb162.project.Coordinates;
 
 /**
- * "static" final class
+ * "Static" final class
  * @author Alzbeta Strompova
  */
 public final class ChessNotation {
@@ -12,8 +12,7 @@ public final class ChessNotation {
     private static final int UNICODE_VALUE_FOR_A = 97;
 
     /**
-     * Private constructor
-     * to prevent implementation
+     * Private constructor to prevent implementation
      */
     private ChessNotation() {
     }
@@ -46,7 +45,13 @@ public final class ChessNotation {
         return new Coordinates(getNumberFromLetter(x),y - 1);
     }
 
-    public String getNotation(TypeOfPieces type) {
+    /**
+     * Chess notation for piece
+     * King -> K, Queen -> Q, Rook -> R, Knight -> N, Bishop -> B, Pawn ->
+     * @param type of piece
+     * @return chess notation for piece
+     */
+    public static String getNotation(TypeOfPiece type) {
         return switch (type) {
             case Knight -> "N";
             case Pawn -> " ";

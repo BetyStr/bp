@@ -12,6 +12,7 @@ public class Castling implements Move {
 
     @Override
     public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+        // todo castling
 
 //        var whiteKing = (ChessPiece) game.getPiece(new Coordinates(4, 0));
 //        var blackKing = (ChessPiece) game.getPiece(new Coordinates(4, 8));
@@ -50,7 +51,6 @@ public class Castling implements Move {
 //
 //            }
 //        }
-        // todo castling
         return null;
     }
 }
