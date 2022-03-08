@@ -1,7 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.Coordinates;
-
 /**
  * "Static" final class
  * @author Alzbeta Strompova

@@ -22,7 +22,8 @@ public class Piece {
         allowedMovesMap.put(TypeOfPiece.Rook, List.of(new Straight()));
         allowedMovesMap.put(TypeOfPiece.Knight, List.of(new Knight()));
         allowedMovesMap.put(TypeOfPiece.Pawn, List.of(new Pawn()));
-        allowedMovesMap.put(null, List.of());
+        allowedMovesMap.put(TypeOfPiece.DraughtsKing, List.of(new Diagonal(1), new Jump()));
+        allowedMovesMap.put(TypeOfPiece.DraughtsMan, List.of(new Diagonal(1, true), new Jump(true)));
 
     }
 

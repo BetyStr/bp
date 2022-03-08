@@ -13,7 +13,7 @@ import java.util.Set;
 public interface Move {
 
     /**
-     * @param game ..is Board when we play
+     * @param game is Board when we play
      * @param position position of piece
      * @return Set of allowed moves of specific piece ... subclasses
      */

@@ -11,11 +11,12 @@ import java.util.Map;
  * @author Alzbeta Strompova
  */
 public enum TypeOfPiece {
-    King, Queen, Bishop, Rook, Knight, Pawn;
+    King, Queen, Bishop, Rook, Knight, Pawn, DraughtsKing, DraughtsMan;
 
     public final static Map<Pair<TypeOfPiece, Color>, String> figures;
     static {
         figures = new HashMap<>();
+        //Chess
         figures.put(Pair.of(TypeOfPiece.King, Color.White), "\u2654");
         figures.put(Pair.of(TypeOfPiece.Queen, Color.White), "\u2655");
         figures.put(Pair.of(TypeOfPiece.Bishop, Color.White), "\u2657");
@@ -29,6 +30,12 @@ public enum TypeOfPiece {
         figures.put(Pair.of(TypeOfPiece.Rook, Color.Black), "\u265C");
         figures.put(Pair.of(TypeOfPiece.Knight, Color.Black), "\u265E");
         figures.put(Pair.of(TypeOfPiece.Pawn, Color.Black), "\u265F");
+
+        // Draughts
+        figures.put(Pair.of(TypeOfPiece.DraughtsMan, Color.White), "\u26C0");
+        figures.put(Pair.of(TypeOfPiece.DraughtsKing, Color.White), "\u26C1");
+        figures.put(Pair.of(TypeOfPiece.DraughtsMan, Color.Black), "\u26C2");
+        figures.put(Pair.of(TypeOfPiece.DraughtsKing, Color.Black), "\u26C3");
     }
 
 }

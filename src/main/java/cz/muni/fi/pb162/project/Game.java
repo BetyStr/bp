@@ -1,6 +1,8 @@
 package cz.muni.fi.pb162.project;
 
 
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * @author Alzbeta Strompova
@@ -149,9 +151,11 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
 
     public abstract String move(Coordinates oldPosition, Coordinates newPosition);
 
+    public abstract void play() throws Exception;
+
     public String printBoardToConsole() {
         var result = new StringBuilder();
-        result.append(SPACE).append(SPACE);
+        result.append(" ").append(SPACE);
         // numbers
         for (int i = 0; i < SIZE; i++) {
             result.append(SPACE).append(SPACE).append(i + 1).append(SPACE);
@@ -174,34 +178,44 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
         return result.append("   ").append("-".repeat(47)).toString();
     }
 
-    //musi to tu byt inak error kvoli tomu ze object obsahuje metodu clone
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        // Patter Matching jdk17
+        if (!(o instanceof Game game)) {
+            return false;
+        }
+        return round != game.round ||
+                !Objects.equals(playerOne, game.playerOne) ||
+                !Objects.equals(playerTwo, game.playerTwo) ||
+                !Objects.equals(next, game.next) ||
+                stateOfGame != game.stateOfGame ||
+                !Objects.equals(history, game.history) ||
+                Arrays.deepEquals(board, game.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(playerOne, playerTwo, next, stateOfGame, round, history, Arrays.deepHashCode(board));
+    }
+
     @Override
     public abstract Game clone();
 
-    ///region Memento
+    ///region Originator and State
     public record GameState(Player next, int round, Piece[][] board) { }
 
-    //        private final int round;
-    //        private final Piece[][] board;
-    //        private final Player next;
-    //
-    //        public GameState(Player next, int round, Piece[][] board) {
-    //            this.next = next;
-    //            this.round = round;
-    //            this.board = board;
-    //        }
-    //
-    //        public int getRound() {
-    //            return round;
-    //        }
-    //
-    //        public Piece[][] getBoard() {
-    //            return board;
-    //        }
-    //
-    //        public Player getNext() {
-    //            return next;
-    //        }
-    ///endregion Memento
+    @Override
+    public GameState save() {
+        return new GameState(getNext(), getRound(), board);
+    }
+
+    @Override
+    public void restore(GameState save) {
+        setNext(save.next());
+        setRound(save.round());
+        board = save.board();
+    }
+    ///endregion Originator and State
 
 }

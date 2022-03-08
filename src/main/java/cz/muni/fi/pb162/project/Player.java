@@ -2,8 +2,8 @@ package cz.muni.fi.pb162.project;
 
 /**
  * record =>
- * constructor with all parameters
- * get and set methods but without "get" or "set"
+ * constructor with all final parameters
+ * get methods but without "get" (for example getName() -> name())
  * toString, equals, hashCode
  * @author Alzbeta Strompova
  */

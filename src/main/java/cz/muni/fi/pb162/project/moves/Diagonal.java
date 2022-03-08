@@ -15,6 +15,7 @@ import java.util.Set;
 public class Diagonal implements Move {
 
     private int step = Game.SIZE;
+    private boolean onlyForward = false;
 
     /**
      * Constructor
@@ -30,6 +31,15 @@ public class Diagonal implements Move {
         this.step = step;
     }
 
+    /**
+     * Constructor
+     */
+    public Diagonal(int step, boolean onlyForward) {
+        this(step);
+        this.onlyForward = onlyForward;
+    }
+
+
     @Override
     public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
 
@@ -39,9 +49,11 @@ public class Diagonal implements Move {
 
         HashSet<Pair<Integer, Integer>> coordinates = new HashSet<> (Arrays.asList(
                 Pair.of(1,1),
-                Pair.of(-1,-1),
-                Pair.of(1,-1),
                 Pair.of(-1,1)));
+        if (!onlyForward) {
+            coordinates.add(Pair.of(-1,-1));
+            coordinates.add(Pair.of(1,-1));
+        }
 
         for (Pair<Integer, Integer> movement: coordinates) {
             for (int i = 1; i <= step ; i++) {

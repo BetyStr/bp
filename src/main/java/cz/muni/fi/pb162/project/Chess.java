@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
- * todo promotion
  * @author Alzbeta Strompova
  */
 public class Chess extends Game implements GameWritable {
@@ -33,7 +32,11 @@ public class Chess extends Game implements GameWritable {
         super(playerOne, playerTwo);
     }
 
-    // prototype
+    /**
+     * Constructor
+     *
+     * @param target d
+     */
     private Chess(Game target) {
         super(target);
     }
@@ -79,9 +82,15 @@ public class Chess extends Game implements GameWritable {
         board[newPosition.letterNumber()][newPosition.number()] = board[oldPosition.letterNumber()][oldPosition.number()];
         board[oldPosition.letterNumber()][oldPosition.number()] = null;
         if (fired != null && fired.getType().equals(TypeOfPiece.King)) {
-            setStateOfGame((fired).getColor().equals(Color.Black)
+            setStateOfGame(
+                    fired.getColor().equals(Color.Black)
                     ? StateOfGame.WhitePlayerWin
                     : StateOfGame.BlackPlayerWin);
+        }
+        // promotion
+        if ((newPosition.number() == 0 || newPosition.number() == 7)
+                && piece.getType().equals(TypeOfPiece.Pawn)) {
+            piece.setType(TypeOfPiece.Queen);
         }
         // todo chess notation
         return ChessNotation.getNotation(piece.getType()) +
@@ -102,6 +111,7 @@ public class Chess extends Game implements GameWritable {
     }
 
     // todo exception
+    @Override
     public void play() throws Exception {
         while (!isEnd()) {
             System.out.println(String.format("Next one is %s", getNext()) + System.lineSeparator());
@@ -138,20 +148,6 @@ public class Chess extends Game implements GameWritable {
         return new Chess(this);
     }
     ///endregion Prototype
-
-    ///region Originator
-    @Override
-    public GameState save() {
-        return new GameState(getNext(), getRound(), board);
-    }
-
-    @Override
-    public void restore(GameState save) {
-        setNext(save.next());
-        setRound(save.round());
-        board = save.board();
-    }
-    ///endregion Originator
 
     ///region Writable
     @Override
