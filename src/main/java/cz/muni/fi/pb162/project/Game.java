@@ -10,18 +10,16 @@ import java.util.Objects;
  */
 public abstract class Game implements Prototype<Game>, Originator<Game.GameState> {
 
-    private final static char SEPARATOR = '|';
     public final static int SIZE = 8;
     public final static char SPACE = '\u2003';
-
+    private final static char SEPARATOR = '|';
+    protected History history;
+    protected Piece[][] board;
     private Player playerOne;
     private Player playerTwo;
     private Player next;
     private StateOfGame stateOfGame = StateOfGame.Playing;
     private int round;
-
-    protected History history;
-    protected Piece[][] board;
 
 
     /**
@@ -46,7 +44,7 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
             playerTwo = target.playerTwo;
             next = target.next;
             board = target.board;
-            round  = target.round;
+            round = target.round;
             history = target.history;
             stateOfGame = target.stateOfGame;
         }
@@ -68,10 +66,6 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
         return playerTwo;
     }
 
-    public void setRound(int round) {
-        this.round = round;
-    }
-
     public Player getNext() {
         return next;
     }
@@ -88,8 +82,12 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
         return round;
     }
 
+    public void setRound(int round) {
+        this.round = round;
+    }
+
     public Color getColor(int letterNumber, int number) {
-        if (isEmpty(letterNumber, number)){
+        if (isEmpty(letterNumber, number)) {
             return null;
         }
         return board[letterNumber][number].getColor();
@@ -100,7 +98,7 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     }
 
     public Piece getPiece(int letterNumber, int number) {
-        if (isEmpty(letterNumber, number)){
+        if (isEmpty(letterNumber, number)) {
             return null;
         }
         return board[letterNumber][number];
@@ -112,8 +110,8 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
 
     /**
      * @param letterNumber first coordinate to put piece 0-7
-     * @param number second coordinate to put piece 0-7
-     * @param piece ChessPiece which we want to put on board
+     * @param number       second coordinate to put piece 0-7
+     * @param piece        ChessPiece which we want to put on board
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         assert inRange(letterNumber, number);
@@ -202,9 +200,6 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     @Override
     public abstract Game clone();
 
-    ///region Originator and State
-    public record GameState(Player next, int round, Piece[][] board) { }
-
     @Override
     public GameState save() {
         return new GameState(getNext(), getRound(), board);
@@ -215,6 +210,10 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
         setNext(save.next());
         setRound(save.round());
         board = save.board();
+    }
+
+    ///region Originator and State
+    public record GameState(Player next, int round, Piece[][] board) {
     }
     ///endregion Originator and State
 

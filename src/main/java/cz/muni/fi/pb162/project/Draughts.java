@@ -35,6 +35,11 @@ public class Draughts extends Game {
     }
 
     @Override
+    public void play() throws Exception {
+
+    }
+
+    @Override
     public Game clone() {
         return new Draughts(this);
     }

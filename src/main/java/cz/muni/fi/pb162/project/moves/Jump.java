@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project.moves;
 
-import cz.muni.fi.pb162.project.Color;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import org.apache.commons.lang3.tuple.Pair;

@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 /**
  * Interface for data import.
+ *
  * @author Radek Oslejsek, Marek Sabo
  */
 public interface GameReadable {

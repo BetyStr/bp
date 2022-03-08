@@ -19,12 +19,16 @@ public class Diagonal implements Move {
 
     /**
      * Constructor
+     * step -> size of game board
+     * onlyForward -> false
      */
     public Diagonal() {
     }
 
     /**
      * Constructor
+     * onlyForward -> false
+     *
      * @param step max distance to move
      */
     public Diagonal(int step) {
@@ -33,6 +37,9 @@ public class Diagonal implements Move {
 
     /**
      * Constructor
+     *
+     * @param step        max distance to m
+     * @param onlyForward boolean that decide that piece can only move forward
      */
     public Diagonal(int step, boolean onlyForward) {
         this(step);
@@ -47,16 +54,16 @@ public class Diagonal implements Move {
         var color = game.getPiece(position).getColor();
         Color goal;
 
-        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<> (Arrays.asList(
-                Pair.of(1,1),
-                Pair.of(-1,1)));
+        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
+                Pair.of(1, 1),
+                Pair.of(-1, 1)));
         if (!onlyForward) {
-            coordinates.add(Pair.of(-1,-1));
-            coordinates.add(Pair.of(1,-1));
+            coordinates.add(Pair.of(-1, -1));
+            coordinates.add(Pair.of(1, -1));
         }
 
-        for (Pair<Integer, Integer> movement: coordinates) {
-            for (int i = 1; i <= step ; i++) {
+        for (Pair<Integer, Integer> movement : coordinates) {
+            for (int i = 1; i <= step; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 goal = game.getColor(left, right);

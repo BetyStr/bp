@@ -27,14 +27,14 @@ public class Straight implements Move {
         var result = new HashSet<Coordinates>();
         var color = game.getPiece(position).getColor();
 
-        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<> (Arrays.asList(
-                Pair.of(0,1),
-                Pair.of(0,-1),
-                Pair.of(1,0),
-                Pair.of(-1,0)));
+        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
+                Pair.of(0, 1),
+                Pair.of(0, -1),
+                Pair.of(1, 0),
+                Pair.of(-1, 0)));
 
-        for (Pair<Integer, Integer> movement: coordinates) {
-            for (int i = 1; i <= step ; i++) {
+        for (Pair<Integer, Integer> movement : coordinates) {
+            for (int i = 1; i <= step; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 if (game.getColor(left, right) == null) {

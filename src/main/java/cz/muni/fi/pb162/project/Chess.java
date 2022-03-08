@@ -84,8 +84,8 @@ public class Chess extends Game implements GameWritable {
         if (fired != null && fired.getType().equals(TypeOfPiece.King)) {
             setStateOfGame(
                     fired.getColor().equals(Color.Black)
-                    ? StateOfGame.WhitePlayerWin
-                    : StateOfGame.BlackPlayerWin);
+                            ? StateOfGame.WhitePlayerWin
+                            : StateOfGame.BlackPlayerWin);
         }
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
@@ -101,7 +101,7 @@ public class Chess extends Game implements GameWritable {
 
     private Coordinates getInputFromPlayer() {
         var position = scanner.next().trim();
-        if (position.length() != 2 ) {
+        if (position.length() != 2) {
             throw new IllegalArgumentException("");
         }
         var letterNumber = position.charAt(0);
@@ -226,7 +226,7 @@ public class Chess extends Game implements GameWritable {
                             var type = TypeOfPiece.valueOf(piece[0]);
                             var color = Color.valueOf(piece[1]);
                             board[count][i] = new Piece(color, type);
-                        }  catch (IllegalArgumentException ex) {
+                        } catch (IllegalArgumentException ex) {
                             throw new IOException("Bad input", ex);
                         }
                     }

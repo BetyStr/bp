@@ -14,6 +14,7 @@ public class Piece {
 
     private static final AtomicLong idCounter = new AtomicLong();
     private final static Map<TypeOfPiece, List<Move>> allowedMovesMap;
+
     static {
         allowedMovesMap = new HashMap<>();
         allowedMovesMap.put(TypeOfPiece.King, List.of(new Straight(1), new Diagonal(1), new Castling()));
@@ -61,7 +62,7 @@ public class Piece {
     public Set<Coordinates> getAllPossibleMoves(Game game) {
         var strategies = allowedMovesMap.get(type);
         var result = new HashSet<Coordinates>();
-        for (Move strategy: strategies) {
+        for (Move strategy : strategies) {
             result.addAll(strategy.getAllowedMoves(game, game.findCoordinatesOfPieceById(getId())));
         }
         return result.stream().filter(game::inRange).collect(Collectors.toSet());

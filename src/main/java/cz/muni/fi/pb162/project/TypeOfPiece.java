@@ -8,12 +8,14 @@ import java.util.Map;
 
 /**
  * Enum represent type of piece
+ *
  * @author Alzbeta Strompova
  */
 public enum TypeOfPiece {
     King, Queen, Bishop, Rook, Knight, Pawn, DraughtsKing, DraughtsMan;
 
     public final static Map<Pair<TypeOfPiece, Color>, String> figures;
+
     static {
         figures = new HashMap<>();
         //Chess

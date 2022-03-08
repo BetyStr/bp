@@ -17,35 +17,35 @@ public class Pawn implements Move {
         var result = new HashSet<Coordinates>();
         var color = game.getPiece(position).getColor();
 
-        if (color.equals(Color.White)){
+        if (color.equals(Color.White)) {
             result.add(new Coordinates(position.letterNumber(), position.number() + 1));
-            if (position.number() == 1){
+            if (position.number() == 1) {
                 result.add(new Coordinates(position.letterNumber(), 3));
             }
             if (!game.isEmpty(position.letterNumber() + 1, position.number() + 1)
                     && game.getColor(position.letterNumber() + 1,
-                    position.number() + 1).equals(Color.Black)){
+                    position.number() + 1).equals(Color.Black)) {
                 result.add(new Coordinates(position.letterNumber() + 1, position.number() + 1));
             }
             if (!game.isEmpty(position.letterNumber() - 1, position.number() + 1)
                     && game.getColor(position.letterNumber() - 1,
-                    position.number() + 1).equals(Color.Black)){
+                    position.number() + 1).equals(Color.Black)) {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() + 1));
             }
         }
-        if (color.equals(Color.Black)){
+        if (color.equals(Color.Black)) {
             result.add(new Coordinates(position.letterNumber(), position.number() - 1));
-            if (position.number() == 6){
+            if (position.number() == 6) {
                 result.add(new Coordinates(position.letterNumber(), 4));
             }
             if (!game.isEmpty(position.letterNumber() + 1, position.number() - 1)
                     && game.getColor(position.letterNumber() + 1,
-                    position.number() - 1).equals(Color.White)){
+                    position.number() - 1).equals(Color.White)) {
                 result.add(new Coordinates(position.letterNumber() + 1, position.number() - 1));
             }
             if (!game.isEmpty(position.letterNumber() - 1, position.number() - 1)
                     && game.getColor(position.letterNumber() - 1,
-                    position.number() - 1).equals(Color.White)){
+                    position.number() - 1).equals(Color.White)) {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() - 1));
             }
         }

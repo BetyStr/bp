@@ -18,13 +18,13 @@ public class Knight implements Move {
         var result = new HashSet<Coordinates>();
         var color = game.getPiece(position).getColor();
 
-        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<> (Arrays.asList(
-                Pair.of(1,2),
-                Pair.of(-1,2),
-                Pair.of(1,-2),
-                Pair.of(-1,-2)));
+        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
+                Pair.of(1, 2),
+                Pair.of(-1, 2),
+                Pair.of(1, -2),
+                Pair.of(-1, -2)));
 
-        for (Pair<Integer, Integer> movement: coordinates) {
+        for (Pair<Integer, Integer> movement : coordinates) {
             var left = position.letterNumber() + movement.getLeft();
             var right = position.number() + movement.getRight();
             if (game.getColor(left, right) == null) {

@@ -3,9 +3,7 @@ package cz.muni.fi.pb162.project.gui;
 import cz.muni.fi.pb162.project.Game;
 
 import javax.swing.*;
-import java.awt.Container;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.MouseListener;
 
 
@@ -15,13 +13,12 @@ import java.awt.event.MouseListener;
 public class GUIBoard extends JFrame {
 
     private final static int SIZE_OF_WINDOW = (int) (Math.min(Toolkit.getDefaultToolkit().getScreenSize().height,
-                Toolkit.getDefaultToolkit().getScreenSize().width) * 0.8);
-    private final MouseListener mouseListener = new MyMouseListener();
+            Toolkit.getDefaultToolkit().getScreenSize().width) * 0.8);
     public static ChessLabel[][] LABELS = new ChessLabel[9][9];
+    private final MouseListener mouseListener = new MyMouseListener();
     // todo click new screen
 
-    public void display(Game game)
-    {
+    public void display(Game game) {
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -29,8 +26,8 @@ public class GUIBoard extends JFrame {
         GridLayout gridLayout = new GridLayout(9, 9);
         contentPane.setLayout(gridLayout);
 
-        JButton b=new JButton("Undo");//creating instance of JButton
-        b.setBounds(0,0,SIZE_OF_WINDOW / 18, SIZE_OF_WINDOW / 18);//x axis, y axis, width, height
+        JButton b = new JButton("Undo");//creating instance of JButton
+        b.setBounds(0, 0, SIZE_OF_WINDOW / 18, SIZE_OF_WINDOW / 18);//x axis, y axis, width, height
         add(b);
 
 //        LABELS[0][0] = new ChessLabel(String.valueOf(Game.SPACE));
@@ -42,8 +39,7 @@ public class GUIBoard extends JFrame {
             LABELS[0][i].setBase();
             contentPane.add(LABELS[0][i]);
         }
-        for (int i = 1; i < 9; i++)
-        {
+        for (int i = 1; i < 9; i++) {
             //add letters
             LABELS[0][i] = new ChessLabel(String.valueOf((char) (64 + i)));
             LABELS[0][i].setBase();
@@ -63,7 +59,7 @@ public class GUIBoard extends JFrame {
 
         contentPane.addMouseListener(mouseListener);
         setSize(SIZE_OF_WINDOW, SIZE_OF_WINDOW);
-       // setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
         setVisible(true);
     }
 
