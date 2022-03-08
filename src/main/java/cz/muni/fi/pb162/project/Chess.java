@@ -1,7 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,14 +11,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 /**
  * @author Alzbeta Strompova
  */
 public class Chess extends Game implements GameWritable {
-
-    private final static Scanner scanner = new Scanner(System.in);
 
     /**
      * Constructor who sets the first player according to the color of the players
@@ -33,15 +28,21 @@ public class Chess extends Game implements GameWritable {
     }
 
     /**
-     * Constructor
+     * Private constructor because design pattern prototype
      *
-     * @param target d
+     * @param target game to copy
      */
     private Chess(Game target) {
         super(target);
     }
 
-    // builder
+    /**
+     * Private constructor because design pattern builder
+     *
+     * @param playerOne first of two players needed to play chess
+     * @param playerTwo second of two players needed to play chess
+     * @param board     is 2-dimensional array to represent board of pieces
+     */
     private Chess(Player playerOne, Player playerTwo, Piece[][] board) {
         super(playerOne, playerTwo);
         this.board = board;
@@ -79,8 +80,10 @@ public class Chess extends Game implements GameWritable {
     public String move(Coordinates oldPosition, Coordinates newPosition) {
         var fired = getPiece(newPosition);
         var piece = getPiece(oldPosition);
-        board[newPosition.letterNumber()][newPosition.number()] = board[oldPosition.letterNumber()][oldPosition.number()];
+        board[newPosition.letterNumber()][newPosition.number()] =
+                board[oldPosition.letterNumber()][oldPosition.number()];
         board[oldPosition.letterNumber()][oldPosition.number()] = null;
+        // dead king -> end of game
         if (fired != null && fired.getType().equals(TypeOfPiece.King)) {
             setStateOfGame(
                     fired.getColor().equals(Color.Black)
@@ -99,48 +102,6 @@ public class Chess extends Game implements GameWritable {
                 ChessNotation.getNotationOfCoordinates(newPosition.letterNumber(), newPosition.number());
     }
 
-    private Coordinates getInputFromPlayer() {
-        var position = scanner.next().trim();
-        if (position.length() != 2) {
-            throw new IllegalArgumentException("");
-        }
-        var letterNumber = position.charAt(0);
-        // todo maybe exception
-        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        return ChessNotation.getCoordinatesOfNotation(letterNumber, number);
-    }
-
-    // todo exception
-    @Override
-    public void play() throws Exception {
-        while (!isEnd()) {
-            System.out.println(String.format("Next one is %s", getNext()) + System.lineSeparator());
-            var fromPosition = getInputFromPlayer();
-            var toPosition = getInputFromPlayer();
-            var piece = getPiece(fromPosition);
-
-            if (piece == null) {
-                throw new RuntimeException("on" + fromPosition + " is not any piece");
-            }
-            if (!piece.getAllPossibleMoves(this).contains(toPosition)) {
-                throw new NotAllowedMoveException(piece + "can move to " + toPosition);
-            }
-            setRound(getRound() + 1);
-            System.out.println(move(fromPosition, toPosition));
-            nextTurn();
-            System.out.println(printBoardToConsole());
-            super.history.hitSave();
-        }
-    }
-
-    // todo end
-    private Boolean isEnd() {
-        // king is dead, one step before
-        // not existing move
-        // can not win
-        // same move again and again
-        return !getStateOfGame().equals(StateOfGame.Playing);
-    }
 
     ///region Prototype
     @Override
@@ -178,7 +139,7 @@ public class Chess extends Game implements GameWritable {
     }
     ///endregion Writable
 
-    ///region Builder
+    ///region Builder and Readable
     public static class Builder implements Buildable<Chess>, GameReadable {
 
         private Piece[][] board = new Piece[SIZE][SIZE];
@@ -206,7 +167,13 @@ public class Chess extends Game implements GameWritable {
         }
 
         @Override
-        public Builder read(InputStream is) throws IOException {
+        public GameReadable read(InputStream is) throws IOException {
+            return read(is, false);
+        }
+
+        // todo header
+        @Override
+        public GameReadable read(InputStream is, boolean header) throws IOException {
             Piece[][] board = new Piece[SIZE][SIZE];
             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
@@ -239,12 +206,17 @@ public class Chess extends Game implements GameWritable {
         }
 
         @Override
-        public Builder read(File file) throws IOException {
+        public GameReadable read(File file) throws IOException {
+            return read(file, false);
+        }
+
+        @Override
+        public GameReadable read(File file, boolean header) throws IOException {
             try (FileInputStream fis = new FileInputStream(file)) {
-                read(fis);
+                read(fis, header);
             }
             return this;
         }
     }
-    ///endregion Builder
+    ///endregion Builder and Readable
 }

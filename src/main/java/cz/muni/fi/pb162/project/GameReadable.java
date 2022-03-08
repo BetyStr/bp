@@ -13,6 +13,10 @@ public interface GameReadable {
 
     GameReadable read(InputStream is) throws IOException;
 
+    GameReadable read(InputStream is, boolean header) throws IOException;
+
     GameReadable read(File file) throws IOException;
+
+    GameReadable read(File file, boolean header) throws IOException;
 
 }

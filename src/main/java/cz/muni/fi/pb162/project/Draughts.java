@@ -17,14 +17,14 @@ public class Draughts extends Game {
     public void setInitialSet() {
         board = new Piece[SIZE][SIZE];
         for (int i = 0; i < SIZE; i += 2) {
-            putPieceOnBoard(0, i, new Piece(Color.White, TypeOfPiece.DraughtsKing));
-            putPieceOnBoard(2, i, new Piece(Color.White, TypeOfPiece.DraughtsKing));
-            putPieceOnBoard(6, i, new Piece(Color.Black, TypeOfPiece.DraughtsKing));
+            putPieceOnBoard(0, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            putPieceOnBoard(2, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            putPieceOnBoard(6, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
         }
         for (int i = 1; i < SIZE; i += 2) {
-            putPieceOnBoard(1, i, new Piece(Color.White, TypeOfPiece.DraughtsKing));
-            putPieceOnBoard(5, i, new Piece(Color.Black, TypeOfPiece.DraughtsKing));
-            putPieceOnBoard(7, i, new Piece(Color.Black, TypeOfPiece.DraughtsKing));
+            putPieceOnBoard(1, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            putPieceOnBoard(5, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+            putPieceOnBoard(7, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
         }
     }
 

@@ -1,8 +1,11 @@
 package cz.muni.fi.pb162.project;
 
 
+import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
+
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * @author Alzbeta Strompova
@@ -13,8 +16,11 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
     public final static int SIZE = 8;
     public final static char SPACE = '\u2003';
     private final static char SEPARATOR = '|';
-    protected History history;
+    private final static Scanner scanner = new Scanner(System.in);
+
     protected Piece[][] board;
+
+    private History history;
     private Player playerOne;
     private Player playerTwo;
     private Player next;
@@ -70,20 +76,8 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
         return next;
     }
 
-    public void setNext(Player next) {
-        this.next = next;
-    }
-
-    public void nextTurn() {
+    private void nextTurn() {
         next = next.equals(playerOne) ? playerTwo : playerOne;
-    }
-
-    public int getRound() {
-        return round;
-    }
-
-    public void setRound(int round) {
-        this.round = round;
     }
 
     public Color getColor(int letterNumber, int number) {
@@ -149,7 +143,37 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
 
     public abstract String move(Coordinates oldPosition, Coordinates newPosition);
 
-    public abstract void play() throws Exception;
+    private Coordinates getInputFromPlayer() {
+        var position = scanner.next().trim();
+        if (position.length() != 2) {
+            throw new IllegalArgumentException("");
+        }
+        var letterNumber = position.charAt(0);
+        // todo maybe exception
+        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        return ChessNotation.getCoordinatesOfNotation(letterNumber, number);
+    }
+
+    public void play() throws Exception {
+        while (stateOfGame.equals(StateOfGame.Playing)) {
+            System.out.println(String.format("Next one is %s", getNext()) + System.lineSeparator());
+            var fromPosition = getInputFromPlayer();
+            var toPosition = getInputFromPlayer();
+            var piece = getPiece(fromPosition);
+
+            if (piece == null) {
+                throw new RuntimeException("on" + fromPosition + " is not any piece");
+            }
+            if (!piece.getAllPossibleMoves(this).contains(toPosition)) {
+                throw new NotAllowedMoveException(piece + "can move to " + toPosition);
+            }
+            round += 1;
+            System.out.println(move(fromPosition, toPosition));
+            nextTurn();
+            System.out.println(printBoardToConsole());
+            history.hitSave();
+        }
+    }
 
     public String printBoardToConsole() {
         var result = new StringBuilder();
@@ -178,7 +202,9 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
         // Patter Matching jdk17
         if (!(o instanceof Game game)) {
             return false;
@@ -202,19 +228,17 @@ public abstract class Game implements Prototype<Game>, Originator<Game.GameState
 
     @Override
     public GameState save() {
-        return new GameState(getNext(), getRound(), board);
+        return new GameState(getNext(), round, board);
     }
 
     @Override
     public void restore(GameState save) {
-        setNext(save.next());
-        setRound(save.round());
+        next = save.next();
+        round = save.round();
         board = save.board();
     }
 
-    ///region Originator and State
     public record GameState(Player next, int round, Piece[][] board) {
     }
-    ///endregion Originator and State
 
 }
