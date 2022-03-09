@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project.moves;
 
+import cz.muni.fi.pb162.project.GameBoard;
 import cz.muni.fi.pb162.project.Coordinates;
-import cz.muni.fi.pb162.project.Game;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class Jump implements Move {
 
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+    public Set<Coordinates> getAllowedMoves(GameBoard gameBoard, Coordinates position) {
 
         var result = new HashSet<Coordinates>();
 
@@ -43,14 +43,14 @@ public class Jump implements Move {
         // treba rekurziu
         // todo implement
         for (Pair<Integer, Integer> movement : coordinates) {
-            for (int i = 1; i <= Game.SIZE / 2; i++) {
+            for (int i = 1; i <= GameBoard.SIZE / 2; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 var leftGoal = left + movement.getLeft();
                 var rightGoal = right + movement.getRight();
-                var goal = game.getColor(left, right);
-                if (game.getColor(position).getOppositeColor().equals(goal)) {
-                    if (game.getColor(leftGoal, rightGoal) == null) {
+                var goal = gameBoard.getColor(left, right);
+                if (gameBoard.getColor(position).getOppositeColor().equals(goal)) {
+                    if (gameBoard.getColor(leftGoal, rightGoal) == null) {
                         result.add(new Coordinates(left, right));
                     }
                 } else {

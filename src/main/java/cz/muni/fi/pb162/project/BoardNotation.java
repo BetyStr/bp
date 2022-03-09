@@ -5,7 +5,7 @@ package cz.muni.fi.pb162.project;
  *
  * @author Alzbeta Strompova
  */
-public final class ChessNotation {
+public final class BoardNotation {
 
 
     private static final int UNICODE_VALUE_FOR_A = 97;
@@ -13,7 +13,7 @@ public final class ChessNotation {
     /**
      * Private constructor to prevent implementation
      */
-    private ChessNotation() {
+    private BoardNotation() {
     }
 
     private static char getLetterFromNumber(int number) {
@@ -25,7 +25,7 @@ public final class ChessNotation {
     }
 
     /**
-     * Chess notation
+     * Board notation
      *
      * @param x 0-7 => a-h
      * @param y 0-7 => 1-8
@@ -36,7 +36,7 @@ public final class ChessNotation {
     }
 
     /**
-     * Chess notation REVERSE
+     * Board notation REVERSE
      *
      * @param x a-h => 0-7
      * @param y 1-8 => 0-7
@@ -46,19 +46,22 @@ public final class ChessNotation {
         return new Coordinates(getNumberFromLetter(x), y - 1);
     }
 
-    /**
-     * Chess notation for piece
-     * King -> K, Queen -> Q, Rook -> R, Knight -> N, Bishop -> B, Pawn ->
-     *
-     * @param type of piece
-     * @return chess notation for piece
-     */
-    public static String getNotation(TypeOfPiece type) {
-        return switch (type) {
-            case Knight -> "N";
-            case Pawn -> " ";
-            default -> String.valueOf(type.name().charAt(0));
-        };
-
-    }
+    //todo ..vymazat asi celyy metodu
+//    /**
+//     * Notation for piece
+//     * King -> K, Queen -> Q, Rook -> R, Knight -> N, Bishop -> B, Pawn ->
+//     *
+//     * @param type of piece
+//     * @return chess notation for piece
+//     */
+//    public static String getNotation(TypeOfPiece type) {
+//        return switch (type) {
+//            case Knight -> "N";
+//            case Pawn -> " ";
+//            case DraughtsMan -> "DM";
+//            case DraughtsKing -> "DK";
+//            default -> String.valueOf(type.name().charAt(0));
+//        };
+//
+//    }
 }

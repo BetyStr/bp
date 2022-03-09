@@ -8,7 +8,7 @@ public record Coordinates(int letterNumber, int number) {
 
     @Override
     public String toString() {
-        return ChessNotation.getNotationOfCoordinates(letterNumber, number);
+        return BoardNotation.getNotationOfCoordinates(letterNumber, number);
     }
 
 }

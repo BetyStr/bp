@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project.moves;
 
 
-import cz.muni.fi.pb162.project.Game;
+import cz.muni.fi.pb162.project.GameBoard;
 import cz.muni.fi.pb162.project.Coordinates;
 
 import java.util.Set;
@@ -14,10 +14,10 @@ import java.util.Set;
 public interface Move {
 
     /**
-     * @param game     is Board when we play
+     * @param gameBoard     is Board when we play
      * @param position position of piece
      * @return Set of allowed moves of specific piece ... subclasses
      */
-    Set<Coordinates> getAllowedMoves(Game game, Coordinates position);
+    Set<Coordinates> getAllowedMoves(GameBoard gameBoard, Coordinates position);
 
 }

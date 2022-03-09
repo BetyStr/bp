@@ -1,9 +1,12 @@
 package cz.muni.fi.pb162.project;
 
 
+import cz.muni.fi.pb162.project.moves.*;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,12 +15,23 @@ import java.util.Map;
  * @author Alzbeta Strompova
  */
 public enum TypeOfPiece {
-    King, Queen, Bishop, Rook, Knight, Pawn, DraughtsKing, DraughtsMan;
+    King(List.of(new Straight(1), new Diagonal(1), new Castling())),
+    Queen(List.of(new Straight(), new Diagonal())),
+    Bishop(List.of(new Diagonal())),
+    Rook(List.of(new Straight())),
+    Knight(List.of(new Knight())),
+    Pawn(List.of(new Pawn())),
+    DraughtsKing(List.of(new Diagonal(1))),
+    DraughtsMan(List.of(new Diagonal(1, true)));
 
-    public final static Map<Pair<TypeOfPiece, Color>, String> figures;
+    private final List<Move> moves;
 
-    static {
-        figures = new HashMap<>();
+    TypeOfPiece(List<Move> moves) {
+        this.moves = moves;
+    }
+
+    public String getSymbol(Color color) {
+        Map<Pair<TypeOfPiece, Color>, String> figures = new HashMap<>();
         //Chess
         figures.put(Pair.of(TypeOfPiece.King, Color.White), "\u2654");
         figures.put(Pair.of(TypeOfPiece.Queen, Color.White), "\u2655");
@@ -38,6 +52,10 @@ public enum TypeOfPiece {
         figures.put(Pair.of(TypeOfPiece.DraughtsKing, Color.White), "\u26C1");
         figures.put(Pair.of(TypeOfPiece.DraughtsMan, Color.Black), "\u26C2");
         figures.put(Pair.of(TypeOfPiece.DraughtsKing, Color.Black), "\u26C3");
+        return figures.getOrDefault(Pair.of(this, color), " ");
     }
 
+    public List<Move> getMoves() {
+        return Collections.unmodifiableList(moves);
+    }
 }

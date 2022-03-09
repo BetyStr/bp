@@ -15,23 +15,23 @@ public class Draughts extends Game {
 
     @Override
     public void setInitialSet() {
-        board = new Piece[SIZE][SIZE];
-        for (int i = 0; i < SIZE; i += 2) {
-            putPieceOnBoard(0, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
-            putPieceOnBoard(2, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
-            putPieceOnBoard(6, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+        gameBoard = new GameBoard();
+        for (int i = 0; i < GameBoard.SIZE; i += 2) {
+            gameBoard.putPieceOnBoard(0, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            gameBoard.putPieceOnBoard(2, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            gameBoard.putPieceOnBoard(6, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
         }
-        for (int i = 1; i < SIZE; i += 2) {
-            putPieceOnBoard(1, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
-            putPieceOnBoard(5, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
-            putPieceOnBoard(7, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+        for (int i = 1; i < GameBoard.SIZE; i += 2) {
+            gameBoard.putPieceOnBoard(1, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            gameBoard.putPieceOnBoard(5, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+            gameBoard.putPieceOnBoard(7, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
         }
     }
 
     @Override
-    public String move(Coordinates oldPosition, Coordinates newPosition) {
+    public void move(Coordinates oldPosition, Coordinates newPosition) {
         // todo
-        return null;
+
     }
 
     @Override

@@ -2,7 +2,11 @@ package cz.muni.fi.pb162.project;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author Alzbeta Strompova
@@ -23,11 +27,13 @@ public class Main {
         var chess = new Chess(player1, player2);
 
         chess.setInitialSet();
-        System.out.println(chess.printBoardToConsole());
+        System.out.println(chess.gameBoard.printBoardToConsole());
 //        var guiBoard = new GUIBoard();
 //        guiBoard.display(chess);
+        var x = chess.gameBoard.isInDanger(new Coordinates(2,2), Color.White);
 
-//        chess.write(System.out);
+        System.out.println(x);
+        chess.write(System.out);
         chess.play();
 
 

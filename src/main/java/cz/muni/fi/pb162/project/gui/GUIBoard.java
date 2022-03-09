@@ -1,6 +1,6 @@
 package cz.muni.fi.pb162.project.gui;
 
-import cz.muni.fi.pb162.project.Game;
+import cz.muni.fi.pb162.project.GameBoard;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +18,7 @@ public class GUIBoard extends JFrame {
     private final MouseListener mouseListener = new MyMouseListener();
     // todo click new screen
 
-    public void display(Game game) {
+    public void display(GameBoard gameBoard) {
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -46,9 +46,9 @@ public class GUIBoard extends JFrame {
             contentPane.add(LABELS[0][i]);
 
             for (int j = 1; j < 9; j++) {
-                var piece = game.getPiece(i - 1, j - 1) == null
-                        ? String.valueOf(Game.SPACE)
-                        : game.getPiece(i - 1, j - 1).toString();
+                var piece = gameBoard.getPiece(i - 1, j - 1) == null
+                        ? " "
+                        : gameBoard.getPiece(i - 1, j - 1).toString();
 
                 LABELS[i][j] = new ChessLabel(piece);
                 LABELS[i][j].setSquare(i, j);

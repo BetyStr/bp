@@ -1,7 +1,12 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.moves.*;
-import org.apache.commons.lang3.tuple.Pair;
+import cz.muni.fi.pb162.project.moves.Castling;
+import cz.muni.fi.pb162.project.moves.Diagonal;
+import cz.muni.fi.pb162.project.moves.Jump;
+import cz.muni.fi.pb162.project.moves.Knight;
+import cz.muni.fi.pb162.project.moves.Move;
+import cz.muni.fi.pb162.project.moves.Pawn;
+import cz.muni.fi.pb162.project.moves.Straight;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -31,6 +36,15 @@ public class Piece {
     private final long id;
     private final Color color;
     private TypeOfPiece type;
+    private boolean firstMove = true;
+
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void alreadyMove() {
+        firstMove = false;
+    }
 
     public Piece(Color color, TypeOfPiece type) {
         id = createID();
@@ -59,18 +73,23 @@ public class Piece {
         return id;
     }
 
-    public Set<Coordinates> getAllPossibleMoves(Game game) {
+    public Set<Coordinates> getAllPossibleMoves(GameBoard gameBoard) {
         var strategies = allowedMovesMap.get(type);
         var result = new HashSet<Coordinates>();
         for (Move strategy : strategies) {
-            result.addAll(strategy.getAllowedMoves(game, game.findCoordinatesOfPieceById(getId())));
+            var value = strategy.getAllowedMoves(gameBoard, gameBoard.findCoordinatesOfPieceById(getId()));
+            if (value != null) {
+                result.addAll(value);
+            }
         }
-        return result.stream().filter(game::inRange).collect(Collectors.toSet());
+        return result.stream()
+                .filter(gameBoard::inRange)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public String toString() {
-        return TypeOfPiece.figures.get(Pair.of(getType(), getColor()));
+        return getType().getSymbol(getColor());
     }
 
     @Override
