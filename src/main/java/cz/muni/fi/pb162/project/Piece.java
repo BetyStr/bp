@@ -1,14 +1,9 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.moves.Castling;
-import cz.muni.fi.pb162.project.moves.Diagonal;
-import cz.muni.fi.pb162.project.moves.Jump;
-import cz.muni.fi.pb162.project.moves.Knight;
 import cz.muni.fi.pb162.project.moves.Move;
-import cz.muni.fi.pb162.project.moves.Pawn;
-import cz.muni.fi.pb162.project.moves.Straight;
-
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -17,34 +12,12 @@ import java.util.stream.Collectors;
  */
 public class Piece {
 
-    private static final AtomicLong idCounter = new AtomicLong();
-    private final static Map<TypeOfPiece, List<Move>> allowedMovesMap;
-
-    static {
-        allowedMovesMap = new HashMap<>();
-        allowedMovesMap.put(TypeOfPiece.King, List.of(new Straight(1), new Diagonal(1), new Castling()));
-        allowedMovesMap.put(TypeOfPiece.Queen, List.of(new Straight(), new Diagonal()));
-        allowedMovesMap.put(TypeOfPiece.Bishop, List.of(new Diagonal()));
-        allowedMovesMap.put(TypeOfPiece.Rook, List.of(new Straight()));
-        allowedMovesMap.put(TypeOfPiece.Knight, List.of(new Knight()));
-        allowedMovesMap.put(TypeOfPiece.Pawn, List.of(new Pawn()));
-        allowedMovesMap.put(TypeOfPiece.DraughtsKing, List.of(new Diagonal(1), new Jump()));
-        allowedMovesMap.put(TypeOfPiece.DraughtsMan, List.of(new Diagonal(1, true), new Jump(true)));
-
-    }
+    private static final AtomicLong ID_COUNTER = new AtomicLong();
 
     private final long id;
     private final Color color;
     private TypeOfPiece type;
     private boolean firstMove = true;
-
-    public boolean isFirstMove() {
-        return firstMove;
-    }
-
-    public void alreadyMove() {
-        firstMove = false;
-    }
 
     public Piece(Color color, TypeOfPiece type) {
         id = createID();
@@ -54,7 +27,15 @@ public class Piece {
     }
 
     private static long createID() {
-        return idCounter.getAndIncrement();
+        return ID_COUNTER.getAndIncrement();
+    }
+
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void alreadyMove() {
+        firstMove = false;
     }
 
     public TypeOfPiece getType() {
@@ -74,7 +55,7 @@ public class Piece {
     }
 
     public Set<Coordinates> getAllPossibleMoves(GameBoard gameBoard) {
-        var strategies = allowedMovesMap.get(type);
+        var strategies = type.getMoves();
         var result = new HashSet<Coordinates>();
         for (Move strategy : strategies) {
             var value = strategy.getAllowedMoves(gameBoard, gameBoard.findCoordinatesOfPieceById(getId()));

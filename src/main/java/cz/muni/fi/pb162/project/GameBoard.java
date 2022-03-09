@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  */
 public class GameBoard implements Originator<GameBoard.BoardState> {
 
-    public final static int SIZE = 8;
+    public static final int SIZE = 8;
 
     protected Piece[][] board;
     private int round;
@@ -89,7 +89,7 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
      * After test I removed it
      *
      * @param position to check
-     * @param color by which color we control that position is in danger
+     * @param color    by which color we control that position is in danger
      * @return true if position is in danger by color
      */
     public boolean isInDanger(Coordinates position, Color color) {
@@ -114,29 +114,29 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
 
 
     public String printBoardToConsole() {
-        final char SPACE = '\u2003';
-        final char SEPARATOR = '|';
-        var result = new StringBuilder().append(SPACE).append(SPACE);
+        final char space = '\u2003';
+        final char separator = '|';
+        var result = new StringBuilder().append(space).append(space);
         // numbers
         for (int i = 0; i < SIZE; i++) {
-            result.append(SPACE).append(SPACE).append(i + 1).append(SPACE);
+            result.append(space).append(space).append(i + 1).append(space);
         }
         result.append(System.lineSeparator());
 
         for (int i = 0; i < SIZE; i++) {
             // board
-            result.append(SPACE).append(SPACE).append("-".repeat(47));
+            result.append(space).append(space).append("-".repeat(47));
             result.append(System.lineSeparator());
             // letters
             result.append((char) (65 + i));
             // pieces
             for (int j = 0; j < SIZE; j++) {
-                result.append(SPACE).append(SEPARATOR).append(SPACE)
-                        .append(board[i][j] == null ? SPACE : board[i][j]);
+                result.append(space).append(separator).append(space)
+                        .append(board[i][j] == null ? space : board[i][j]);
             }
-            result.append(SPACE).append(SEPARATOR).append(System.lineSeparator());
+            result.append(space).append(separator).append(System.lineSeparator());
         }
-        return result.append(SPACE).append(SPACE).append("-".repeat(47)).toString();
+        return result.append(space).append(space).append("-".repeat(47)).toString();
     }
 
     @Override

@@ -1,8 +1,8 @@
 package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.GameBoard;
 import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.GameBoard;
 import cz.muni.fi.pb162.project.TypeOfPiece;
 
 import java.util.Set;

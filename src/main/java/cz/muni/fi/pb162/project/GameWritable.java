@@ -1,6 +1,8 @@
 package cz.muni.fi.pb162.project;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Interface for data export.

@@ -1,10 +1,12 @@
 package cz.muni.fi.pb162.project.gui;
 
 import cz.muni.fi.pb162.project.GameBoard;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 
 
 /**
@@ -12,9 +14,9 @@ import java.awt.event.MouseListener;
  */
 public class GUIBoard extends JFrame {
 
-    private final static int SIZE_OF_WINDOW = (int) (Math.min(Toolkit.getDefaultToolkit().getScreenSize().height,
+    private static final int SIZE_OF_WINDOW = (int) (Math.min(Toolkit.getDefaultToolkit().getScreenSize().height,
             Toolkit.getDefaultToolkit().getScreenSize().width) * 0.8);
-    public static ChessLabel[][] LABELS = new ChessLabel[9][9];
+    private static final ChessLabel[][] labels = new ChessLabel[9][9];
     private final MouseListener mouseListener = new MyMouseListener();
     // todo click new screen
 
@@ -35,28 +37,26 @@ public class GUIBoard extends JFrame {
 //        contentPane.add(LABELS[0][0]);
         //add numbers
         for (int i = 1; i < 9; i++) {
-            LABELS[0][i] = new ChessLabel(String.valueOf(i));
-            LABELS[0][i].setBase();
-            contentPane.add(LABELS[0][i]);
+            labels[0][i] = new ChessLabel(String.valueOf(i));
+            labels[0][i].setBase();
+            contentPane.add(labels[0][i]);
         }
         for (int i = 1; i < 9; i++) {
             //add letters
-            LABELS[0][i] = new ChessLabel(String.valueOf((char) (64 + i)));
-            LABELS[0][i].setBase();
-            contentPane.add(LABELS[0][i]);
+            labels[0][i] = new ChessLabel(String.valueOf((char) (64 + i)));
+            labels[0][i].setBase();
+            contentPane.add(labels[0][i]);
 
             for (int j = 1; j < 9; j++) {
                 var piece = gameBoard.getPiece(i - 1, j - 1) == null
                         ? " "
                         : gameBoard.getPiece(i - 1, j - 1).toString();
 
-                LABELS[i][j] = new ChessLabel(piece);
-                LABELS[i][j].setSquare(i, j);
-                contentPane.add(LABELS[i][j]);
+                labels[i][j] = new ChessLabel(piece);
+                labels[i][j].setSquare(i, j);
+                contentPane.add(labels[i][j]);
             }
         }
-
-
         contentPane.addMouseListener(mouseListener);
         setSize(SIZE_OF_WINDOW, SIZE_OF_WINDOW);
         // setLocationRelativeTo(null);

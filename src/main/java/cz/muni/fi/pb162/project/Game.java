@@ -2,7 +2,6 @@ package cz.muni.fi.pb162.project;
 
 
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
-import cz.muni.fi.pb162.project.moves.Move;
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -13,7 +12,7 @@ import java.util.Stack;
  */
 public abstract class Game implements Prototype<Game>, Caretaker {
 
-    private final static Scanner scanner = new Scanner(System.in);
+    private static final Scanner SCANNER = new Scanner(System.in);
     private final Stack<GameBoard.BoardState> savedBoardState = new Stack<>();
 
     protected GameBoard gameBoard = new GameBoard();
@@ -73,7 +72,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     public abstract void move(Coordinates oldPosition, Coordinates newPosition);
 
     private Coordinates getInputFromPlayer() {
-        var position = scanner.next().trim();
+        var position = SCANNER.next().trim();
         if (position.length() != 2) {
             throw new IllegalArgumentException("");
         }

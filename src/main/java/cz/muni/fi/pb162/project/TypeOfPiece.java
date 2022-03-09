@@ -1,7 +1,12 @@
 package cz.muni.fi.pb162.project;
 
 
-import cz.muni.fi.pb162.project.moves.*;
+import cz.muni.fi.pb162.project.moves.Castling;
+import cz.muni.fi.pb162.project.moves.Diagonal;
+import cz.muni.fi.pb162.project.moves.Knight;
+import cz.muni.fi.pb162.project.moves.Move;
+import cz.muni.fi.pb162.project.moves.Pawn;
+import cz.muni.fi.pb162.project.moves.Straight;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collections;

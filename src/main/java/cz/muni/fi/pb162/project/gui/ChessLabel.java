@@ -1,11 +1,13 @@
 package cz.muni.fi.pb162.project.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  * @author Alzbeta Strompova
- * https://github.com/teemoo7/bobby/blob/4623214ed01beabb8f10db6254597124ea2570a4/src/main/java/ch/teemoo/bobby/helpers/GuiHelper.java
+ * https://github.com/teemoo7/bobby/
+ * blob/4623214ed01beabb8f10db6254597124ea2570a4/src/main/java/ch/teemoo/bobby/helpers/GuiHelper.java
  * https://stackoverflow.com/questions/2535417/chess-board-in-java
  */
 public class ChessLabel extends JLabel {

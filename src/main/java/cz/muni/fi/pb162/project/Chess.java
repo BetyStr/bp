@@ -41,7 +41,7 @@ public class Chess extends Game implements GameWritable {
      *
      * @param playerOne first of two players needed to play chess
      * @param playerTwo second of two players needed to play chess
-     * @param gameBoard     is 2-dimensional array to represent board of pieces
+     * @param gameBoard is 2-dimensional array to represent board of pieces
      */
     private Chess(Player playerOne, Player playerTwo, GameBoard gameBoard) {
         super(playerOne, playerTwo);
