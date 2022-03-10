@@ -2,7 +2,6 @@ package cz.muni.fi.pb162.project;
 
 
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
-
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Stack;
@@ -19,7 +18,6 @@ public abstract class Game implements Prototype<Game>, Caretaker {
 
     private Player playerOne;
     private Player playerTwo;
-    private Player next;
     private StateOfGame stateOfGame = StateOfGame.Playing;
 
     /**
@@ -31,7 +29,6 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     public Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        next = playerOne.color().equals(Color.White) ? playerOne : playerTwo;
     }
 
     /**
@@ -41,7 +38,6 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         if (target != null) {
             playerOne = target.playerOne;
             playerTwo = target.playerTwo;
-            next = target.next;
             stateOfGame = target.stateOfGame;
             gameBoard = target.gameBoard;
         }
@@ -59,13 +55,6 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return playerTwo;
     }
 
-    public Player getNext() {
-        return next;
-    }
-
-    private void nextTurn() {
-        next = next.equals(playerOne) ? playerTwo : playerOne;
-    }
 
     public abstract void setInitialSet();
 
@@ -82,9 +71,13 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
+    private Player getCurrentPlayer() {
+        return playerOne.color().ordinal() == gameBoard.getRound() % 2 ? playerOne : playerTwo;
+    }
     public void play() throws Exception {
         while (stateOfGame.equals(StateOfGame.Playing)) {
-            System.out.println(String.format("Next one is %s", getNext()) + System.lineSeparator());
+            var next = getCurrentPlayer();
+            System.out.println(String.format("Next one is %s", next) + System.lineSeparator());
             var fromPosition = getInputFromPlayer();
             var toPosition = getInputFromPlayer();
             var piece = gameBoard.getPiece(fromPosition);
@@ -97,8 +90,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             }
             gameBoard.setRound(gameBoard.getRound() + 1);
             move(fromPosition, toPosition);
-            nextTurn();
-            System.out.println(gameBoard.printBoardToConsole());
+            System.out.println(gameBoard);
             hitSave();
         }
     }
@@ -114,20 +106,18 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         }
         return !Objects.equals(playerOne, game.playerOne) ||
                 !Objects.equals(playerTwo, game.playerTwo) ||
-                !Objects.equals(next, game.next) ||
                 stateOfGame != game.stateOfGame ||
                 gameBoard.equals(game.gameBoard);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerOne, playerTwo, next, stateOfGame, gameBoard);
+        return Objects.hash(playerOne, playerTwo, stateOfGame, gameBoard);
     }
 
     @Override
     public void hitSave() {
         savedBoardState.push(gameBoard.save());
-
     }
 
     @Override
@@ -136,7 +126,6 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             gameBoard.restore(savedBoardState.pop());
         }
     }
-
 
     @Override
     public abstract Game clone();

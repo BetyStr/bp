@@ -23,7 +23,7 @@ public class Main {
         var chess = new Chess(player1, player2);
 
         chess.setInitialSet();
-        System.out.println(chess.gameBoard.printBoardToConsole());
+        System.out.println(chess.gameBoard.toString());
 //        var guiBoard = new GUIBoard();
 //        guiBoard.display(chess);
         var x = chess.gameBoard.isInDanger(new Coordinates(2, 2), Color.White);

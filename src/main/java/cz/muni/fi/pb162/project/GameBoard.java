@@ -112,8 +112,8 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
         return value;
     }
 
-
-    public String printBoardToConsole() {
+    @Override
+    public String toString() {
         final char space = '\u2003';
         final char separator = '|';
         var result = new StringBuilder().append(space).append(space);
@@ -146,7 +146,7 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
 
     @Override
     public void restore(BoardState save) {
-        round = save.round();
+        setRound(save.round());
         board = save.board();
     }
 
