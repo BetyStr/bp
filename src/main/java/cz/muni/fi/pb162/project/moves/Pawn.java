@@ -1,6 +1,6 @@
 package cz.muni.fi.pb162.project.moves;
 
-import cz.muni.fi.pb162.project.GameBoard;
+import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Color;
 
@@ -13,22 +13,22 @@ import java.util.Set;
 public class Pawn implements Move {
 
     @Override
-    public Set<Coordinates> getAllowedMoves(GameBoard gameBoard, Coordinates position) {
+    public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
         var result = new HashSet<Coordinates>();
-        var color = gameBoard.getPiece(position).getColor();
+        var color = board.getPiece(position).getColor();
 
         if (color.equals(Color.White)) {
             result.add(new Coordinates(position.letterNumber(), position.number() + 1));
             if (position.number() == 1) {
                 result.add(new Coordinates(position.letterNumber(), 3));
             }
-            if (!gameBoard.isEmpty(position.letterNumber() + 1, position.number() + 1)
-                    && gameBoard.getColor(position.letterNumber() + 1,
+            if (!board.isEmpty(position.letterNumber() + 1, position.number() + 1)
+                    && board.getColor(position.letterNumber() + 1,
                     position.number() + 1).equals(Color.Black)) {
                 result.add(new Coordinates(position.letterNumber() + 1, position.number() + 1));
             }
-            if (!gameBoard.isEmpty(position.letterNumber() - 1, position.number() + 1)
-                    && gameBoard.getColor(position.letterNumber() - 1,
+            if (!board.isEmpty(position.letterNumber() - 1, position.number() + 1)
+                    && board.getColor(position.letterNumber() - 1,
                     position.number() + 1).equals(Color.Black)) {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() + 1));
             }
@@ -38,13 +38,13 @@ public class Pawn implements Move {
             if (position.number() == 6) {
                 result.add(new Coordinates(position.letterNumber(), 4));
             }
-            if (!gameBoard.isEmpty(position.letterNumber() + 1, position.number() - 1)
-                    && gameBoard.getColor(position.letterNumber() + 1,
+            if (!board.isEmpty(position.letterNumber() + 1, position.number() - 1)
+                    && board.getColor(position.letterNumber() + 1,
                     position.number() - 1).equals(Color.White)) {
                 result.add(new Coordinates(position.letterNumber() + 1, position.number() - 1));
             }
-            if (!gameBoard.isEmpty(position.letterNumber() - 1, position.number() - 1)
-                    && gameBoard.getColor(position.letterNumber() - 1,
+            if (!board.isEmpty(position.letterNumber() - 1, position.number() - 1)
+                    && board.getColor(position.letterNumber() - 1,
                     position.number() - 1).equals(Color.White)) {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() - 1));
             }

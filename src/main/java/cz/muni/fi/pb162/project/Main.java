@@ -23,10 +23,10 @@ public class Main {
         var chess = new Chess(player1, player2);
 
         chess.setInitialSet();
-        System.out.println(chess.gameBoard.toString());
+        System.out.println(chess.getBoard());
 //        var guiBoard = new GUIBoard();
 //        guiBoard.display(chess);
-        var x = chess.gameBoard.isInDanger(new Coordinates(2, 2), Color.White);
+        var x = chess.getBoard().isInDanger(new Coordinates(2, 2), Color.White);
 
         System.out.println(x);
         chess.write(System.out);

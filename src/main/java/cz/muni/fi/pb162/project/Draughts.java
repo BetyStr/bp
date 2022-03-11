@@ -15,16 +15,16 @@ public class Draughts extends Game {
 
     @Override
     public void setInitialSet() {
-        gameBoard = new GameBoard();
-        for (int i = 0; i < GameBoard.SIZE; i += 2) {
-            gameBoard.putPieceOnBoard(0, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
-            gameBoard.putPieceOnBoard(2, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
-            gameBoard.putPieceOnBoard(6, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+        setBoard(new Board());
+        for (int i = 0; i < Board.SIZE; i += 2) {
+            getBoard().putPieceOnBoard(0, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            getBoard().putPieceOnBoard(2, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            getBoard().putPieceOnBoard(6, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
         }
-        for (int i = 1; i < GameBoard.SIZE; i += 2) {
-            gameBoard.putPieceOnBoard(1, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
-            gameBoard.putPieceOnBoard(5, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
-            gameBoard.putPieceOnBoard(7, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+        for (int i = 1; i < Board.SIZE; i += 2) {
+            getBoard().putPieceOnBoard(1, i, new Piece(Color.White, TypeOfPiece.DraughtsMan));
+            getBoard().putPieceOnBoard(5, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
+            getBoard().putPieceOnBoard(7, i, new Piece(Color.Black, TypeOfPiece.DraughtsMan));
         }
     }
 
@@ -36,7 +36,7 @@ public class Draughts extends Game {
 
     @Override
     public void play() throws Exception {
-
+        // todo
     }
 
     @Override

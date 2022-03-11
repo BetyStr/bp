@@ -45,23 +45,4 @@ public final class BoardNotation {
     public static Coordinates getCoordinatesOfNotation(char x, int y) {
         return new Coordinates(getNumberFromLetter(x), y - 1);
     }
-
-    //todo ..vymazat asi celyy metodu
-//    /**
-//     * Notation for piece
-//     * King -> K, Queen -> Q, Rook -> R, Knight -> N, Bishop -> B, Pawn ->
-//     *
-//     * @param type of piece
-//     * @return chess notation for piece
-//     */
-//    public static String getNotation(TypeOfPiece type) {
-//        return switch (type) {
-//            case Knight -> "N";
-//            case Pawn -> " ";
-//            case DraughtsMan -> "DM";
-//            case DraughtsKing -> "DK";
-//            default -> String.valueOf(type.name().charAt(0));
-//        };
-//
-//    }
 }

@@ -12,14 +12,14 @@ import java.util.Stack;
 public abstract class Game implements Prototype<Game>, Caretaker {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Stack<GameBoard.BoardState> savedBoardState = new Stack<>();
+    private final Stack<Board.BoardState> savedBoardState = new Stack<>();
 
-    protected GameBoard gameBoard = new GameBoard();
+    private Board board = new Board();
 
     private Player playerOne;
+
     private Player playerTwo;
     private StateOfGame stateOfGame = StateOfGame.Playing;
-
     /**
      * Constructor who sets the first player according to the color of the players
      *
@@ -39,8 +39,16 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             playerOne = target.playerOne;
             playerTwo = target.playerTwo;
             stateOfGame = target.stateOfGame;
-            gameBoard = target.gameBoard;
+            board = target.board;
         }
+    }
+
+    protected Board getBoard() {
+        return board;
+    }
+
+    protected void setBoard(Board board) {
+        this.board = board;
     }
 
     public void setStateOfGame(StateOfGame stateOfGame) {
@@ -72,7 +80,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     }
 
     private Player getCurrentPlayer() {
-        return playerOne.color().ordinal() == gameBoard.getRound() % 2 ? playerOne : playerTwo;
+        return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
     }
     public void play() throws Exception {
         while (stateOfGame.equals(StateOfGame.Playing)) {
@@ -80,17 +88,17 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             System.out.println(String.format("Next one is %s", next) + System.lineSeparator());
             var fromPosition = getInputFromPlayer();
             var toPosition = getInputFromPlayer();
-            var piece = gameBoard.getPiece(fromPosition);
+            var piece = board.getPiece(fromPosition);
 
             if (piece == null) {
                 throw new RuntimeException("on" + fromPosition + " is not any piece");
             }
-            if (!piece.getAllPossibleMoves(gameBoard).contains(toPosition)) {
+            if (!piece.getAllPossibleMoves(board).contains(toPosition)) {
                 throw new NotAllowedMoveException(piece + "can move to " + toPosition);
             }
-            gameBoard.setRound(gameBoard.getRound() + 1);
+            board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
-            System.out.println(gameBoard);
+            System.out.println(board);
             hitSave();
         }
     }
@@ -107,23 +115,23 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return !Objects.equals(playerOne, game.playerOne) ||
                 !Objects.equals(playerTwo, game.playerTwo) ||
                 stateOfGame != game.stateOfGame ||
-                gameBoard.equals(game.gameBoard);
+                board.equals(game.board);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(playerOne, playerTwo, stateOfGame, gameBoard);
+        return Objects.hash(playerOne, playerTwo, stateOfGame, board);
     }
 
     @Override
     public void hitSave() {
-        savedBoardState.push(gameBoard.save());
+        savedBoardState.push(board.save());
     }
 
     @Override
     public void hitUndo() {
         if (savedBoardState.size() > 0) {
-            gameBoard.restore(savedBoardState.pop());
+            board.restore(savedBoardState.pop());
         }
     }
 

@@ -17,25 +17,15 @@ public class Piece {
     private final long id;
     private final Color color;
     private TypeOfPiece type;
-    private boolean firstMove = true;
 
     public Piece(Color color, TypeOfPiece type) {
         id = createID();
         this.color = color;
         this.type = type;
-
     }
 
     private static long createID() {
         return ID_COUNTER.getAndIncrement();
-    }
-
-    public boolean isFirstMove() {
-        return firstMove;
-    }
-
-    public void alreadyMove() {
-        firstMove = false;
     }
 
     public TypeOfPiece getType() {
@@ -54,17 +44,17 @@ public class Piece {
         return id;
     }
 
-    public Set<Coordinates> getAllPossibleMoves(GameBoard gameBoard) {
+    public Set<Coordinates> getAllPossibleMoves(Board board) {
         var strategies = type.getMoves();
         var result = new HashSet<Coordinates>();
         for (Move strategy : strategies) {
-            var value = strategy.getAllowedMoves(gameBoard, gameBoard.findCoordinatesOfPieceById(getId()));
+            var value = strategy.getAllowedMoves(board, board.findCoordinatesOfPieceById(getId()));
             if (value != null) {
                 result.addAll(value);
             }
         }
         return result.stream()
-                .filter(gameBoard::inRange)
+                .filter(board::inRange)
                 .collect(Collectors.toSet());
     }
 

@@ -8,11 +8,10 @@ import java.util.stream.Collectors;
 /**
  * @author Alzbeta Strompova
  */
-public class GameBoard implements Originator<GameBoard.BoardState> {
+public class Board implements Originator<Board.BoardState> {
 
     public static final int SIZE = 8;
-
-    protected Piece[][] board;
+    private Piece[][] squares = new Piece[Board.SIZE][Board.SIZE];
     private int round;
 
     public int getRound() {
@@ -36,14 +35,14 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
     }
 
     public boolean isEmpty(int x, int y) {
-        return !inRange(x, y) || board[x][y] == null;
+        return !inRange(x, y) || squares[x][y] == null;
     }
 
     public Color getColor(int letterNumber, int number) {
         if (isEmpty(letterNumber, number)) {
             return null;
         }
-        return board[letterNumber][number].getColor();
+        return squares[letterNumber][number].getColor();
     }
 
     public Color getColor(Coordinates position) {
@@ -54,7 +53,7 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
         if (isEmpty(letterNumber, number)) {
             return null;
         }
-        return board[letterNumber][number];
+        return squares[letterNumber][number];
     }
 
     public Piece getPiece(Coordinates position) {
@@ -69,13 +68,13 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         assert inRange(letterNumber, number);
-        board[letterNumber][number] = piece;
+        squares[letterNumber][number] = piece;
     }
 
     public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                if (board[i][j] != null && board[i][j].getId() == id) {
+                if (squares[i][j] != null && squares[i][j].getId() == id) {
                     return new Coordinates(i, j);
                 }
             }
@@ -98,7 +97,7 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
             putPieceOnBoard(position.letterNumber(), position.number(),
                     new Piece(color.getOppositeColor(), TypeOfPiece.Queen));
         }
-        var value = Arrays.stream(board)
+        var value = Arrays.stream(squares)
                 .flatMap(Arrays::stream)
                 .filter(Objects::nonNull)
                 .filter(x -> x.getColor().equals(color))
@@ -132,7 +131,7 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
             // pieces
             for (int j = 0; j < SIZE; j++) {
                 result.append(space).append(separator).append(space)
-                        .append(board[i][j] == null ? space : board[i][j]);
+                        .append(squares[i][j] == null ? space : squares[i][j]);
             }
             result.append(space).append(separator).append(System.lineSeparator());
         }
@@ -141,13 +140,13 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
 
     @Override
     public BoardState save() {
-        return new BoardState(round, board);
+        return new BoardState(round, squares);
     }
 
     @Override
     public void restore(BoardState save) {
         setRound(save.round());
-        board = save.board();
+        squares = save.board();
     }
 
     @Override
@@ -158,14 +157,14 @@ public class GameBoard implements Originator<GameBoard.BoardState> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        GameBoard gameBoard = (GameBoard) o;
-        return round == gameBoard.round && Arrays.deepEquals(board, gameBoard.board);
+        Board board = (Board) o;
+        return round == board.round && Arrays.deepEquals(squares, board.squares);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(round);
-        result = 31 * result + Arrays.deepHashCode(board);
+        result = 31 * result + Arrays.deepHashCode(squares);
         return result;
     }
 
