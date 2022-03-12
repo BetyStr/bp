@@ -95,7 +95,7 @@ public class Board implements Originator<Board.BoardState> {
         var emptyPosition = isEmpty(position);
         if (emptyPosition) {
             putPieceOnBoard(position.letterNumber(), position.number(),
-                    new Piece(color.getOppositeColor(), TypeOfPiece.Queen));
+                    new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
         }
         var value = Arrays.stream(squares)
                 .flatMap(Arrays::stream)

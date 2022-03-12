@@ -7,7 +7,7 @@ package cz.muni.fi.pb162.project;
  * @author Alzbeta Strompova
  */
 public enum Color {
-    White, Black;
+    WHITE, BLACK;
 
     /**
      * Return opposite color
@@ -16,7 +16,7 @@ public enum Color {
      * @return Black if color is White and White if color is Black
      */
     public Color getOppositeColor() {
-        return equals(White) ? Black : White;
+        return equals(WHITE) ? BLACK : WHITE;
     }
 
 }

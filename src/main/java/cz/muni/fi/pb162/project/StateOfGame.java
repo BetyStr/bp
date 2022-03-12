@@ -7,5 +7,5 @@ package cz.muni.fi.pb162.project;
  */
 public enum StateOfGame {
 
-    WhitePlayerWin, BlackPlayerWin, Pat, Playing
+    WHITE_PLAYER_WIN, BLACK_PLAYER_WIN, PAT, PLAYING
 }

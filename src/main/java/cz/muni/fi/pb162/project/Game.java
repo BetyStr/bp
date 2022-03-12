@@ -1,6 +1,8 @@
 package cz.muni.fi.pb162.project;
 
 
+import cz.muni.fi.pb162.project.excepions.EmptySquareException;
+import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import java.util.Objects;
 import java.util.Scanner;
@@ -15,11 +17,10 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     private final Stack<Board.BoardState> savedBoardState = new Stack<>();
 
     private Board board = new Board();
-
     private Player playerOne;
-
     private Player playerTwo;
-    private StateOfGame stateOfGame = StateOfGame.Playing;
+    private StateOfGame stateOfGame = StateOfGame.PLAYING;
+
     /**
      * Constructor who sets the first player according to the color of the players
      *
@@ -80,27 +81,32 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
         if (position.length() != 2) {
-            throw new IllegalArgumentException("");
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
         }
         var letterNumber = position.charAt(0);
-        // todo maybe exception
-        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        var number = 0;
+        try {
+            number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        } catch (NumberFormatException ex) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+        }
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
     private Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
     }
-    public void play() throws Exception {
-        while (stateOfGame.equals(StateOfGame.Playing)) {
+
+    public void play() {
+        while (stateOfGame.equals(StateOfGame.PLAYING)) {
             var next = getCurrentPlayer();
-            System.out.println(String.format("Next one is %s", next) + System.lineSeparator());
+            //todo check if exist move
+            System.out.printf("Next one is %s%n", next);
             var fromPosition = getInputFromPlayer();
             var toPosition = getInputFromPlayer();
             var piece = board.getPiece(fromPosition);
-
             if (piece == null) {
-                throw new RuntimeException("on" + fromPosition + " is not any piece");
+                throw new EmptySquareException("On" + fromPosition + " is not any piece");
             }
             if (!piece.getAllPossibleMoves(board).contains(toPosition)) {
                 throw new NotAllowedMoveException(piece + "can move to " + toPosition);

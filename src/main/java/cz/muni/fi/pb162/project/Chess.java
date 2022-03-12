@@ -50,27 +50,27 @@ public class Chess extends Game implements GameWritable {
 
     @Override
     public void setInitialSet() {
-        putPieceOnBoard(4, 0, new Piece(Color.White, TypeOfPiece.King));
-        putPieceOnBoard(3, 0, new Piece(Color.White, TypeOfPiece.Queen));
-        putPieceOnBoard(0, 0, new Piece(Color.White, TypeOfPiece.Rook));
-        putPieceOnBoard(7, 0, new Piece(Color.White, TypeOfPiece.Rook));
-        putPieceOnBoard(1, 0, new Piece(Color.White, TypeOfPiece.Knight));
-        putPieceOnBoard(6, 0, new Piece(Color.White, TypeOfPiece.Knight));
-        putPieceOnBoard(2, 0, new Piece(Color.White, TypeOfPiece.Bishop));
-        putPieceOnBoard(5, 0, new Piece(Color.White, TypeOfPiece.Bishop));
+        putPieceOnBoard(4, 0, new Piece(Color.WHITE, TypeOfPiece.KING));
+        putPieceOnBoard(3, 0, new Piece(Color.WHITE, TypeOfPiece.QUEEN));
+        putPieceOnBoard(0, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
+        putPieceOnBoard(7, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
+        putPieceOnBoard(1, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(6, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(2, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
+        putPieceOnBoard(5, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
 
-        putPieceOnBoard(4, 7, new Piece(Color.Black, TypeOfPiece.King));
-        putPieceOnBoard(3, 7, new Piece(Color.Black, TypeOfPiece.Queen));
-        putPieceOnBoard(0, 7, new Piece(Color.Black, TypeOfPiece.Rook));
-        putPieceOnBoard(7, 7, new Piece(Color.Black, TypeOfPiece.Rook));
-        putPieceOnBoard(1, 7, new Piece(Color.Black, TypeOfPiece.Knight));
-        putPieceOnBoard(6, 7, new Piece(Color.Black, TypeOfPiece.Knight));
-        putPieceOnBoard(2, 7, new Piece(Color.Black, TypeOfPiece.Bishop));
-        putPieceOnBoard(5, 7, new Piece(Color.Black, TypeOfPiece.Bishop));
+        putPieceOnBoard(4, 7, new Piece(Color.BLACK, TypeOfPiece.KING));
+        putPieceOnBoard(3, 7, new Piece(Color.BLACK, TypeOfPiece.QUEEN));
+        putPieceOnBoard(0, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
+        putPieceOnBoard(7, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
+        putPieceOnBoard(1, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(6, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(2, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
+        putPieceOnBoard(5, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
 
         for (int i = 0; i < Board.SIZE; i++) {
-            putPieceOnBoard(i, 1, new Piece(Color.White, TypeOfPiece.Pawn));
-            putPieceOnBoard(i, 6, new Piece(Color.Black, TypeOfPiece.Pawn));
+            putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.PAWN));
+            putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.PAWN));
         }
     }
 
@@ -82,16 +82,16 @@ public class Chess extends Game implements GameWritable {
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(),null);
         // todo better way ..not kill only check
         // dead king -> end of game
-        if (fired != null && fired.getType().equals(TypeOfPiece.King)) {
+        if (fired != null && fired.getType().equals(TypeOfPiece.KING)) {
             setStateOfGame(
-                    fired.getColor().equals(Color.Black)
-                            ? StateOfGame.WhitePlayerWin
-                            : StateOfGame.BlackPlayerWin);
+                    fired.getColor().equals(Color.BLACK)
+                            ? StateOfGame.WHITE_PLAYER_WIN
+                            : StateOfGame.BLACK_PLAYER_WIN);
         }
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
-                && piece.getType().equals(TypeOfPiece.Pawn)) {
-            piece.setType(TypeOfPiece.Queen);
+                && piece.getType().equals(TypeOfPiece.PAWN)) {
+            piece.setType(TypeOfPiece.QUEEN);
         }
     }
 
