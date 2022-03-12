@@ -16,45 +16,40 @@ public class GUIBoard extends JFrame {
 
     private static final int SIZE_OF_WINDOW = (int) (Math.min(Toolkit.getDefaultToolkit().getScreenSize().height,
             Toolkit.getDefaultToolkit().getScreenSize().width) * 0.8);
-    private static final ChessLabel[][] labels = new ChessLabel[9][9];
+    private static final ChessLabel[][] LABELS = new ChessLabel[9][9];
     private final MouseListener mouseListener = new MyMouseListener();
     // todo click new screen
 
     public void display(Board board) {
-        setTitle("Chess");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("Chess"); setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         Container contentPane = getContentPane();
         GridLayout gridLayout = new GridLayout(9, 9);
         contentPane.setLayout(gridLayout);
 
-        JButton b = new JButton("Undo");//creating instance of JButton
-        b.setBounds(0, 0, SIZE_OF_WINDOW / 18, SIZE_OF_WINDOW / 18);//x axis, y axis, width, height
+        JButton b = new JButton("Undo");
+        b.setBounds(0, 0, SIZE_OF_WINDOW / 18, SIZE_OF_WINDOW / 18);
         add(b);
-
 //        LABELS[0][0] = new ChessLabel(String.valueOf(Game.SPACE));
 //        LABELS[0][0].setBase();
 //        contentPane.add(LABELS[0][0]);
         //add numbers
         for (int i = 1; i < 9; i++) {
-            labels[0][i] = new ChessLabel(String.valueOf(i));
-            labels[0][i].setBase();
-            contentPane.add(labels[0][i]);
+            LABELS[0][i] = new ChessLabel(String.valueOf(i));
+            LABELS[0][i].setBase();
+            contentPane.add(LABELS[0][i]);
         }
         for (int i = 1; i < 9; i++) {
             //add letters
-            labels[0][i] = new ChessLabel(String.valueOf((char) (64 + i)));
-            labels[0][i].setBase();
-            contentPane.add(labels[0][i]);
-
+            LABELS[0][i] = new ChessLabel(String.valueOf((char) (64 + i)));
+            LABELS[0][i].setBase();
+            contentPane.add(LABELS[0][i]);
             for (int j = 1; j < 9; j++) {
                 var piece = board.getPiece(i - 1, j - 1) == null
                         ? " "
                         : board.getPiece(i - 1, j - 1).toString();
-
-                labels[i][j] = new ChessLabel(piece);
-                labels[i][j].setSquare(i, j);
-                contentPane.add(labels[i][j]);
+                LABELS[i][j] = new ChessLabel(piece);
+                LABELS[i][j].setSquare(i, j); contentPane.add(LABELS[i][j]);
             }
         }
         contentPane.addMouseListener(mouseListener);

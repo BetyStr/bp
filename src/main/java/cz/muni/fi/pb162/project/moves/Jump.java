@@ -41,7 +41,7 @@ public class Jump implements Move {
         // blbost
         // neiplmelemntovane
         // treba rekurziu
-        // todo implement
+        // todo implement jump
         for (Pair<Integer, Integer> movement : coordinates) {
             for (int i = 1; i <= Board.SIZE / 2; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();

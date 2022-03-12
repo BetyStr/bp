@@ -16,7 +16,6 @@ public class Knight implements Move {
     @Override
     public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
         var result = new HashSet<Coordinates>();
-        var color = board.getPiece(position).getColor();
 
         HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
                 Pair.of(1, 2),
@@ -29,11 +28,10 @@ public class Knight implements Move {
             var right = position.number() + movement.getRight();
             if (board.getColor(left, right) == null) {
                 result.add(new Coordinates(left, right));
-            } else if (color.equals(board.getColor(left, right).getOppositeColor())) {
+            } else if (board.getPiece(position).getColor().equals(board.getColor(left, right).getOppositeColor())) {
                 result.add(new Coordinates(left, right));
             }
         }
-
         return result;
     }
 }

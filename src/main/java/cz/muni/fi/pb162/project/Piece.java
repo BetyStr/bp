@@ -1,7 +1,6 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.moves.Move;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -45,15 +44,13 @@ public class Piece {
     }
 
     public Set<Coordinates> getAllPossibleMoves(Board board) {
-        var strategies = type.getMoves();
-        var result = new HashSet<Coordinates>();
-        for (Move strategy : strategies) {
-            var value = strategy.getAllowedMoves(board, board.findCoordinatesOfPieceById(getId()));
-            if (value != null) {
-                result.addAll(value);
-            }
-        }
-        return result.stream()
+        return type
+                .getMoves()
+                .stream()
+                .map(strategy -> strategy
+                        .getAllowedMoves(board, board.findCoordinatesOfPieceById(getId())))
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
                 .filter(board::inRange)
                 .collect(Collectors.toSet());
     }
@@ -68,7 +65,7 @@ public class Piece {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass().isInstance(o.getClass())) {
+        if (o == null || getClass() == o.getClass()) {
             return false;
         }
         Piece piece = (Piece) o;

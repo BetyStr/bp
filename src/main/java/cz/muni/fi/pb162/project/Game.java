@@ -51,6 +51,15 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         this.board = board;
     }
 
+    /**
+     * @param letterNumber first coordinate to put piece 0-7
+     * @param number       second coordinate to put piece 0-7
+     * @param piece        ChessPiece which we want to put on board
+     */
+    public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
+        board.putPieceOnBoard(letterNumber, number, piece);
+    }
+
     public void setStateOfGame(StateOfGame stateOfGame) {
         this.stateOfGame = stateOfGame;
     }

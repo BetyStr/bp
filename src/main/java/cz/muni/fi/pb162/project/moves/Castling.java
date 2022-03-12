@@ -7,6 +7,7 @@ import java.util.Set;
 
 
 /**
+ * todo castling, maybe use memento
  * @author Alzbeta Strompova
  */
 public class Castling implements Move {
@@ -36,7 +37,7 @@ public class Castling implements Move {
 //                    }
 //                }
 //                if (canMove) {
-//                    // todo
+//                    //
 //                }
 //            }
 //

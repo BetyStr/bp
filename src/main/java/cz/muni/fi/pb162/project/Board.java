@@ -30,12 +30,12 @@ public class Board implements Originator<Board.BoardState> {
         return inRange(coordinates.letterNumber(), coordinates.number());
     }
 
-    public boolean isEmpty(Coordinates position) {
-        return isEmpty(position.letterNumber(), position.number());
-    }
-
     public boolean isEmpty(int x, int y) {
         return !inRange(x, y) || squares[x][y] == null;
+    }
+
+    public boolean isEmpty(Coordinates position) {
+        return isEmpty(position.letterNumber(), position.number());
     }
 
     public Color getColor(int letterNumber, int number) {
@@ -61,16 +61,6 @@ public class Board implements Originator<Board.BoardState> {
     }
 
 
-    /**
-     * @param letterNumber first coordinate to put piece 0-7
-     * @param number       second coordinate to put piece 0-7
-     * @param piece        ChessPiece which we want to put on board
-     */
-    public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
-        assert inRange(letterNumber, number);
-        squares[letterNumber][number] = piece;
-    }
-
     public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -80,6 +70,16 @@ public class Board implements Originator<Board.BoardState> {
             }
         }
         return null;
+    }
+
+    /**
+     * @param letterNumber first coordinate to put piece 0-7
+     * @param number       second coordinate to put piece 0-7
+     * @param piece        ChessPiece which we want to put on board
+     */
+    public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
+        assert inRange(letterNumber, number);
+        squares[letterNumber][number] = piece;
     }
 
     /**
@@ -113,6 +113,7 @@ public class Board implements Originator<Board.BoardState> {
 
     @Override
     public String toString() {
+        //todo better way find or write nicer
         final char space = '\u2003';
         final char separator = '|';
         var result = new StringBuilder().append(space).append(space);

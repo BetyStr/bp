@@ -5,7 +5,7 @@ package cz.muni.fi.pb162.project.excepions;
  *
  * @author Alzbeta Strompova
  */
-public class NotAllowedMoveException extends Exception {
+public class NotAllowedMoveException extends RuntimeException {
 
     public NotAllowedMoveException(String message) {
         super(message);

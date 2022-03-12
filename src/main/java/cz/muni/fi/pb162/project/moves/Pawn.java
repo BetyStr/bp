@@ -16,7 +16,6 @@ public class Pawn implements Move {
     public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
         var result = new HashSet<Coordinates>();
         var color = board.getPiece(position).getColor();
-
         if (color.equals(Color.White)) {
             result.add(new Coordinates(position.letterNumber(), position.number() + 1));
             if (position.number() == 1) {
@@ -33,6 +32,12 @@ public class Pawn implements Move {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() + 1));
             }
         }
+        extracted(board, position, result, color);
+        // todo en passaint..memento
+        return result;
+    }
+
+    private void extracted(Board board, Coordinates position, HashSet<Coordinates> result, Color color) {
         if (color.equals(Color.Black)) {
             result.add(new Coordinates(position.letterNumber(), position.number() - 1));
             if (position.number() == 6) {
@@ -49,8 +54,5 @@ public class Pawn implements Move {
                 result.add(new Coordinates(position.letterNumber() - 1, position.number() - 1));
             }
         }
-
-        // todo en passaint..memento
-        return result;
     }
 }
