@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-
 /**
  * Record =>
  * constructor with all attributes,

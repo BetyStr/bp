@@ -23,7 +23,7 @@ public class Piece {
      * Constructor takes color and type of piece and set up uniq id
      *
      * @param color which our piece will have
-     * @param type which our piece will have
+     * @param type  which our piece will have
      */
     public Piece(Color color, TypeOfPiece type) {
         id = ID_COUNTER.getAndIncrement();

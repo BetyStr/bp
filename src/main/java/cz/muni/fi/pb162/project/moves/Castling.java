@@ -1,14 +1,14 @@
 package cz.muni.fi.pb162.project.moves;
 
+import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Coordinates;
 import java.util.Collections;
-import cz.muni.fi.pb162.project.Board;
-
 import java.util.Set;
 
 
 /**
  * todo castling, maybe use memento
+ *
  * @author Alzbeta Strompova
  */
 public class Castling implements Move {

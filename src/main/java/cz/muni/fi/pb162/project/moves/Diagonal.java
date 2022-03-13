@@ -1,13 +1,12 @@
 package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Board;
-import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Color;
-import org.apache.commons.lang3.tuple.Pair;
-
+import cz.muni.fi.pb162.project.Coordinates;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * @author Alzbeta Strompova

@@ -2,9 +2,7 @@ package cz.muni.fi.pb162.project;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Objects;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -17,7 +15,6 @@ public class Board implements Originator<Board> {
     private int round;
 
     public Board() {
-
     }
 
     private Board(int round, Piece[][] squares) {

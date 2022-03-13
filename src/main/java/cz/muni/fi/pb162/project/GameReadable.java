@@ -25,7 +25,7 @@ public interface GameReadable {
     /**
      * Read Game data from input stream.
      *
-     * @param is input stream
+     * @param is        input stream
      * @param hasHeader is true if steam has hasHeader
      * @return the object with info from the data
      * @throws IOException on read error

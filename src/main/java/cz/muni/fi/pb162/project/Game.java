@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-
 import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
@@ -18,7 +17,7 @@ import java.util.Scanner;
 public abstract class Game implements Prototype<Game>, Caretaker {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Deque<Board> savedBoardState = new LinkedList<>();
+    private final Deque<Board> mementoHistory = new LinkedList<>();
 
     private Board board = new Board();
     private Player playerOne;
@@ -143,13 +142,13 @@ public abstract class Game implements Prototype<Game>, Caretaker {
 
     @Override
     public void hitSave() {
-        savedBoardState.push(board.save());
+        mementoHistory.push(board.save());
     }
 
     @Override
     public void hitUndo() {
-        if (!savedBoardState.isEmpty()) {
-            board.restore(savedBoardState.pop());
+        if (!mementoHistory.isEmpty()) {
+            board.restore(mementoHistory.pop());
         }
     }
 
