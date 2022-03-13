@@ -1,5 +1,6 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -156,9 +157,8 @@ public class Chess extends Game implements GameWritable {
 
         @Override
         public Chess build() {
-            // todo exception
             if (playerOne == null || playerTwo == null) {
-                throw new RuntimeException("todo ");
+                throw new MissingPlayerException("You must have two players to play");
             }
             return new Chess(playerOne, playerTwo, board);
         }
@@ -168,35 +168,45 @@ public class Chess extends Game implements GameWritable {
             return read(is, false);
         }
 
-        // todo header and exception
         @Override
         public GameReadable read(InputStream is, boolean hasHeader) throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-
-            var count = 0;
+            processHeader(hasHeader, br);
+            var row = 0;
             while (br.ready()) {
                 String[] data = br.readLine().split(";", Board.SIZE);
                 if (data.length != Board.SIZE) {
-                    throw new IOException("Invalid data (some information might be missing)");
+                    throw new IOException("Invalid data length (some information might be missing)");
                 }
                 for (int i = 0; i < Board.SIZE; i++) {
-                    if (!data[i].equals("_")) {
-                        String[] piece = data[i].split(",", 2);
-                        if (piece.length != 2) {
-                            throw new IOException("Invalid data (some information might be missing)");
-                        }
-                        try {
-                            var type = TypeOfPiece.valueOf(piece[0]);
-                            var color = Color.valueOf(piece[1]);
-                            board.putPieceOnBoard(count, i, new Piece(color, type));
-                        } catch (IllegalArgumentException ex) {
-                            throw new IOException("Bad input", ex);
-                        }
+                    if (data[i].equals("_")) {
+                        continue;
+                    }
+                    String[] piece = data[i].split(",", 2);
+                    if (piece.length != 2) {
+                        throw new IOException("Invalid data length (some information might be missing)");
+                    }
+                    try {
+                        var type = TypeOfPiece.valueOf(piece[0]);
+                        var color = Color.valueOf(piece[1]);
+                        board.putPieceOnBoard(row, i, new Piece(color, type));
+                    } catch (IllegalArgumentException ex) {
+                        throw new IOException("Invalid data format", ex);
                     }
                 }
-                count += 1;
+                row += 1;
             }
             return this;
+        }
+
+        private void processHeader(boolean hasHeader, BufferedReader br) throws IOException {
+            if (hasHeader) {
+                String[] data = br.readLine().split(";", 2);
+                var player = data[0].split("-", 2);
+                playerOne = new Player(player[0], Color.valueOf(player[1]));
+                player = data[1].split("-", 2);
+                playerTwo = new Player(player[0], Color.valueOf(player[1]));
+            }
         }
 
         @Override

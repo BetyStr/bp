@@ -21,7 +21,7 @@ public final class BoardNotation {
     }
 
     private static int getNumberFromLetter(char letter) {
-        return (int) letter - UNICODE_VALUE_FOR_A;
+        return letter - UNICODE_VALUE_FOR_A;
     }
 
     /**

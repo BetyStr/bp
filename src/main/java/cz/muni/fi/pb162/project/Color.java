@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project;
 
 /**
  * Enum represent color of piece
- * ordinal: 0 - White, 1 - Black
+ * ordinal: {@code WHITE} - 0, {@code BLACK} - 1
  *
  * @author Alzbeta Strompova
  */
@@ -11,9 +11,10 @@ public enum Color {
 
     /**
      * Return opposite color
-     * White -> Black, Black -> White
+     * {@code WHITE} -> {@code BLACK},
+     * {@code BLACK} -> {@code WHITE}
      *
-     * @return Black if color is White and White if color is Black
+     * @return {@code BLACK} if color is {@code WHITE} and {@code WHITE} if color is {@code BLACK}
      */
     public Color getOppositeColor() {
         return equals(WHITE) ? BLACK : WHITE;

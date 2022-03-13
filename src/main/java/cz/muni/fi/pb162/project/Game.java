@@ -4,17 +4,21 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
+ * Abstract class representing Game on board
+ * which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ *
  * @author Alzbeta Strompova
  */
 public abstract class Game implements Prototype<Game>, Caretaker {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Stack<Board.BoardState> savedBoardState = new Stack<>();
+    private final Deque<Board> savedBoardState = new LinkedList<>();
 
     private Board board = new Board();
     private Player playerOne;
@@ -22,12 +26,12 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Constructor who sets the first player according to the color of the players
+     * Constructor
      *
      * @param playerOne first of two players needed to play chess
      * @param playerTwo second of two players needed to play chess
      */
-    public Game(Player playerOne, Player playerTwo) {
+    protected Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
@@ -55,7 +59,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
     /**
      * @param letterNumber first coordinate to put piece 0-7
      * @param number       second coordinate to put piece 0-7
-     * @param piece        ChessPiece which we want to put on board
+     * @param piece        Piece which we want to put on board
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         board.putPieceOnBoard(letterNumber, number, piece);
@@ -73,29 +77,13 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return playerTwo;
     }
 
+    private Player getCurrentPlayer() {
+        return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
+    }
 
     public abstract void setInitialSet();
 
     public abstract void move(Coordinates oldPosition, Coordinates newPosition);
-
-    private Coordinates getInputFromPlayer() {
-        var position = SCANNER.next().trim();
-        if (position.length() != 2) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
-        var letterNumber = position.charAt(0);
-        var number = 0;
-        try {
-            number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        } catch (NumberFormatException ex) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
-        return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
-    }
-
-    private Player getCurrentPlayer() {
-        return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
-    }
 
     public void play() {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
@@ -116,6 +104,21 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             System.out.println(board);
             hitSave();
         }
+    }
+
+    private Coordinates getInputFromPlayer() {
+        var position = SCANNER.next().trim();
+        if (position.length() != 2) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+        }
+        var letterNumber = position.charAt(0);
+        var number = 0;
+        try {
+            number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        } catch (NumberFormatException ex) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+        }
+        return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
     @Override
@@ -149,9 +152,5 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             board.restore(savedBoardState.pop());
         }
     }
-
-    @Override
-    public abstract Game makeClone();
-
 
 }

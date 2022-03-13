@@ -19,7 +19,6 @@ public class Main {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("B");
         System.out.println(dtf.withLocale(Locale.ENGLISH).format(LocalTime.of(15, 0)));
 
-        System.out.println(System.lineSeparator());
         var player1 = new Player("Jozko", Color.WHITE);
         var player2 = new Player("Janko", Color.BLACK);
 

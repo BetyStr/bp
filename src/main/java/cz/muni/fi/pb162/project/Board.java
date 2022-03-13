@@ -2,17 +2,28 @@ package cz.muni.fi.pb162.project;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
  * @author Alzbeta Strompova
  */
-public class Board implements Originator<Board.BoardState> {
+public class Board implements Originator<Board> {
 
     public static final int SIZE = 8;
-    private Piece[][] squares = new Piece[Board.SIZE][Board.SIZE];
+    private Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
+
+    public Board() {
+
+    }
+
+    private Board(int round, Piece[][] squares) {
+        this.round = round;
+        this.squares = squares;
+    }
 
     public int getRound() {
         return round;
@@ -78,8 +89,9 @@ public class Board implements Originator<Board.BoardState> {
      * @param piece        ChessPiece which we want to put on board
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
-        assert inRange(letterNumber, number);
-        squares[letterNumber][number] = piece;
+        if (inRange(letterNumber, number)) {
+            squares[letterNumber][number] = piece;
+        }
     }
 
     /**
@@ -114,8 +126,8 @@ public class Board implements Originator<Board.BoardState> {
     @Override
     public String toString() {
         //todo better way find or write nicer
-        final char space = '\u2003';
-        final char separator = '|';
+        char space = '\u2003';
+        char separator = '|';
         var result = new StringBuilder().append(space).append(space);
         // numbers
         for (int i = 0; i < SIZE; i++) {
@@ -140,14 +152,14 @@ public class Board implements Originator<Board.BoardState> {
     }
 
     @Override
-    public BoardState save() {
-        return new BoardState(round, squares);
+    public Board save() {
+        return new Board(round, squares);
     }
 
     @Override
-    public void restore(BoardState save) {
-        setRound(save.round());
-        squares = save.board();
+    public void restore(Board save) {
+        setRound(save.getRound());
+        squares = save.squares;
     }
 
     @Override
@@ -169,6 +181,4 @@ public class Board implements Originator<Board.BoardState> {
         return result;
     }
 
-    public record BoardState(int round, Piece[][] board) {
-    }
 }
