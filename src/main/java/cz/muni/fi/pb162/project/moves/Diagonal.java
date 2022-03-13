@@ -69,10 +69,10 @@ public class Diagonal implements Move {
                 goal = board.getColor(left, right);
                 if (goal == null) {
                     result.add(new Coordinates(left, right));
-                } else if (color.getOppositeColor().equals(goal)) {
-                    result.add(new Coordinates(left, right));
-                    break;
                 } else {
+                    if (color.getOppositeColor().equals(goal)) {
+                        result.add(new Coordinates(left, right));
+                    }
                     break;
                 }
             }

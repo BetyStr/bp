@@ -98,7 +98,7 @@ public class Chess extends Game implements GameWritable {
 
     ///region Prototype
     @Override
-    public Game clone() {
+    public Game makeClone() {
         return new Chess(this);
     }
     ///endregion Prototype
@@ -170,7 +170,7 @@ public class Chess extends Game implements GameWritable {
 
         // todo header and exception
         @Override
-        public GameReadable read(InputStream is, boolean header) throws IOException {
+        public GameReadable read(InputStream is, boolean hasHeader) throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
             var count = 0;

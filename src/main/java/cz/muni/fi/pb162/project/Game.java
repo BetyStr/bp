@@ -145,13 +145,13 @@ public abstract class Game implements Prototype<Game>, Caretaker {
 
     @Override
     public void hitUndo() {
-        if (savedBoardState.size() > 0) {
+        if (!savedBoardState.isEmpty()) {
             board.restore(savedBoardState.pop());
         }
     }
 
     @Override
-    public abstract Game clone();
+    public abstract Game makeClone();
 
 
 }

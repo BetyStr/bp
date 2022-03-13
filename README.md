@@ -1,6 +1,13 @@
 # New PB162 seminar project
 
-Chess
+Hry na šachovnici 
+- Chess (šach)
+- Draughts (dáma)
+
+Poznámky
+- dokumentácia je predbežná
+- šach aj dáma maju zjednodušene pravidla (presnejšie vynechané niektore okrajove prípady)
+
 
 ### Iteration schedule during the year
 (according to the past)

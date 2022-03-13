@@ -2,11 +2,10 @@ package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Coordinates;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * @author Alzbeta Strompova
@@ -39,10 +38,10 @@ public class Straight implements Move {
                 var right = position.number() + i * movement.getRight();
                 if (board.getColor(left, right) == null) {
                     result.add(new Coordinates(left, right));
-                } else if (color.getOppositeColor().equals(board.getColor(left, right))) {
-                    result.add(new Coordinates(left, right));
-                    break;
                 } else {
+                    if (color.getOppositeColor().equals(board.getColor(left, right))) {
+                        result.add(new Coordinates(left, right));
+                    }
                     break;
                 }
             }

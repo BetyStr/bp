@@ -7,15 +7,16 @@ import cz.muni.fi.pb162.project.moves.Knight;
 import cz.muni.fi.pb162.project.moves.Move;
 import cz.muni.fi.pb162.project.moves.Pawn;
 import cz.muni.fi.pb162.project.moves.Straight;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Enum represent type of piece
+ * with attribute {@code moves} which is List
+ * of all possible types of movement of specific type of piece
  *
  * @author Alzbeta Strompova
  */
@@ -31,10 +32,26 @@ public enum TypeOfPiece {
 
     private final List<Move> moves;
 
+    /**
+     * Constructor to initializing all possible types of movement of specific type of piece
+     *
+     * @param moves is List of all possible types of movement of specific type of piece
+     */
     TypeOfPiece(List<Move> moves) {
         this.moves = moves;
     }
 
+    public List<Move> getMoves() {
+        return Collections.unmodifiableList(moves);
+    }
+
+    /**
+     * Method than return symbol representing the piece in Unicode base on type and color of piece
+     * Symbols are from {@link <a href="https://www.fileformat.info/info/unicode/index.htm">www.fileformat.info</a>}
+     *
+     * @param color of the piece whose symbol we want to get
+     * @return symbol representing the piece in Unicode base on type and color of piece
+     */
     public String getSymbol(Color color) {
         Map<Pair<TypeOfPiece, Color>, String> figures = new HashMap<>();
         //Chess
@@ -60,7 +77,4 @@ public enum TypeOfPiece {
         return figures.getOrDefault(Pair.of(this, color), " ");
     }
 
-    public List<Move> getMoves() {
-        return Collections.unmodifiableList(moves);
-    }
 }

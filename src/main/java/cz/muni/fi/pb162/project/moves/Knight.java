@@ -26,9 +26,8 @@ public class Knight implements Move {
         for (Pair<Integer, Integer> movement : coordinates) {
             var left = position.letterNumber() + movement.getLeft();
             var right = position.number() + movement.getRight();
-            if (board.getColor(left, right) == null) {
-                result.add(new Coordinates(left, right));
-            } else if (board.getPiece(position).getColor().equals(board.getColor(left, right).getOppositeColor())) {
+            if (board.getColor(left, right) == null ||
+                    board.getPiece(position).getColor().equals(board.getColor(left, right).getOppositeColor())) {
                 result.add(new Coordinates(left, right));
             }
         }

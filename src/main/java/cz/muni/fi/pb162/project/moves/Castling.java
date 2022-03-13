@@ -1,6 +1,7 @@
 package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Coordinates;
+import java.util.Collections;
 import cz.muni.fi.pb162.project.Board;
 
 import java.util.Set;
@@ -42,6 +43,6 @@ public class Castling implements Move {
 //            }
 //
 //        }
-        return null;
+        return Collections.emptySet();
     }
 }

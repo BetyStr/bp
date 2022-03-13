@@ -1,10 +1,11 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * record =>
- * constructor with all final parameters
- * get methods but without "get" (for example getName() -> name())
- * toString, equals, hashCode
+ * Record =>
+ * constructor with all attributes,
+ * all attributes are final,
+ * get methods but without "get" (for example getName() -> name()),
+ * intelligent toString, equals, hashCode base on attributes
  *
  * @author Alzbeta Strompova
  */

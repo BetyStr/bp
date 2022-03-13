@@ -30,11 +30,11 @@ public class Draughts extends Game {
 
     @Override
     public void move(Coordinates oldPosition, Coordinates newPosition) {
-
+        // TODO implementation
     }
 
     @Override
-    public Game clone() {
+    public Game makeClone() {
         return new Draughts(this);
     }
 
