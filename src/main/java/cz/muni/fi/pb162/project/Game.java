@@ -3,10 +3,13 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Abstract class representing Game on board
@@ -76,7 +79,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return playerTwo;
     }
 
-    private Player getCurrentPlayer() {
+    protected Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
     }
 
@@ -84,10 +87,11 @@ public abstract class Game implements Prototype<Game>, Caretaker {
 
     public abstract void move(Coordinates oldPosition, Coordinates newPosition);
 
-    public void play() {
+    public void play() throws EmptySquareException, NotAllowedMoveException {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
+            System.out.println(board);
             var next = getCurrentPlayer();
-            //todo check if exist move
+            updateStatus();
             System.out.printf("Next one is %s%n", next);
             var fromPosition = getInputFromPlayer();
             var toPosition = getInputFromPlayer();
@@ -100,10 +104,15 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             }
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
-            System.out.println(board);
             hitSave();
         }
+        System.out.println(board);
     }
+
+    /**
+     * Check if is end of game
+     */
+    public abstract void updateStatus();
 
     private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
@@ -118,6 +127,16 @@ public abstract class Game implements Prototype<Game>, Caretaker {
             throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
         }
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
+    }
+
+    public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
+        return board
+                .getAllPiecesFromBoard()
+                .stream()
+                .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
+                .map(x -> x.getAllPossibleMoves(board))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     @Override

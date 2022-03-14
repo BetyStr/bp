@@ -3,6 +3,7 @@ package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.moves.Castling;
 import cz.muni.fi.pb162.project.moves.Diagonal;
+import cz.muni.fi.pb162.project.moves.Jump;
 import cz.muni.fi.pb162.project.moves.Knight;
 import cz.muni.fi.pb162.project.moves.Move;
 import cz.muni.fi.pb162.project.moves.Pawn;
@@ -27,8 +28,8 @@ public enum TypeOfPiece {
     ROOK(List.of(new Straight())),
     KNIGHT(List.of(new Knight())),
     PAWN(List.of(new Pawn())),
-    DRAUGHTS_KING(List.of(new Diagonal(1))),
-    DRAUGHTS_MAN(List.of(new Diagonal(1, true)));
+    DRAUGHTS_KING(List.of(new Diagonal(1), new Jump())),
+    DRAUGHTS_MAN(List.of(new Diagonal(1, true), new Jump(true)));
 
     private final List<Move> moves;
 

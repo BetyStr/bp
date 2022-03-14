@@ -37,24 +37,15 @@ public class Jump implements Move {
             coordinates.add(Pair.of(-1, -1));
             coordinates.add(Pair.of(1, -1));
         }
-        // blbost
-        // neiplmelemntovane
-        // treba rekurziu
-        // todo implement jump
+
         for (Pair<Integer, Integer> movement : coordinates) {
-            for (int i = 1; i <= Board.SIZE / 2; i++) {
-                var left = position.letterNumber() + i * movement.getLeft();
-                var right = position.number() + i * movement.getRight();
-                var leftGoal = left + movement.getLeft();
-                var rightGoal = right + movement.getRight();
-                var goal = board.getColor(left, right);
-                if (board.getColor(position).getOppositeColor().equals(goal)) {
-                    if (board.getColor(leftGoal, rightGoal) == null) {
-                        result.add(new Coordinates(left, right));
-                    }
-                } else {
-                    break;
-                }
+            var leftToJump = position.letterNumber() + movement.getLeft();
+            var rightToJump = position.number() + movement.getRight();
+            var leftGoal = leftToJump + movement.getLeft();
+            var rightGoal = rightToJump + movement.getRight();
+            if (board.getColor(position).getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
+                    && board.getColor(leftGoal, rightGoal) == null) {
+                result.add(new Coordinates(leftToJump, rightToJump));
             }
         }
         return result;
