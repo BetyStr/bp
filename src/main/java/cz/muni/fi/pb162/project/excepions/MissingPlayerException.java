@@ -5,10 +5,6 @@ package cz.muni.fi.pb162.project.excepions;
  */
 public class MissingPlayerException extends RuntimeException {
 
-    public MissingPlayerException() {
-        super();
-    }
-
     public MissingPlayerException(String message) {
         super(message);
     }

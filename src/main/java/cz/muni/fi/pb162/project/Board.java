@@ -2,6 +2,7 @@ package cz.muni.fi.pb162.project;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,6 @@ public class Board implements Originator<Board> {
         return getPiece(position.letterNumber(), position.number());
     }
 
-
     public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -106,9 +106,8 @@ public class Board implements Originator<Board> {
             putPieceOnBoard(position.letterNumber(), position.number(),
                     new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
         }
-        var value = Arrays.stream(squares)
-                .flatMap(Arrays::stream)
-                .filter(Objects::nonNull)
+        var value = getAllPiecesFromBoard()
+                .stream()
                 .filter(x -> x.getColor().equals(color))
                 .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
@@ -120,9 +119,15 @@ public class Board implements Originator<Board> {
         return value;
     }
 
+    public List<Piece> getAllPiecesFromBoard() {
+        return Arrays.stream(squares)
+                .flatMap(Arrays::stream)
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
     @Override
     public String toString() {
-        //todo better way find or write nicer
         char space = '\u2003';
         char separator = '|';
         var result = new StringBuilder().append(space).append(space);
@@ -131,7 +136,6 @@ public class Board implements Originator<Board> {
             result.append(space).append(space).append(i + 1).append(space);
         }
         result.append(System.lineSeparator());
-
         for (int i = 0; i < SIZE; i++) {
             // board
             result.append(space).append(space).append("-".repeat(47));

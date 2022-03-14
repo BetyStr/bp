@@ -42,7 +42,7 @@ public class Chess extends Game implements GameWritable {
      *
      * @param playerOne first of two players needed to play chess
      * @param playerTwo second of two players needed to play chess
-     * @param board is 2-dimensional array to represent board of pieces
+     * @param board     is 2-dimensional array to represent board of pieces
      */
     private Chess(Player playerOne, Player playerTwo, Board board) {
         super(playerOne, playerTwo);
@@ -80,8 +80,7 @@ public class Chess extends Game implements GameWritable {
         var fired = getBoard().getPiece(newPosition);
         var piece = getBoard().getPiece(oldPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
-        putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(),null);
-        // todo better way ..not kill only check
+        putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
         // dead king -> end of game
         if (fired != null && fired.getType().equals(TypeOfPiece.KING)) {
             setStateOfGame(
@@ -96,6 +95,22 @@ public class Chess extends Game implements GameWritable {
         }
     }
 
+    @Override
+    public void updateStatus() {
+        if (allPossibleMovesByCurrentPlayer().isEmpty()) {
+            setStateOfGame(StateOfGame.PAT);
+        }
+        var kings = getBoard()
+                .getAllPiecesFromBoard()
+                .stream()
+                .filter(x -> x.getType().equals(TypeOfPiece.KING))
+                .toList();
+        if (kings.size() < 2) {
+            setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
+                    ? StateOfGame.BLACK_PLAYER_WIN
+                    : StateOfGame.WHITE_PLAYER_WIN);
+        }
+    }
 
     ///region Prototype
     @Override
@@ -131,6 +146,11 @@ public class Chess extends Game implements GameWritable {
             write(fos);
         }
     }
+
+    @Override
+    public void writeJson(OutputStream os, Object object) throws IOException {
+        GameWritable.super.writeJson(os, object);
+    }
     ///endregion Writable
 
     ///region Builder and Readable
@@ -156,7 +176,7 @@ public class Chess extends Game implements GameWritable {
         }
 
         @Override
-        public Chess build() {
+        public Chess build() throws MissingPlayerException {
             if (playerOne == null || playerTwo == null) {
                 throw new MissingPlayerException("You must have two players to play");
             }

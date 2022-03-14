@@ -5,10 +5,6 @@ package cz.muni.fi.pb162.project.excepions;
  */
 public class InvalidFormatOfInputException extends RuntimeException {
 
-    public InvalidFormatOfInputException() {
-        super();
-    }
-
     public InvalidFormatOfInputException(String message) {
         super(message);
     }

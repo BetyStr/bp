@@ -6,7 +6,9 @@ import cz.muni.fi.pb162.project.Coordinates;
 import java.util.Set;
 
 /**
- * Design pattern strategy
+ * Interface to help implement a behavioral design pattern
+ * that lets you define a family of algorithms,
+ * put each of them into a separate class, and make their objects interchangeable.
  *
  * @author Alzbeta Strompova
  */
