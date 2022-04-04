@@ -1,19 +1,21 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Record =>
- * constructor with all attributes,
- * all attributes are final,
- * get methods but without "get" (for example getName() -> name()),
- * intelligent toString, equals, hashCode base on attributes
+ * Record represents player of board game.
  *
  * @author Alzbeta Strompova
  */
-public record Player(String name, Color color) {
+public class Player {
 
-    @Override
-    public String toString() {
-        return String.format("%s-%s", name, color);
+    private String name;
+
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
 
