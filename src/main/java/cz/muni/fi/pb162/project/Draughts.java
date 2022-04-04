@@ -54,7 +54,7 @@ public class Draughts extends Game {
     }
 
     @Override
-    public Game makeClone() {
+    public Playable makeClone() {
         return new Draughts(this);
     }
 

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Prototype<Game>, Caretaker {
+public abstract class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
     private final Deque<Board> mementoHistory = new LinkedList<>();
@@ -83,10 +83,13 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
     }
 
+    @Override
     public abstract void setInitialSet();
 
+    @Override
     public abstract void move(Coordinates oldPosition, Coordinates newPosition);
 
+    @Override
     public void play() throws EmptySquareException, NotAllowedMoveException {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
             System.out.println(board);
@@ -109,9 +112,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         System.out.println(board);
     }
 
-    /**
-     * Check if is end of game
-     */
+    @Override
     public abstract void updateStatus();
 
     private Coordinates getInputFromPlayer() {
@@ -129,6 +130,7 @@ public abstract class Game implements Prototype<Game>, Caretaker {
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
+    @Override
     public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
         return board
                 .getAllPiecesFromBoard()

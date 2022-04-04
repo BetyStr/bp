@@ -114,7 +114,7 @@ public class Chess extends Game implements GameWritable {
 
     ///region Prototype
     @Override
-    public Game makeClone() {
+    public Playable makeClone() {
         return new Chess(this);
     }
     ///endregion Prototype
