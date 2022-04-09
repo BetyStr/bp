@@ -17,18 +17,18 @@ public class Piece {
 
     private final long id;
     private final Color color;
-    private TypeOfPiece type;
+    private TypeOfPiece typeOfPiece;
 
     /**
      * Constructor takes color and type of piece and set up uniq id
      *
      * @param color which our piece will have
-     * @param type  which our piece will have
+     * @param typeOfPiece  which our piece will have
      */
-    public Piece(Color color, TypeOfPiece type) {
+    public Piece(Color color, TypeOfPiece typeOfPiece) {
         id = ID_COUNTER.getAndIncrement();
         this.color = color;
-        this.type = type;
+        this.typeOfPiece = typeOfPiece;
     }
 
     public long getId() {
@@ -39,36 +39,36 @@ public class Piece {
         return color;
     }
 
-    public TypeOfPiece getType() {
-        return type;
+    public TypeOfPiece getTypeOfPiece() {
+        return typeOfPiece;
     }
 
-    public void setType(TypeOfPiece type) {
-        this.type = type;
+    public void setTypeOfPiece(TypeOfPiece typeOfPiece) {
+        this.typeOfPiece = typeOfPiece;
     }
 
     /**
      * Returns set of coordinates x, y which represent position at board
      * when the piece can move
      *
-     * @param board representing actual layout of pieces
+     * @param game representing actual layout of pieces
      * @return coordinates of all possible move at actual board
      */
-    public Set<Coordinates> getAllPossibleMoves(Board board) {
-        return type
+    public Set<Coordinates> getAllPossibleMoves(Game game) {
+        return typeOfPiece
                 .getMoves()
                 .stream()
                 .map(strategy -> strategy
-                        .getAllowedMoves(board, board.findCoordinatesOfPieceById(getId())))
+                        .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .filter(board::inRange)
+                .filter(game.getBoard()::inRange)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public String toString() {
-        return getType().getSymbol(getColor());
+        return getTypeOfPiece().getSymbol(getColor());
     }
 
     @Override

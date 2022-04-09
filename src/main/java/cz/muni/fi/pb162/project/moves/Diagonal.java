@@ -3,6 +3,7 @@ package cz.muni.fi.pb162.project.moves;
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Color;
 import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Game;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -47,8 +48,8 @@ public class Diagonal implements Move {
 
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Board board, Coordinates position) {
-
+    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+        var board = game.getBoard();
         var result = new HashSet<Coordinates>();
         var color = board.getPiece(position).getColor();
         Color goal;

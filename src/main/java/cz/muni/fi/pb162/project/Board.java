@@ -1,10 +1,8 @@
 package cz.muni.fi.pb162.project;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @author Alzbeta Strompova
@@ -89,34 +87,6 @@ public class Board implements Originator<Board> {
         if (inRange(letterNumber, number)) {
             squares[letterNumber][number] = piece;
         }
-    }
-
-    /**
-     * Method that control if position is danger by color
-     * First I put some piece on this position (if she is empty) because Pawn move
-     * After test I removed it
-     *
-     * @param position to check
-     * @param color    by which color we control that position is in danger
-     * @return true if position is in danger by color
-     */
-    public boolean isInDanger(Coordinates position, Color color) {
-        var emptyPosition = isEmpty(position);
-        if (emptyPosition) {
-            putPieceOnBoard(position.letterNumber(), position.number(),
-                    new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
-        }
-        var value = getAllPiecesFromBoard()
-                .stream()
-                .filter(x -> x.getColor().equals(color))
-                .map(x -> x.getAllPossibleMoves(this))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet())
-                .contains(position);
-        if (emptyPosition) {
-            putPieceOnBoard(position.letterNumber(), position.number(), null);
-        }
-        return value;
     }
 
     public List<Piece> getAllPiecesFromBoard() {

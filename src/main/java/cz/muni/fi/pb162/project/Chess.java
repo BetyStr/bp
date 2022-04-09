@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Alzbeta Strompova
@@ -75,23 +77,30 @@ public class Chess extends Game implements GameWritable {
         }
     }
 
+    private void checkCastling(Coordinates oldPosition, Coordinates newPosition) {
+        var piece = getBoard().getPiece(oldPosition);
+        if(!piece.getTypeOfPiece().equals(TypeOfPiece.KING)) {
+            return;
+        }
+        int diff = Math.abs(oldPosition.letterNumber() - newPosition.letterNumber());
+        if(diff > 1) {
+            putPieceOnBoard(oldPosition.letterNumber() + 1, oldPosition.number(),
+                    getBoard().getPiece(oldPosition.letterNumber() + diff + 1, oldPosition.number()));
+            putPieceOnBoard(oldPosition.letterNumber() + diff + 1, oldPosition.number(), null);
+        }
+
+    }
+
     @Override
     public void move(Coordinates oldPosition, Coordinates newPosition) {
-        var fired = getBoard().getPiece(newPosition);
         var piece = getBoard().getPiece(oldPosition);
+        checkCastling(oldPosition, newPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
-        // dead king -> end of game
-        if (fired != null && fired.getType().equals(TypeOfPiece.KING)) {
-            setStateOfGame(
-                    fired.getColor().equals(Color.BLACK)
-                            ? StateOfGame.WHITE_PLAYER_WIN
-                            : StateOfGame.BLACK_PLAYER_WIN);
-        }
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
-                && piece.getType().equals(TypeOfPiece.PAWN)) {
-            piece.setType(TypeOfPiece.QUEEN);
+                && piece.getTypeOfPiece().equals(TypeOfPiece.PAWN)) {
+            piece.setTypeOfPiece(TypeOfPiece.QUEEN);
         }
     }
 
@@ -103,13 +112,45 @@ public class Chess extends Game implements GameWritable {
         var kings = getBoard()
                 .getAllPiecesFromBoard()
                 .stream()
-                .filter(x -> x.getType().equals(TypeOfPiece.KING))
+                .filter(x -> x.getTypeOfPiece().equals(TypeOfPiece.KING))
                 .toList();
         if (kings.size() < 2) {
             setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
                     ? StateOfGame.BLACK_PLAYER_WIN
                     : StateOfGame.WHITE_PLAYER_WIN);
         }
+    }
+
+    /**
+     * Method that control if position is danger by color
+     * First I put some piece on this position (if she is empty) because Pawn move
+     * After test I removed it
+     *
+     * @param position to check
+     * @param color    by which color we control that position is in danger
+     * @return true if {@code position} is in danger by anu piece of {@code color}
+     */
+    public boolean isInDanger(Coordinates position, Color color) {
+        var emptyPosition = getBoard().isEmpty(position);
+        if (emptyPosition) {
+            putPieceOnBoard(position.letterNumber(), position.number(),
+                    new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
+        }
+        var value = getBoard().getAllPiecesFromBoard()
+                .stream()
+                .filter(x -> x.getColor().equals(color))
+                .map(x -> x.getAllPossibleMoves(this))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet())
+                .contains(position);
+        if (emptyPosition) {
+            putPieceOnBoard(position.letterNumber(), position.number(), null);
+        }
+        return value;
+    }
+
+    public boolean isInDanger(int x, int y, Color color) {
+        return isInDanger(new Coordinates(x, y), color);
     }
 
     ///region Prototype
@@ -131,7 +172,7 @@ public class Chess extends Game implements GameWritable {
                 if (piece == null) {
                     br.write("_");
                 } else {
-                    br.write(piece.getType() + "," + piece.getColor());
+                    br.write(piece.getTypeOfPiece() + "," + piece.getColor());
                 }
                 br.write(";");
             }

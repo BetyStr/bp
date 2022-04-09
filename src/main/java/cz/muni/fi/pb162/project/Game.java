@@ -4,6 +4,7 @@ import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -50,12 +51,16 @@ public abstract class Game implements Playable {
         }
     }
 
-    protected Board getBoard() {
+    public Board getBoard() {
         return board;
     }
 
     protected void setBoard(Board board) {
         this.board = board;
+    }
+
+    public Collection<Board> getMementoHistory() {
+        return Collections.unmodifiableCollection(mementoHistory);
     }
 
     /**
@@ -84,12 +89,6 @@ public abstract class Game implements Playable {
     }
 
     @Override
-    public abstract void setInitialSet();
-
-    @Override
-    public abstract void move(Coordinates oldPosition, Coordinates newPosition);
-
-    @Override
     public void play() throws EmptySquareException, NotAllowedMoveException {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
             System.out.println(board);
@@ -102,7 +101,7 @@ public abstract class Game implements Playable {
             if (piece == null) {
                 throw new EmptySquareException("On" + fromPosition + " is not any piece");
             }
-            if (!piece.getAllPossibleMoves(board).contains(toPosition)) {
+            if (!piece.getAllPossibleMoves(this).contains(toPosition)) {
                 throw new NotAllowedMoveException(piece + "can move to " + toPosition);
             }
             board.setRound(board.getRound() + 1);
@@ -111,9 +110,6 @@ public abstract class Game implements Playable {
         }
         System.out.println(board);
     }
-
-    @Override
-    public abstract void updateStatus();
 
     private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
@@ -136,7 +132,7 @@ public abstract class Game implements Playable {
                 .getAllPiecesFromBoard()
                 .stream()
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
-                .map(x -> x.getAllPossibleMoves(board))
+                .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toUnmodifiableSet());
     }
