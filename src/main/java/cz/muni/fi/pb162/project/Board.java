@@ -16,7 +16,7 @@ public class Board implements Originator<Board> {
     private int round;
 
     /**
-     * Constructor
+     * Constructor without parameters
      */
     public Board() {
     }
@@ -24,7 +24,7 @@ public class Board implements Originator<Board> {
     /**
      * Constructor because design pattern Memento
      *
-     * @param round number of rounds played
+     * @param round   number of rounds played
      * @param squares 2-dimensional array of Pieces representing board
      */
     private Board(int round, Piece[][] squares) {
@@ -39,23 +39,14 @@ public class Board implements Originator<Board> {
     public void setRound(int round) {
         this.round = round;
     }
-//todo
-    private boolean inRange(int x, int y) {
-        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
-    }
 
-    public boolean inRange(Coordinates coordinates) {
-        return inRange(coordinates.letterNumber(), coordinates.number());
-    }
-
-    public boolean isEmpty(int x, int y) {
-        return !inRange(x, y) || squares[x][y] == null;
-    }
-
-    public boolean isEmpty(Coordinates position) {
-        return isEmpty(position.letterNumber(), position.number());
-    }
-
+    /**
+     * Return color of piece at {@code position}.
+     *
+     * @param letterNumber first coordinate of coordinates from which we want piece
+     * @param number second coordinate of coordinates from which we want piece
+     * @return color of piece at {@code position}
+     */
     public Color getColor(int letterNumber, int number) {
         if (isEmpty(letterNumber, number)) {
             return null;
@@ -63,10 +54,13 @@ public class Board implements Originator<Board> {
         return squares[letterNumber][number].getColor();
     }
 
-    public Color getColor(Coordinates position) {
-        return getColor(position.letterNumber(), position.number());
-    }
-
+    /**
+     * Return piece at {@code position}.
+     *
+     * @param letterNumber first coordinate of coordinates from which we want piece
+     * @param number second coordinate of coordinates from which we want piece
+     * @return piece at {@code position}
+     */
     public Piece getPiece(int letterNumber, int number) {
         if (isEmpty(letterNumber, number)) {
             return null;
@@ -74,11 +68,51 @@ public class Board implements Originator<Board> {
         return squares[letterNumber][number];
     }
 
+    /**
+     * Return piece at {@code position}.
+     *
+     * @param position from which we want piece
+     * @return piece at {@code position}
+     */
     public Piece getPiece(Coordinates position) {
         return getPiece(position.letterNumber(), position.number());
     }
 
     /**
+     * Control if coordinates({@code x}, {@code y}) is in board.
+     *
+     * @param x first coordinate of coordinates to check
+     * @param y second coordinate of coordinates to check
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
+     */
+    private boolean inRange(int x, int y) {
+        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
+    }
+
+    /**
+     * Control if {@code coordinates} is in board.
+     *
+     * @param coordinates to check.
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
+     */
+    public boolean inRange(Coordinates coordinates) {
+        return inRange(coordinates.letterNumber(), coordinates.number());
+    }
+
+    /**
+     * Control if is coordinates ({@code x}, {@code y}) at board empty.
+     *
+     * @param x first coordinate of coordinates to check
+     * @param y second coordinate of coordinates to check
+     * @return true if is empty, else id is not empty
+     */
+    public boolean isEmpty(int x, int y) {
+        return !inRange(x, y) || squares[x][y] == null;
+    }
+
+    /**
+     * Put {@code piece} on board at coordinates ({@code x}, {@code y}).
+     *
      * @param letterNumber first coordinate to put piece 0-7
      * @param number       second coordinate to put piece 0-7
      * @param piece        ChessPiece which we want to put on board
@@ -89,8 +123,13 @@ public class Board implements Originator<Board> {
         }
     }
 
-    //todo
-
+    /**
+     * Find coordinate of piece by id. Every piece has uniq id.
+     * If coordinate with {@code id} does not exist return null.
+     *
+     * @param id of piece, we want find.
+     * @return coordinate of piece with {@code id} or if it does not exist return null.
+     */
     public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -102,6 +141,11 @@ public class Board implements Originator<Board> {
         return null;
     }
 
+    /**
+     * Return list of all pieces on board.
+     *
+     * @return list of all pieces on board.
+     */
     public List<Piece> getAllPiecesFromBoard() {
         return Arrays.stream(squares)
                 .flatMap(Arrays::stream)

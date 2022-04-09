@@ -43,7 +43,8 @@ public class Jump implements Move {
             var rightToJump = position.number() + movement.getRight();
             var leftGoal = leftToJump + movement.getLeft();
             var rightGoal = rightToJump + movement.getRight();
-            if (board.getColor(position).getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
+            if (board.getColor(position.letterNumber(), position.number())
+                    .getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
                     && board.getColor(leftGoal, rightGoal) == null) {
                 result.add(new Coordinates(leftToJump, rightToJump));
             }

@@ -3,6 +3,7 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
+import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -24,24 +25,25 @@ public abstract class Game implements Playable {
     private static final Scanner SCANNER = new Scanner(System.in);
     private final Deque<Board> mementoHistory = new LinkedList<>();
 
-    private Board board = new Board();
+    private Board board;
     private Player playerOne;
     private Player playerTwo;
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Constructor
+     * Protected constructor because Builder.
      *
-     * @param playerOne first of two players needed to play chess
-     * @param playerTwo second of two players needed to play chess
+     * @param playerOne first of two players needed to play board game.
+     * @param playerTwo second of two players needed to play board game.
      */
-    protected Game(Player playerOne, Player playerTwo) {
+    protected Game(Player playerOne, Player playerTwo, Board board) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
+        this.board = board;
     }
 
     /**
-     * Constructor because Prototype
+     * Protected constructor because Prototype.
      */
     protected Game(Game target) {
         if (target != null) {
@@ -52,29 +54,12 @@ public abstract class Game implements Playable {
         }
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    protected void setBoard(Board board) {
-        this.board = board;
-    }
-
     public Collection<Board> getMementoHistory() {
         return Collections.unmodifiableCollection(mementoHistory);
     }
 
-    /**
-     * @param letterNumber first coordinate to put piece 0-7
-     * @param number       second coordinate to put piece 0-7
-     * @param piece        Piece which we want to put on board
-     */
-    public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
-        board.putPieceOnBoard(letterNumber, number, piece);
-    }
-
-    public void setStateOfGame(StateOfGame stateOfGame) {
-        this.stateOfGame = stateOfGame;
+    public Board getBoard() {
+        return board;
     }
 
     public Player getPlayerOne() {
@@ -89,7 +74,35 @@ public abstract class Game implements Playable {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
     }
 
-    public abstract void updateStatus();
+    public void setStateOfGame(StateOfGame stateOfGame) {
+        this.stateOfGame = stateOfGame;
+    }
+
+    /**
+     * Method that put piece on board at coordinates {@code letterNumber} and {@code number}.
+     *
+     * @param letterNumber first coordinate to put piece 0-7
+     * @param number       second coordinate to put piece 0-7
+     * @param piece        Piece which we want to put on board
+     */
+    public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
+        board.putPieceOnBoard(letterNumber, number, piece);
+    }
+
+    private Coordinates getInputFromPlayer() {
+        var position = SCANNER.next().trim();
+        if (position.length() != 2) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+        }
+        var letterNumber = position.charAt(0);
+        var number = 0;
+        try {
+            number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        } catch (NumberFormatException ex) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+        }
+        return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
+    }
 
     @Override
     public void play() throws EmptySquareException, NotAllowedMoveException {
@@ -114,24 +127,18 @@ public abstract class Game implements Playable {
         System.out.println(board);
     }
 
-    private Coordinates getInputFromPlayer() {
-        var position = SCANNER.next().trim();
-        if (position.length() != 2) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
-        var letterNumber = position.charAt(0);
-        var number = 0;
-        try {
-            number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        } catch (NumberFormatException ex) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
-        return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
-    }
+    /**
+     * Method that control if it needs to be change status of game.
+     */
+    public abstract void updateStatus();
 
+    /**
+     * Method that return set of all possible moves than can do current player.
+     *
+     * @return set of all possible moves than can do current player.
+     */
     public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
-        return board
-                .getAllPiecesFromBoard()
+        return board.getAllPiecesFromBoard()
                 .stream()
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
                 .map(x -> x.getAllPossibleMoves(this))
@@ -148,10 +155,8 @@ public abstract class Game implements Playable {
         if (!(o instanceof Game game)) {
             return false;
         }
-        return !Objects.equals(playerOne, game.playerOne) ||
-                !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame ||
-                board.equals(game.board);
+        return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
+                stateOfGame != game.stateOfGame || board.equals(game.board);
     }
 
     @Override

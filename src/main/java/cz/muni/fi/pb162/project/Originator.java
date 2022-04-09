@@ -11,6 +11,7 @@ package cz.muni.fi.pb162.project;
  * - The {@code Caretaker} knows not only “when” and “why” to capture the originator’s state,
  * but also when the state should be restored.
  *
+ * @param <T> is a value object that acts as a snapshot of the originator’s state.
  * @author Alzbeta Strompova
  */
 public interface Originator<T> {

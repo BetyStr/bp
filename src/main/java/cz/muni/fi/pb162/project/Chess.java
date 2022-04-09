@@ -1,6 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
+import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,18 +17,21 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
+ * Class for representing simplification of board game Chess.
+ * Subclass of abstract class {@code Game}.
+ *
  * @author Alzbeta Strompova
  */
 public class Chess extends Game implements GameWritable {
 
     /**
-     * Constructor who sets the first player according to the color of the players
+     * Constructor who takes two players with opposite color.
      *
      * @param playerOne first of two players needed to play chess
      * @param playerTwo second of two players needed to play chess
      */
     public Chess(Player playerOne, Player playerTwo) {
-        super(playerOne, playerTwo);
+        super(playerOne, playerTwo, new Board());
     }
 
     /**
@@ -47,8 +51,7 @@ public class Chess extends Game implements GameWritable {
      * @param board     is 2-dimensional array to represent board of pieces
      */
     private Chess(Player playerOne, Player playerTwo, Board board) {
-        super(playerOne, playerTwo);
-        this.setBoard(board);
+        super(playerOne, playerTwo, board);
     }
 
     @Override
@@ -79,11 +82,11 @@ public class Chess extends Game implements GameWritable {
 
     private void checkCastling(Coordinates oldPosition, Coordinates newPosition) {
         var piece = getBoard().getPiece(oldPosition);
-        if(!piece.getTypeOfPiece().equals(TypeOfPiece.KING)) {
+        if (!piece.getTypeOfPiece().equals(TypeOfPiece.KING)) {
             return;
         }
         int diff = Math.abs(oldPosition.letterNumber() - newPosition.letterNumber());
-        if(diff > 1) {
+        if (diff > 1) {
             putPieceOnBoard(oldPosition.letterNumber() + 1, oldPosition.number(),
                     getBoard().getPiece(oldPosition.letterNumber() + diff + 1, oldPosition.number()));
             putPieceOnBoard(oldPosition.letterNumber() + diff + 1, oldPosition.number(), null);
@@ -122,35 +125,31 @@ public class Chess extends Game implements GameWritable {
     }
 
     /**
-     * Method that control if position is danger by color
-     * First I put some piece on this position (if she is empty) because Pawn move
-     * After test I removed it
+     * Method that control if position ({@code x}, {@code y}) is in danger by {@code color}.
+     * First I put some piece on this position ({@code x}, {@code y}) (if he is empty) because {@code Pawn}  move.
+     * After test, I removed it.
      *
-     * @param position to check
-     * @param color    by which color we control that position is in danger
-     * @return true if {@code position} is in danger by anu piece of {@code color}
+     * @param x     first coordinate of position
+     * @param y     second coordinate of position
+     * @param color by which color we control that position is in danger.
+     * @return true if position is in danger by anu piece of {@code color}.
      */
-    public boolean isInDanger(Coordinates position, Color color) {
-        var emptyPosition = getBoard().isEmpty(position);
+    public boolean isInDanger(int x, int y, Color color) {
+        var emptyPosition = getBoard().isEmpty(x, y);
         if (emptyPosition) {
-            putPieceOnBoard(position.letterNumber(), position.number(),
-                    new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
+            putPieceOnBoard(x, y, new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
         }
         var value = getBoard().getAllPiecesFromBoard()
                 .stream()
-                .filter(x -> x.getColor().equals(color))
-                .map(x -> x.getAllPossibleMoves(this))
+                .filter(q -> q.getColor().equals(color))
+                .map(q -> q.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet())
-                .contains(position);
+                .contains(new Coordinates(x, y));
         if (emptyPosition) {
-            putPieceOnBoard(position.letterNumber(), position.number(), null);
+            putPieceOnBoard(x, y, null);
         }
         return value;
-    }
-
-    public boolean isInDanger(int x, int y, Color color) {
-        return isInDanger(new Coordinates(x, y), color);
     }
 
     ///region Prototype
@@ -195,12 +194,27 @@ public class Chess extends Game implements GameWritable {
     ///endregion Writable
 
     ///region Builder and Readable
+
+    /**
+     * Creational design pattern that lets you construct complex objects' step by step.
+     * The pattern allows you to produce different types and representations
+     * of an object using the same construction code.
+     * When the object is ready to be built, {@link #build()} method is called.
+     *
+     * @author Alzbeta Strompova
+     */
     public static class Builder implements Buildable<Chess>, GameReadable {
 
         private final Board board = new Board();
         private Player playerOne;
         private Player playerTwo;
 
+        /**
+         * Method that add {@code player}. Can be added exactly two players.
+         *
+         * @param player we want to add
+         * @return buildable with added {@code player} ready for next method.
+         */
         public Builder addPlayer(Player player) {
             if (playerOne == null) {
                 playerOne = player;
@@ -210,6 +224,14 @@ public class Chess extends Game implements GameWritable {
             return this;
         }
 
+        /**
+         * Method that add {@code piece}.
+         *
+         * @param piece that we want to add to board
+         * @param letterNumber first coordinate when we want to add {@code piece}
+         * @param number second coordinate when we want to add {@code piece}
+         * @return buildable with added {@code piece} ready for next method.
+         */
         public Builder addPieceToBoard(Piece piece, char letterNumber, int number) {
             var position = BoardNotation.getCoordinatesOfNotation(letterNumber, number);
             board.putPieceOnBoard(position.letterNumber(), position.number(), piece);

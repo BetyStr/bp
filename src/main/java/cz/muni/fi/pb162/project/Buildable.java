@@ -10,6 +10,7 @@ package cz.muni.fi.pb162.project;
  * Every implementation of this interface should contain at least one method to fill up the builder with the data.
  *
  * @param <T> what type we want to build
+ * @author Alzbeta Strompova
  */
 public interface Buildable<T> {
 

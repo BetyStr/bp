@@ -1,21 +1,34 @@
 package cz.muni.fi.pb162.project;
 
 /**
+ * Class for representing simplification of board game Draughts.
+ * Subclass of abstract class {@code Game}.
+ *
  * @author Alzbeta Strompova
  */
 public class Draughts extends Game {
 
+    /**
+     * Constructor who takes two players with opposite color.
+     *
+     * @param playerOne first of two players needed to play draughts.
+     * @param playerTwo second of two players needed to play draughts.
+     */
     public Draughts(Player playerOne, Player playerTwo) {
-        super(playerOne, playerTwo);
+        super(playerOne, playerTwo, new Board());
     }
 
-    protected Draughts(Game target) {
+    /**
+     * Private constructor because design pattern prototype
+     *
+     * @param target game to copy
+     */
+    private Draughts(Game target) {
         super(target);
     }
 
     @Override
     public void setInitialSet() {
-        setBoard(new Board());
         for (int i = 0; i < Board.SIZE; i += 2) {
             getBoard().putPieceOnBoard(i, 0, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
             getBoard().putPieceOnBoard(i, 2, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));

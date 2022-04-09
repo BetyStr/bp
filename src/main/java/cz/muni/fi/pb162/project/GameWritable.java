@@ -10,6 +10,7 @@ import java.io.Writer;
 
 /**
  * Interface for data export.
+ * @author Alzbeta Strompova
  */
 public interface GameWritable {
 

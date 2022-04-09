@@ -1,8 +1,12 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.utils.BoardNotation;
+
 /**
  * Record representing coordinates of board
  *
+ * @param letterNumber first coordinate of board
+ * @param number second coordinate of board
  * @author Alzbeta Strompova
  */
 public record Coordinates(int letterNumber, int number) implements Comparable<Coordinates>{

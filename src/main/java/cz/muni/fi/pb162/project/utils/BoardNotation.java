@@ -1,4 +1,6 @@
-package cz.muni.fi.pb162.project;
+package cz.muni.fi.pb162.project.utils;
+
+import cz.muni.fi.pb162.project.Coordinates;
 
 /**
  * "Static" final class for manipulation with Board notation.

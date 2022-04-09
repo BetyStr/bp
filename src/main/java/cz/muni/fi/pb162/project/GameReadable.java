@@ -10,6 +10,7 @@ import java.io.InputStream;
  * Format of file (Board.Size x Board.Size):
  * [typeOfPiece],[colorOfPiece];[typeOfPiece],[colorOfPiece];...
  * ...
+ * @author Alzbeta Strompova
  **/
 public interface GameReadable {
 

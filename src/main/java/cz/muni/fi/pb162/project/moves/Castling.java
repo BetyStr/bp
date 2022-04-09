@@ -25,7 +25,7 @@ public class Castling implements Move {
 
         var color = board.getPiece(position).getColor().getOppositeColor();
 
-        if (!(game instanceof Chess chess) || chess.isInDanger(position, color) ||
+        if (!(game instanceof Chess chess) || chess.isInDanger(position.letterNumber(), position.number(), color) ||
                 pieceMoveAlready(chess.getMementoHistory(), position)) {
             return result;
         }
@@ -48,8 +48,8 @@ public class Castling implements Move {
         }
     }
 
-
-    private void smallCastling(Coordinates position, Board board, HashSet<Coordinates> result, Color color, Chess chess) {
+    private void smallCastling(Coordinates position, Board board, HashSet<Coordinates> result,
+                               Color color, Chess chess) {
         for (int i = 1; i < 3; i++) {
             if(!board.isEmpty(position.letterNumber() + i, position.number()) ||
                     chess.isInDanger(position.letterNumber() + i, position.number(), color)) {
