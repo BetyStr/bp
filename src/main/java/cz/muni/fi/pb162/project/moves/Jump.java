@@ -2,23 +2,30 @@ package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
+ * Part of Strategy design pattern.
+ *
  * @author Alzbeta Strompova
  */
 public class Jump implements Move {
 
     private boolean onlyForward = false;
 
+    /**
+     * Constructor
+     * onlyForward -> false
+     */
     public Jump() {
     }
 
     /**
      * Constructor
+     *
+     * @param onlyForward boolean that decide that piece can only move forward
      */
     public Jump(boolean onlyForward) {
         this.onlyForward = onlyForward;
@@ -29,14 +36,7 @@ public class Jump implements Move {
     public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
         var board = game.getBoard();
         var result = new HashSet<Coordinates>();
-
-        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
-                Pair.of(1, 1),
-                Pair.of(-1, 1)));
-        if (!onlyForward) {
-            coordinates.add(Pair.of(-1, -1));
-            coordinates.add(Pair.of(1, -1));
-        }
+        var coordinates = Move.getDiagonalShift(onlyForward);
 
         for (Pair<Integer, Integer> movement : coordinates) {
             var leftToJump = position.letterNumber() + movement.getLeft();

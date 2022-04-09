@@ -16,7 +16,7 @@ public interface GameWritable {
     Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     /**
-     * Write data to the output stream
+     * Write data to the output stream.
      *
      * @param os the stream we want to write into
      * @throws IOException on write error
@@ -24,7 +24,7 @@ public interface GameWritable {
     void write(OutputStream os) throws IOException;
 
     /**
-     * Write data to the output file
+     * Write data to the output file.
      *
      * @param file the file we want to write into
      * @throws IOException on write error
@@ -32,8 +32,8 @@ public interface GameWritable {
     void write(File file) throws IOException;
 
     /**
-     * Default method of interface
-     * Write data to the output stream in Json formatting
+     * Default method of interface.
+     * Write data to the output stream in Json formatting.
      *
      * @param os     the stream we want to write into
      * @param object data to write

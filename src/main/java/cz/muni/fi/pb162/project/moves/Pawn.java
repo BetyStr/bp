@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Part of Strategy design pattern.
+ *
  * @author Alzbeta Strompova
  */
 public class Pawn implements Move {

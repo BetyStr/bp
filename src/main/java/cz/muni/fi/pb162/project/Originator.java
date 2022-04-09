@@ -12,7 +12,6 @@ package cz.muni.fi.pb162.project;
  * but also when the state should be restored.
  *
  * @author Alzbeta Strompova
- * @see <a href="https://refactoring.guru/design-patterns/memento">Memento</a>
  */
 public interface Originator<T> {
 

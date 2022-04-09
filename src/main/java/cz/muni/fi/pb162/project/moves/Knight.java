@@ -8,6 +8,8 @@ import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
+ * Part of Strategy design pattern.
+ *
  * @author Alzbeta Strompova
  */
 public class Knight implements Move {

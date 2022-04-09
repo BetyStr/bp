@@ -1,12 +1,12 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * "Static" final class
+ * "Static" final class for manipulation with Board notation.
+ * Board have coordinates 1 - {@code Board.SIZE} and A,B,C... because this is better readable for humans.
  *
  * @author Alzbeta Strompova
  */
 public final class BoardNotation {
-
 
     private static final int UNICODE_VALUE_FOR_A = 97;
 

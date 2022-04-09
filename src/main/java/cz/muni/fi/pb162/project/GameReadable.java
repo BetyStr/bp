@@ -7,7 +7,7 @@ import java.io.InputStream;
 /**
  * Interface for data import.
  * Format of header: [playerName]-[playerColor];[playerName]-[playerColor]
- * Format of file (Game.Size x Game.Size):
+ * Format of file (Board.Size x Board.Size):
  * [typeOfPiece],[colorOfPiece];[typeOfPiece],[colorOfPiece];...
  * ...
  **/

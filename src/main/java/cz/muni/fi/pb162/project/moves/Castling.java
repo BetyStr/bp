@@ -11,6 +11,9 @@ import java.util.Set;
 
 
 /**
+ * Part of Strategy design pattern.
+ * Castling is specific move for Chess.
+ *
  * @author Alzbeta Strompova
  */
 public class Castling implements Move {

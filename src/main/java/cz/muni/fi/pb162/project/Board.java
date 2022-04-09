@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Class representing board for board games.
+ *
  * @author Alzbeta Strompova
  */
 public class Board implements Originator<Board> {
@@ -13,9 +15,18 @@ public class Board implements Originator<Board> {
     private Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
 
+    /**
+     * Constructor
+     */
     public Board() {
     }
 
+    /**
+     * Constructor because design pattern Memento
+     *
+     * @param round number of rounds played
+     * @param squares 2-dimensional array of Pieces representing board
+     */
     private Board(int round, Piece[][] squares) {
         this.round = round;
         this.squares = squares;
@@ -28,7 +39,7 @@ public class Board implements Originator<Board> {
     public void setRound(int round) {
         this.round = round;
     }
-
+//todo
     private boolean inRange(int x, int y) {
         return x < SIZE && y < SIZE && x >= 0 && y >= 0;
     }
@@ -67,17 +78,6 @@ public class Board implements Originator<Board> {
         return getPiece(position.letterNumber(), position.number());
     }
 
-    public Coordinates findCoordinatesOfPieceById(long id) {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (squares[i][j] != null && squares[i][j].getId() == id) {
-                    return new Coordinates(i, j);
-                }
-            }
-        }
-        return null;
-    }
-
     /**
      * @param letterNumber first coordinate to put piece 0-7
      * @param number       second coordinate to put piece 0-7
@@ -89,12 +89,38 @@ public class Board implements Originator<Board> {
         }
     }
 
+    //todo
+
+    public Coordinates findCoordinatesOfPieceById(long id) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (squares[i][j] != null && squares[i][j].getId() == id) {
+                    return new Coordinates(i, j);
+                }
+            }
+        }
+        return null;
+    }
+
     public List<Piece> getAllPiecesFromBoard() {
         return Arrays.stream(squares)
                 .flatMap(Arrays::stream)
                 .filter(Objects::nonNull)
                 .toList();
     }
+
+    ///region Originator
+    @Override
+    public Board save() {
+        return new Board(round, squares);
+    }
+
+    @Override
+    public void restore(Board save) {
+        setRound(save.getRound());
+        squares = save.squares;
+    }
+    ///endregion Originator
 
     @Override
     public String toString() {
@@ -120,17 +146,6 @@ public class Board implements Originator<Board> {
             result.append(space).append(separator).append(System.lineSeparator());
         }
         return result.append(space).append(space).append("-".repeat(47)).toString();
-    }
-
-    @Override
-    public Board save() {
-        return new Board(round, squares);
-    }
-
-    @Override
-    public void restore(Board save) {
-        setRound(save.getRound());
-        squares = save.squares;
     }
 
     @Override

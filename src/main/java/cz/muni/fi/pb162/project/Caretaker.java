@@ -1,8 +1,8 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Interface to help implement behavioral design pattern Memento
- * that lets you save and restore the previous state of an object without revealing the details of its implementation.
+ * Interface to help implement behavioral design pattern Memento that lets you save and restore
+ * the previous state of an object without revealing the details of its implementation.<p>
  * This design patter consist of
  * - The {@code Originator} class can produce snapshots of its own state,
  * as well as restore its state from snapshots when needed.
@@ -12,12 +12,17 @@ package cz.muni.fi.pb162.project;
  * but also when the state should be restored.
  *
  * @author Alzbeta Strompova
- * @see <a href="https://refactoring.guru/design-patterns/memento">Memento</a>
  */
 public interface Caretaker {
 
+    /**
+     * Method is called when we want save Originator.
+     */
     void hitSave();
 
+    /**
+     * Method is called when we want to take a step to back.
+     */
     void hitUndo();
 
 }

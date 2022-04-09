@@ -13,8 +13,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Abstract class representing Game on board
- * which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Abstract Factory is a creational design pattern that lets you produce
+ * families of related objects without specifying their concrete classes. <p>
+ * Abstract class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
  *
  * @author Alzbeta Strompova
  */
@@ -88,6 +89,8 @@ public abstract class Game implements Playable {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
     }
 
+    public abstract void updateStatus();
+
     @Override
     public void play() throws EmptySquareException, NotAllowedMoveException {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
@@ -126,7 +129,6 @@ public abstract class Game implements Playable {
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
-    @Override
     public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
         return board
                 .getAllPiecesFromBoard()

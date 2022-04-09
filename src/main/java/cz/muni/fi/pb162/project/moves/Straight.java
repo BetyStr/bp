@@ -9,15 +9,26 @@ import java.util.Set;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
+ * Part of Strategy design pattern.
+ *
  * @author Alzbeta Strompova
  */
 public class Straight implements Move {
 
     private int step = Board.SIZE;
 
+    /**
+     * Constructor
+     * step -> size of game board
+     */
     public Straight() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param step max distance to move
+     */
     public Straight(int step) {
         this.step = step;
     }

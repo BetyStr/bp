@@ -7,7 +7,8 @@ package cz.muni.fi.pb162.project;
  * @author Alzbeta Strompova
  */
 public enum Color {
-    WHITE, BLACK;
+    WHITE,
+    BLACK;
 
     /**
      * Return opposite color

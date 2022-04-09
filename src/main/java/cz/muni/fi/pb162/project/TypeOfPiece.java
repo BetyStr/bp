@@ -15,9 +15,8 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Enum represent type of piece
- * with attribute {@code moves} which is List
- * of all possible types of movement of specific type of piece
+ * Enum represent type of piece with attribute {@code moves} which is List
+ * of all possible types of movement of specific type of piece.
  *
  * @author Alzbeta Strompova
  */
@@ -34,9 +33,9 @@ public enum TypeOfPiece {
     private final List<Move> moves;
 
     /**
-     * Constructor to initializing all possible types of movement of specific type of piece
+     * Constructor to initializing all possible types of movement of specific type of piece.
      *
-     * @param moves is List of all possible types of movement of specific type of piece
+     * @param moves is List of all possible types of movement of specific type of piece.
      */
     TypeOfPiece(List<Move> moves) {
         this.moves = moves;
@@ -47,8 +46,8 @@ public enum TypeOfPiece {
     }
 
     /**
-     * Method than return symbol representing the piece in Unicode base on type and color of piece
-     * Symbols are from {@link <a href="https://www.fileformat.info/info/unicode/index.htm">www.fileformat.info</a>}
+     * Method than return symbol representing the piece in Unicode base on type and color of piece.
+     * Symbols are from {@link <a href="https://www.fileformat.info/info/unicode/index.htm">www.fileformat.info</a>}.
      *
      * @param color of the piece whose symbol we want to get
      * @return symbol representing the piece in Unicode base on type and color of piece

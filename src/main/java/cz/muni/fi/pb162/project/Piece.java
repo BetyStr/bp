@@ -7,14 +7,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
- * Class represent piece
+ * Class represent piece of board game
  *
  * @author Alzbeta Strompova
  */
 public class Piece {
 
     private static final AtomicLong ID_COUNTER = new AtomicLong();
-
     private final long id;
     private final Color color;
     private TypeOfPiece typeOfPiece;
@@ -22,8 +21,8 @@ public class Piece {
     /**
      * Constructor takes color and type of piece and set up uniq id
      *
-     * @param color which our piece will have
-     * @param typeOfPiece  which our piece will have
+     * @param color       which our piece will have
+     * @param typeOfPiece which our piece will have
      */
     public Piece(Color color, TypeOfPiece typeOfPiece) {
         id = ID_COUNTER.getAndIncrement();
@@ -51,7 +50,7 @@ public class Piece {
      * Returns set of coordinates x, y which represent position at board
      * when the piece can move
      *
-     * @param game representing actual layout of pieces
+     * @param game has board which representing actual layout of pieces
      * @return coordinates of all possible move at actual board
      */
     public Set<Coordinates> getAllPossibleMoves(Game game) {
