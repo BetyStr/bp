@@ -1,17 +1,21 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Record represent player of board game
+ * Class represent player of board game
  *
- * @param name is name of player
- * @param color is color of player
  * @author Alzbeta Strompova
  */
-public record Player(String name, Color color) {
+public class Player {
 
-    @Override
-    public String toString() {
-        return String.format("%s-%s", name, color);
+    private String name;
+
+    public String getName() {
+        return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
 

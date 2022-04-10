@@ -1,36 +1,15 @@
 package cz.muni.fi.pb162.project;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 /**
  * Class representing board for board games.
  *
  * @author Alzbeta Strompova
  */
-public class Board implements Originator<Board> {
+public class Board {
 
     public static final int SIZE = 8;
-    private Piece[][] squares = new Piece[SIZE][SIZE];
+    private final Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
-
-    /**
-     * Constructor without parameters
-     */
-    public Board() {
-    }
-
-    /**
-     * Constructor because design pattern Memento
-     *
-     * @param round   number of rounds played
-     * @param squares 2-dimensional array of Pieces representing board
-     */
-    private Board(int round, Piece[][] squares) {
-        this.round = round;
-        this.squares = squares;
-    }
 
     public int getRound() {
         return round;
@@ -41,24 +20,10 @@ public class Board implements Originator<Board> {
     }
 
     /**
-     * Return color of piece at {@code position}.
-     *
-     * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
-     * @return color of piece at {@code position}
-     */
-    public Color getColor(int letterNumber, int number) {
-        if (isEmpty(letterNumber, number)) {
-            return null;
-        }
-        return squares[letterNumber][number].getColor();
-    }
-
-    /**
      * Return piece at {@code position}.
      *
      * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
+     * @param number       second coordinate of coordinates from which we want piece
      * @return piece at {@code position}
      */
     public Piece getPiece(int letterNumber, int number) {
@@ -140,75 +105,4 @@ public class Board implements Originator<Board> {
         }
         return null;
     }
-
-    /**
-     * Return list of all pieces on board.
-     *
-     * @return list of all pieces on board.
-     */
-    public List<Piece> getAllPiecesFromBoard() {
-        return Arrays.stream(squares)
-                .flatMap(Arrays::stream)
-                .filter(Objects::nonNull)
-                .toList();
-    }
-
-    ///region Originator
-    @Override
-    public Board save() {
-        return new Board(round, squares);
-    }
-
-    @Override
-    public void restore(Board save) {
-        setRound(save.getRound());
-        squares = save.squares;
-    }
-    ///endregion Originator
-
-    @Override
-    public String toString() {
-        char space = '\u2003';
-        char separator = '|';
-        var result = new StringBuilder().append(space).append(space);
-        // numbers
-        for (int i = 0; i < SIZE; i++) {
-            result.append(space).append(space).append(i + 1).append(space);
-        }
-        result.append(System.lineSeparator());
-        for (int i = 0; i < SIZE; i++) {
-            // board
-            result.append(space).append(space).append("-".repeat(47));
-            result.append(System.lineSeparator());
-            // letters
-            result.append((char) (65 + i));
-            // pieces
-            for (int j = 0; j < SIZE; j++) {
-                result.append(space).append(separator).append(space)
-                        .append(squares[i][j] == null ? space : squares[i][j]);
-            }
-            result.append(space).append(separator).append(System.lineSeparator());
-        }
-        return result.append(space).append(space).append("-".repeat(47)).toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Board board = (Board) o;
-        return round == board.round && Arrays.deepEquals(squares, board.squares);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(round);
-        result = 31 * result + Arrays.deepHashCode(squares);
-        return result;
-    }
-
 }

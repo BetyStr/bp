@@ -1,10 +1,8 @@
 package cz.muni.fi.pb162.project.demo;
 
-import cz.muni.fi.pb162.project.Chess;
-import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Player;
-import cz.muni.fi.pb162.project.excepions.EmptySquareException;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
+import cz.muni.fi.pb162.project.Board;
+import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Piece;
 
 /**
  * Class for running main method.
@@ -19,13 +17,11 @@ public class Main {
      *
      * @param args command line arguments, will be ignored.
      */
-    public static void main(String[] args) throws EmptySquareException, NotAllowedMoveException {
-        var player1 = new Player("Jozko", Color.WHITE);
-        var player2 = new Player("Janko", Color.BLACK);
-
-        var chess = new Chess(player1, player2);
-        chess.setInitialSet();
-        chess.play();
+    public static void main(String[] args) {
+        Board board = new Board();
+        Piece piece = new Piece();
+        board.putPieceOnBoard(0, 0, piece);
+        System.out.println(new Coordinates(2, 2));
     }
 
 }
