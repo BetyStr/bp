@@ -15,6 +15,7 @@ public class Main {
      * @param args command line arguments, will be ignored.
      */
     public static void main(String[] args) {
+
     }
 
 }

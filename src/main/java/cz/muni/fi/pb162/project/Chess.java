@@ -1,7 +1,6 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
-import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

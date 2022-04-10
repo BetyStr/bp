@@ -1,24 +1,40 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.utils.BoardNotation;
+import java.util.Objects;
 
 /**
- * Record representing coordinates of board
+ * Class representing coordinates of board
  *
- * @param letterNumber first coordinate of board
- * @param number second coordinate of board
  * @author Alzbeta Strompova
  */
-public record Coordinates(int letterNumber, int number) implements Comparable<Coordinates>{
+public class Coordinates {
+    private int letterNumber;
+    private int number;
 
-    @Override
-    public String toString() {
-        return BoardNotation.getNotationOfCoordinates(letterNumber, number);
+    /**
+     * Constructor
+     *
+     * @param letterNumber first coordinate of board
+     * @param number second coordinate of board
+     */
+    public Coordinates(int letterNumber, int number) {
+        this.letterNumber = letterNumber;
+        this.number = number;
     }
 
-    @Override
-    public int compareTo(Coordinates o) {
-        var value = Integer.compare(letterNumber,  o.letterNumber);
-        return value != 0 ? Integer.compare(number, o.number) : value;
+    public int getLetterNumber() {
+        return letterNumber;
+    }
+
+    public void setLetterNumber(int letterNumber) {
+        this.letterNumber = letterNumber;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }
