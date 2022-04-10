@@ -1,10 +1,6 @@
 package cz.muni.fi.pb162.project;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 /**
  * Class represent piece of board game
@@ -17,7 +13,7 @@ public class Piece {
     private final long id;
 
     /**
-     * Constructor takes color and type of piece and set up uniq id
+     * Constructor which set up uniq id
      */
     public Piece() {
         id = ID_COUNTER.getAndIncrement();
@@ -26,4 +22,5 @@ public class Piece {
     public long getId() {
         return id;
     }
+
 }
