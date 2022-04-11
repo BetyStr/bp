@@ -41,21 +41,4 @@ public record Coordinates(int letterNumber, int number) implements Comparable<Co
         var value = Integer.compare(letterNumber,  o.letterNumber);
         return value != 0 ? Integer.compare(number, o.number) : value;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Coordinates that = (Coordinates) o;
-        return letterNumber == that.letterNumber && number == that.number;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(letterNumber, number);
-    }
 }
