@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -29,17 +28,6 @@ public class Chess extends Game {
      */
     private Chess(Game target) {
         super(target);
-    }
-
-    /**
-     * Private constructor because design pattern builder
-     *
-     * @param playerOne first of two players needed to play chess
-     * @param playerTwo second of two players needed to play chess
-     * @param board     is 2-dimensional array to represent board of pieces
-     */
-    private Chess(Player playerOne, Player playerTwo, Board board) {
-        super(playerOne, playerTwo, board);
     }
 
     @Override
@@ -147,58 +135,4 @@ public class Chess extends Game {
     }
     ///endregion Prototype
 
-    ///region Builder
-
-    /**
-     * Creational design pattern that lets you construct complex objects' step by step.
-     * The pattern allows you to produce different types and representations
-     * of an object using the same construction code.
-     * When the object is ready to be built, {@link #build()} method is called.
-     *
-     * @author Alzbeta Strompova
-     */
-    public static class Builder implements Buildable<Chess> {
-
-        private final Board board = new Board();
-        private Player playerOne;
-        private Player playerTwo;
-
-        /**
-         * Method that add {@code player}. Can be added exactly two players.
-         *
-         * @param player we want to add
-         * @return buildable with added {@code player} ready for next method.
-         */
-        public Builder addPlayer(Player player) {
-            if (playerOne == null) {
-                playerOne = player;
-            } else if (playerTwo == null) {
-                playerTwo = player;
-            }
-            return this;
-        }
-
-        /**
-         * Method that add {@code piece}.
-         *
-         * @param piece        that we want to add to board
-         * @param letterNumber first coordinate when we want to add {@code piece}
-         * @param number       second coordinate when we want to add {@code piece}
-         * @return buildable with added {@code piece} ready for next method.
-         */
-        public Builder addPieceToBoard(Piece piece, char letterNumber, int number) {
-            var position = BoardNotation.getCoordinatesOfNotation(letterNumber, number);
-            board.putPieceOnBoard(position.letterNumber(), position.number(), piece);
-            return this;
-        }
-
-        @Override
-        public Chess build() {
-            if (playerOne == null || playerTwo == null) {
-                throw new IllegalArgumentException("You must have two players to play");
-            }
-            return new Chess(playerOne, playerTwo, board);
-        }
-    }
-    ///endregion Builder
 }

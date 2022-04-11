@@ -7,4 +7,3 @@ Tasks:
 - `Castling` in `moves`
 - in Chess add:
   - `isInDanger`
-  - `Builder`
