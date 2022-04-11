@@ -136,30 +136,4 @@ public class Board {
                 .toList();
     }
 
-    @Override
-    public String toString() {
-        char space = '\u2003';
-        char separator = '|';
-        var result = new StringBuilder().append(space).append(space);
-        // numbers
-        for (int i = 0; i < SIZE; i++) {
-            result.append(space).append(space).append(i + 1).append(space);
-        }
-        result.append(System.lineSeparator());
-        for (int i = 0; i < SIZE; i++) {
-            // board
-            result.append(space).append(space).append("-".repeat(47));
-            result.append(System.lineSeparator());
-            // letters
-            result.append((char) (65 + i));
-            // pieces
-            for (int j = 0; j < SIZE; j++) {
-                result.append(space).append(separator).append(space)
-                        .append(squares[i][j] == null ? space : squares[i][j]);
-            }
-            result.append(space).append(separator).append(System.lineSeparator());
-        }
-        return result.append(space).append(space).append("-".repeat(47)).toString();
-    }
-
 }
