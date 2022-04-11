@@ -1,8 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.EmptySquareException;
-import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Collection;
 import java.util.Collections;
@@ -91,21 +88,13 @@ public abstract class Game implements Playable {
 
     private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
-        if (position.length() != 2) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
         var letterNumber = position.charAt(0);
-        var number = 0;
-        try {
-            number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        } catch (NumberFormatException ex) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
+        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
     @Override
-    public void play() throws EmptySquareException, NotAllowedMoveException {
+    public void play() {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
             System.out.println(board);
             var next = getCurrentPlayer();
@@ -113,13 +102,6 @@ public abstract class Game implements Playable {
             System.out.printf("Next one is %s%n", next);
             var fromPosition = getInputFromPlayer();
             var toPosition = getInputFromPlayer();
-            var piece = board.getPiece(fromPosition);
-            if (piece == null) {
-                throw new EmptySquareException("On" + fromPosition + " is not any piece");
-            }
-            if (!piece.getAllPossibleMoves(this).contains(toPosition)) {
-                throw new NotAllowedMoveException(piece + "can move to " + toPosition);
-            }
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
             hitSave();

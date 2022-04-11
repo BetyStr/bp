@@ -1,7 +1,6 @@
 package cz.muni.fi.pb162.project;
 
 
-import cz.muni.fi.pb162.project.moves.Castling;
 import cz.muni.fi.pb162.project.moves.Diagonal;
 import cz.muni.fi.pb162.project.moves.Jump;
 import cz.muni.fi.pb162.project.moves.Knight;
@@ -21,7 +20,7 @@ import org.apache.commons.lang3.tuple.Pair;
  * @author Alzbeta Strompova
  */
 public enum TypeOfPiece {
-    KING(List.of(new Straight(1), new Diagonal(1), new Castling())),
+    KING(List.of(new Straight(1), new Diagonal(1))),
     QUEEN(List.of(new Straight(), new Diagonal())),
     BISHOP(List.of(new Diagonal())),
     ROOK(List.of(new Straight())),
