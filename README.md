@@ -6,7 +6,7 @@ Tasks:
   - `Board`
   - `Piece`
   - `Game`
-- override `toString` in `Piece`
+- change `toString` in `Piece`
 - Memento 
   - add attribute `LinkedList<Board> history`
   - `Game` implement `Caretaker`
