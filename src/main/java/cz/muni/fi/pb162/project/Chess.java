@@ -1,18 +1,6 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -22,7 +10,7 @@ import java.util.stream.Collectors;
  *
  * @author Alzbeta Strompova
  */
-public class Chess extends Game implements GameWritable {
+public class Chess extends Game {
 
     /**
      * Constructor who takes two players with opposite color.
@@ -159,41 +147,7 @@ public class Chess extends Game implements GameWritable {
     }
     ///endregion Prototype
 
-    ///region Writable
-    @Override
-    public void write(OutputStream os) throws IOException {
-        BufferedWriter br = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
-        br.write(getPlayerOne() + ";" + getPlayerTwo());
-        br.newLine();
-        for (int i = 0; i < Board.SIZE; i++) {
-            for (int j = 0; j < Board.SIZE; j++) {
-                var piece = getBoard().getPiece(i, j);
-                if (piece == null) {
-                    br.write("_");
-                } else {
-                    br.write(piece.getTypeOfPiece() + "," + piece.getColor());
-                }
-                br.write(";");
-            }
-            br.newLine();
-        }
-        br.flush();
-    }
-
-    @Override
-    public void write(File file) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(file)) {
-            write(fos);
-        }
-    }
-
-    @Override
-    public void writeJson(OutputStream os, Object object) throws IOException {
-        GameWritable.super.writeJson(os, object);
-    }
-    ///endregion Writable
-
-    ///region Builder and Readable
+    ///region Builder
 
     /**
      * Creational design pattern that lets you construct complex objects' step by step.
@@ -203,7 +157,7 @@ public class Chess extends Game implements GameWritable {
      *
      * @author Alzbeta Strompova
      */
-    public static class Builder implements Buildable<Chess>, GameReadable {
+    public static class Builder implements Buildable<Chess> {
 
         private final Board board = new Board();
         private Player playerOne;
@@ -227,9 +181,9 @@ public class Chess extends Game implements GameWritable {
         /**
          * Method that add {@code piece}.
          *
-         * @param piece that we want to add to board
+         * @param piece        that we want to add to board
          * @param letterNumber first coordinate when we want to add {@code piece}
-         * @param number second coordinate when we want to add {@code piece}
+         * @param number       second coordinate when we want to add {@code piece}
          * @return buildable with added {@code piece} ready for next method.
          */
         public Builder addPieceToBoard(Piece piece, char letterNumber, int number) {
@@ -239,71 +193,12 @@ public class Chess extends Game implements GameWritable {
         }
 
         @Override
-        public Chess build() throws MissingPlayerException {
+        public Chess build() {
             if (playerOne == null || playerTwo == null) {
-                throw new MissingPlayerException("You must have two players to play");
+                throw new IllegalArgumentException("You must have two players to play");
             }
             return new Chess(playerOne, playerTwo, board);
         }
-
-        @Override
-        public GameReadable read(InputStream is) throws IOException {
-            return read(is, false);
-        }
-
-        @Override
-        public GameReadable read(InputStream is, boolean hasHeader) throws IOException {
-            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            processHeader(hasHeader, br);
-            var row = 0;
-            while (br.ready()) {
-                String[] data = br.readLine().split(";", Board.SIZE);
-                if (data.length != Board.SIZE) {
-                    throw new IOException("Invalid data length (some information might be missing)");
-                }
-                for (int i = 0; i < Board.SIZE; i++) {
-                    if (data[i].equals("_")) {
-                        continue;
-                    }
-                    String[] piece = data[i].split(",", 2);
-                    if (piece.length != 2) {
-                        throw new IOException("Invalid data length (some information might be missing)");
-                    }
-                    try {
-                        var type = TypeOfPiece.valueOf(piece[0]);
-                        var color = Color.valueOf(piece[1]);
-                        board.putPieceOnBoard(row, i, new Piece(color, type));
-                    } catch (IllegalArgumentException ex) {
-                        throw new IOException("Invalid data format", ex);
-                    }
-                }
-                row += 1;
-            }
-            return this;
-        }
-
-        private void processHeader(boolean hasHeader, BufferedReader br) throws IOException {
-            if (hasHeader) {
-                String[] data = br.readLine().split(";", 2);
-                var player = data[0].split("-", 2);
-                playerOne = new Player(player[0], Color.valueOf(player[1]));
-                player = data[1].split("-", 2);
-                playerTwo = new Player(player[0], Color.valueOf(player[1]));
-            }
-        }
-
-        @Override
-        public GameReadable read(File file) throws IOException {
-            return read(file, false);
-        }
-
-        @Override
-        public GameReadable read(File file, boolean header) throws IOException {
-            try (FileInputStream fis = new FileInputStream(file)) {
-                read(fis, header);
-            }
-            return this;
-        }
     }
-    ///endregion Builder and Readable
+    ///endregion Builder
 }
