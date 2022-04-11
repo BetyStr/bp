@@ -14,7 +14,3 @@ Games that we will implement during the semester
 - Draughts
 
 both with simplified rules :)
-
-
-
-
