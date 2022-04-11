@@ -1,4 +1,4 @@
-package cz.muni.fi.pb162.project.demo;
+package cz.muni.fi.pb162.project;
 
 /**
  * Class for running main method.
