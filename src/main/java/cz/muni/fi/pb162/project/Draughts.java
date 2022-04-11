@@ -18,14 +18,6 @@ public class Draughts extends Game {
         super(playerOne, playerTwo, new Board());
     }
 
-    /**
-     * Private constructor because design pattern prototype
-     *
-     * @param target game to copy
-     */
-    private Draughts(Game target) {
-        super(target);
-    }
 
     @Override
     public void setInitialSet() {
@@ -64,11 +56,6 @@ public class Draughts extends Game {
                     ? StateOfGame.BLACK_PLAYER_WIN
                     : StateOfGame.WHITE_PLAYER_WIN);
         }
-    }
-
-    @Override
-    public Playable makeClone() {
-        return new Draughts(this);
     }
 
 }

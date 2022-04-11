@@ -1,14 +1,11 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.EmptySquareException;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
-
 /**
  * Interface to help implement game
  *
  * @author Alzbeta Strompova
  */
-public interface Playable extends Prototype<Playable>, Caretaker {
+public interface Playable {
 
     /**
      * Method that set initial layout for game
@@ -25,10 +22,7 @@ public interface Playable extends Prototype<Playable>, Caretaker {
 
     /**
      * Method that represent playing board game until is finish.
-     *
-     * @throws EmptySquareException    if we want to move piece from empty square on board.
-     * @throws NotAllowedMoveException if we want to do illegal move.
      */
-    void play() throws EmptySquareException, NotAllowedMoveException;
+    void play();
 
 }

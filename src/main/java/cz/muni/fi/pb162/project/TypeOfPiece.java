@@ -1,49 +1,24 @@
 package cz.muni.fi.pb162.project;
 
-
-import cz.muni.fi.pb162.project.moves.Castling;
-import cz.muni.fi.pb162.project.moves.Diagonal;
-import cz.muni.fi.pb162.project.moves.Jump;
-import cz.muni.fi.pb162.project.moves.Knight;
-import cz.muni.fi.pb162.project.moves.Move;
-import cz.muni.fi.pb162.project.moves.Pawn;
-import cz.muni.fi.pb162.project.moves.Straight;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Enum represent type of piece with attribute {@code moves} which is List
- * of all possible types of movement of specific type of piece.
+ * Enum represent type of piece.
  *
  * @author Alzbeta Strompova
  */
+
 public enum TypeOfPiece {
-    KING(List.of(new Straight(1), new Diagonal(1), new Castling())),
-    QUEEN(List.of(new Straight(), new Diagonal())),
-    BISHOP(List.of(new Diagonal())),
-    ROOK(List.of(new Straight())),
-    KNIGHT(List.of(new Knight())),
-    PAWN(List.of(new Pawn())),
-    DRAUGHTS_KING(List.of(new Diagonal(1), new Jump())),
-    DRAUGHTS_MAN(List.of(new Diagonal(1, true), new Jump(true)));
-
-    private final List<Move> moves;
-
-    /**
-     * Constructor to initializing all possible types of movement of specific type of piece.
-     *
-     * @param moves is List of all possible types of movement of specific type of piece.
-     */
-    TypeOfPiece(List<Move> moves) {
-        this.moves = moves;
-    }
-
-    public List<Move> getMoves() {
-        return Collections.unmodifiableList(moves);
-    }
+    KING,
+    QUEEN,
+    BISHOP,
+    ROOK,
+    KNIGHT,
+    PAWN,
+    DRAUGHTS_KING,
+    DRAUGHTS_MAN;
 
     /**
      * Method than return symbol representing the piece in Unicode base on type and color of piece.
