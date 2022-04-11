@@ -8,3 +8,5 @@ Tasks:
 - `Game` implements interface `Playeble`
   - plus add method `updateStatus`
   - and `getInputFromPlayer` without Exceptions yet
+- `Board`
+  - add method `getAllPiecesFromBoard`
