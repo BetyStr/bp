@@ -55,4 +55,5 @@ public class Coordinates {
     public double meanOfCoordinates() {
         return (letterNumber + number) / 2.0;
     }
+
 }
