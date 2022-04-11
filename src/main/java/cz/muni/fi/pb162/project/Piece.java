@@ -42,4 +42,9 @@ public class Piece {
         this.typeOfPiece = typeOfPiece;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(getTypeOfPiece().name().charAt(0));
+    }
+
 }
