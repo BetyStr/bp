@@ -80,6 +80,20 @@ public class MyArray {
                 .toList();
     }
 
+    /**
+     * Method return List of integers that entered the condition check.
+     * Condition: item of List > {@code number}.
+     *
+     * @param number with which we compare
+     * @return new List of integers that entered the condition check.
+     */
+    public List<Integer> biggerThenNumber(int number) {
+        return arrayList
+                .stream()
+                .filter(x -> x > number)
+                .toList();
+    }
+
     @Override
     public String toString() {
         return "MyArray is: " + arrayList;
