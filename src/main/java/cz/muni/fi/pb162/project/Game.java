@@ -1,61 +1,32 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.EmptySquareException;
-import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Scanner;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
- * Abstract Factory is a creational design pattern that lets you produce
- * families of related objects without specifying their concrete classes. <p>
- * Abstract class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Playable {
+public class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Deque<Board> mementoHistory = new LinkedList<>();
 
-    private Board board;
-    private Player playerOne;
-    private Player playerTwo;
+    private final Board board;
+    private final Player playerOne;
+    private final Player playerTwo;
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Protected constructor because Builder.
+     * Constructor because Builder.
      *
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
      */
-    protected Game(Player playerOne, Player playerTwo, Board board) {
+    public Game(Player playerOne, Player playerTwo, Board board) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.board = board;
-    }
-
-    /**
-     * Protected constructor because Prototype.
-     */
-    protected Game(Game target) {
-        if (target != null) {
-            playerOne = target.playerOne;
-            playerTwo = target.playerTwo;
-            stateOfGame = target.stateOfGame;
-            board = target.board;
-        }
-    }
-
-    public Collection<Board> getMementoHistory() {
-        return Collections.unmodifiableCollection(mementoHistory);
     }
 
     public Board getBoard() {
@@ -91,21 +62,51 @@ public abstract class Game implements Playable {
 
     private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
-        if (position.length() != 2) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
         var letterNumber = position.charAt(0);
-        var number = 0;
-        try {
-            number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        } catch (NumberFormatException ex) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
+        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
     @Override
-    public void play() throws EmptySquareException, NotAllowedMoveException {
+    public void setInitialSet() {
+        putPieceOnBoard(4, 0, new Piece(Color.WHITE, TypeOfPiece.KING));
+        putPieceOnBoard(3, 0, new Piece(Color.WHITE, TypeOfPiece.QUEEN));
+        putPieceOnBoard(0, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
+        putPieceOnBoard(7, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
+        putPieceOnBoard(1, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(6, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(2, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
+        putPieceOnBoard(5, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
+
+        putPieceOnBoard(4, 7, new Piece(Color.BLACK, TypeOfPiece.KING));
+        putPieceOnBoard(3, 7, new Piece(Color.BLACK, TypeOfPiece.QUEEN));
+        putPieceOnBoard(0, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
+        putPieceOnBoard(7, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
+        putPieceOnBoard(1, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(6, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
+        putPieceOnBoard(2, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
+        putPieceOnBoard(5, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
+
+        for (int i = 0; i < Board.SIZE; i++) {
+            putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.PAWN));
+            putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.PAWN));
+        }
+    }
+
+    @Override
+    public void move(Coordinates oldPosition, Coordinates newPosition) {
+        var piece = getBoard().getPiece(oldPosition);
+        putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
+        putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
+        // promotion
+        if ((newPosition.number() == 0 || newPosition.number() == 7)
+                && piece.getTypeOfPiece().equals(TypeOfPiece.PAWN)) {
+            piece.setTypeOfPiece(TypeOfPiece.QUEEN);
+        }
+    }
+
+    @Override
+    public void play() {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
             System.out.println(board);
             var next = getCurrentPlayer();
@@ -113,16 +114,8 @@ public abstract class Game implements Playable {
             System.out.printf("Next one is %s%n", next);
             var fromPosition = getInputFromPlayer();
             var toPosition = getInputFromPlayer();
-            var piece = board.getPiece(fromPosition);
-            if (piece == null) {
-                throw new EmptySquareException("On" + fromPosition + " is not any piece");
-            }
-            if (!piece.getAllPossibleMoves(this).contains(toPosition)) {
-                throw new NotAllowedMoveException(piece + "can move to " + toPosition);
-            }
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
-            hitSave();
         }
         System.out.println(board);
     }
@@ -130,49 +123,16 @@ public abstract class Game implements Playable {
     /**
      * Method that control if it needs to be change status of game.
      */
-    public abstract void updateStatus();
-
-    /**
-     * Method that return set of all possible moves than can do current player.
-     *
-     * @return set of all possible moves than can do current player.
-     */
-    public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
-        return board.getAllPiecesFromBoard()
+    public void updateStatus() {
+        var kings = getBoard()
+                .getAllPiecesFromBoard()
                 .stream()
-                .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
-                .map(x -> x.getAllPossibleMoves(this))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableSet());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        // Patter Matching jdk17
-        if (!(o instanceof Game game)) {
-            return false;
-        }
-        return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || board.equals(game.board);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(playerOne, playerTwo, stateOfGame, board);
-    }
-
-    @Override
-    public void hitSave() {
-        mementoHistory.push(board.save());
-    }
-
-    @Override
-    public void hitUndo() {
-        if (!mementoHistory.isEmpty()) {
-            board.restore(mementoHistory.pop());
+                .filter(x -> x.getTypeOfPiece().equals(TypeOfPiece.KING))
+                .toList();
+        if (kings.size() < 2) {
+            setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
+                    ? StateOfGame.BLACK_PLAYER_WIN
+                    : StateOfGame.WHITE_PLAYER_WIN);
         }
     }
 

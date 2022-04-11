@@ -9,28 +9,11 @@ import java.util.Objects;
  *
  * @author Alzbeta Strompova
  */
-public class Board implements Originator<Board> {
+public class Board {
 
     public static final int SIZE = 8;
-    private Piece[][] squares = new Piece[SIZE][SIZE];
+    private final Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
-
-    /**
-     * Constructor without parameters
-     */
-    public Board() {
-    }
-
-    /**
-     * Constructor because design pattern Memento
-     *
-     * @param round   number of rounds played
-     * @param squares 2-dimensional array of Pieces representing board
-     */
-    private Board(int round, Piece[][] squares) {
-        this.round = round;
-        this.squares = squares;
-    }
 
     public int getRound() {
         return round;
@@ -153,19 +136,6 @@ public class Board implements Originator<Board> {
                 .toList();
     }
 
-    ///region Originator
-    @Override
-    public Board save() {
-        return new Board(round, squares);
-    }
-
-    @Override
-    public void restore(Board save) {
-        setRound(save.getRound());
-        squares = save.squares;
-    }
-    ///endregion Originator
-
     @Override
     public String toString() {
         char space = '\u2003';
@@ -190,25 +160,6 @@ public class Board implements Originator<Board> {
             result.append(space).append(separator).append(System.lineSeparator());
         }
         return result.append(space).append(space).append("-".repeat(47)).toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Board board = (Board) o;
-        return round == board.round && Arrays.deepEquals(squares, board.squares);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(round);
-        result = 31 * result + Arrays.deepHashCode(squares);
-        return result;
     }
 
 }
