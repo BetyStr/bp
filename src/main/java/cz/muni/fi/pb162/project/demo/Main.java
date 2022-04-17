@@ -20,11 +20,14 @@ public class Main {
         Player player = new Player();
         player.setName("Matko");
         System.out.println(player.getName());
-        Coordinates one = new Coordinates(1, 7);
-        System.out.println(one.meanOfCoordinates());
-        Coordinates two = new Coordinates(5, 0);
-        System.out.println(one.add(two));
 
+        Coordinates one = new Coordinates(1, 7);
+        Coordinates two = new Coordinates(5, 0);
+        System.out.println(one.averageOfCoordinates());
+
+        Coordinates result = one.add(two);
+        System.out.println(result.getLetterNumber());
+        System.out.println(result.getNumber());
     }
 
 }
