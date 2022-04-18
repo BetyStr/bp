@@ -1,0 +1,29 @@
+package cz.muni.fi.pb162.project;
+
+import cz.muni.fi.pb162.project.helper.BasicRulesTester;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * @author Alzbeta Strompova
+ */
+class PlayerTest {
+
+    @Test
+    void attributesAndMethodsAmount() {
+        BasicRulesTester.attributesAmount(Player.class, 1);
+        BasicRulesTester.methodsAmount(Player.class, 2);
+    }
+
+    @Test
+    void getAndSetName() {
+        var player = new Player();
+        player.setName("test");
+        assertEquals("test", player.getName());
+        player.setName("Martin");
+        assertEquals("Martin", player.getName());
+        player.setName("");
+        assertEquals("", player.getName());
+    }
+}

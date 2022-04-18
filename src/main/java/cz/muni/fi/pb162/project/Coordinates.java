@@ -18,15 +18,15 @@ public record Coordinates(int letterNumber, int number) {
      * @return mean of coordinates.
      */
     public Coordinates add(Coordinates other) {
-        return new Coordinates(letterNumber + other.letterNumber, number + other.letterNumber);
+        return new Coordinates(letterNumber + other.letterNumber, number + other.number);
     }
 
     /**
-     * Compute mean of coordinates.
+     * Compute average of coordinates.
      *
-     * @return mean of coordinates.
+     * @return average of coordinates.
      */
-    public double meanOfCoordinates() {
+    public double averageOfCoordinates() {
         return (letterNumber + number) / 2.0;
     }
 
