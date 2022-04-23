@@ -18,11 +18,11 @@ class PieceTest {
 
     @Test
     void getId() {
-        var piece = new Piece();
-        var piece2 = new Piece();
-        var piece3 = new Piece();
-        assertNotEquals(piece.getId(), piece2.getId());
-        assertNotEquals(piece.getId(), piece3.getId());
-        assertNotEquals(piece2.getId(), piece3.getId());
+        var piece = new Piece(1L);
+        var piece2 = new Piece(2L);
+        var piece3 = new Piece(3L);
+        assertEquals(1L, piece.getId());
+        assertEquals(2L, piece2.getId());
+        assertEquals(3L, piece3.getId());
     }
 }
