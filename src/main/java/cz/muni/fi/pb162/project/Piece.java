@@ -1,5 +1,6 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.moves.Castling;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -54,9 +55,22 @@ public class Piece {
      * @return coordinates of all possible move at actual board
      */
     public Set<Coordinates> getAllPossibleMoves(Game game) {
+        return getAllPossibleMoves(game, true);
+    }
+
+    /**
+     * Returns set of coordinates x, y which represent position at board
+     * when the piece can move
+     *
+     * @param game has board which representing actual layout of pieces
+     * @param withCastling boolean decides if result contains castling moves
+     * @return coordinates of all possible move at actual board
+     */
+    public Set<Coordinates> getAllPossibleMoves(Game game, Boolean withCastling) {
         return typeOfPiece
                 .getMoves()
                 .stream()
+                .filter(x -> withCastling || x.getClass() != Castling.class)
                 .map(strategy -> strategy
                         .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
                 .filter(Objects::nonNull)

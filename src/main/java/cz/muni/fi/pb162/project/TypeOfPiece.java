@@ -53,28 +53,48 @@ public enum TypeOfPiece {
      * @return symbol representing the piece in Unicode base on type and color of piece
      */
     public String getSymbol(Color color) {
-        Map<Pair<TypeOfPiece, Color>, String> figures = new HashMap<>();
+        Map<MyPair, String> figures = new HashMap<>();
         //Chess
-        figures.put(Pair.of(TypeOfPiece.KING, Color.WHITE), "\u2654");
-        figures.put(Pair.of(TypeOfPiece.QUEEN, Color.WHITE), "\u2655");
-        figures.put(Pair.of(TypeOfPiece.BISHOP, Color.WHITE), "\u2657");
-        figures.put(Pair.of(TypeOfPiece.ROOK, Color.WHITE), "\u2656");
-        figures.put(Pair.of(TypeOfPiece.KNIGHT, Color.WHITE), "\u2658");
-        figures.put(Pair.of(TypeOfPiece.PAWN, Color.WHITE), "\u2659");
+        figures.put(new MyPair(TypeOfPiece.KING, Color.WHITE), "\u2654");
+        figures.put(new MyPair(TypeOfPiece.QUEEN, Color.WHITE), "\u2655");
+        figures.put(new MyPair(TypeOfPiece.BISHOP, Color.WHITE), "\u2657");
+        figures.put(new MyPair(TypeOfPiece.ROOK, Color.WHITE), "\u2656");
+        figures.put(new MyPair(TypeOfPiece.KNIGHT, Color.WHITE), "\u2658");
+        figures.put(new MyPair(TypeOfPiece.PAWN, Color.WHITE), "\u2659");
 
-        figures.put(Pair.of(TypeOfPiece.KING, Color.BLACK), "\u265A");
-        figures.put(Pair.of(TypeOfPiece.QUEEN, Color.BLACK), "\u265B");
-        figures.put(Pair.of(TypeOfPiece.BISHOP, Color.BLACK), "\u265D");
-        figures.put(Pair.of(TypeOfPiece.ROOK, Color.BLACK), "\u265C");
-        figures.put(Pair.of(TypeOfPiece.KNIGHT, Color.BLACK), "\u265E");
-        figures.put(Pair.of(TypeOfPiece.PAWN, Color.BLACK), "\u265F");
+        figures.put(new MyPair(TypeOfPiece.KING, Color.BLACK), "\u265A");
+        figures.put(new MyPair(TypeOfPiece.QUEEN, Color.BLACK), "\u265B");
+        figures.put(new MyPair(TypeOfPiece.BISHOP, Color.BLACK), "\u265D");
+        figures.put(new MyPair(TypeOfPiece.ROOK, Color.BLACK), "\u265C");
+        figures.put(new MyPair(TypeOfPiece.KNIGHT, Color.BLACK), "\u265E");
+        figures.put(new MyPair(TypeOfPiece.PAWN, Color.BLACK), "\u265F");
 
-        // Draughts
-        figures.put(Pair.of(TypeOfPiece.DRAUGHTS_MAN, Color.WHITE), "\u26C0");
-        figures.put(Pair.of(TypeOfPiece.DRAUGHTS_KING, Color.WHITE), "\u26C1");
-        figures.put(Pair.of(TypeOfPiece.DRAUGHTS_MAN, Color.BLACK), "\u26C2");
-        figures.put(Pair.of(TypeOfPiece.DRAUGHTS_KING, Color.BLACK), "\u26C3");
+        //Draughts
+        figures.put(new MyPair(TypeOfPiece.DRAUGHTS_MAN, Color.WHITE), "\u26C0");
+        figures.put(new MyPair(TypeOfPiece.DRAUGHTS_KING, Color.WHITE), "\u26C1");
+
+        figures.put(new MyPair(TypeOfPiece.DRAUGHTS_MAN, Color.BLACK), "\u26C2");
+        figures.put(new MyPair(TypeOfPiece.DRAUGHTS_KING, Color.BLACK), "\u26C3");
         return figures.getOrDefault(Pair.of(this, color), " ");
+    }
+
+    private class MyPair {
+
+        private final TypeOfPiece first;
+        private final Color second;
+
+        private MyPair(TypeOfPiece first, Color second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public TypeOfPiece getFirst() {
+            return first;
+        }
+
+        public Color getSecond() {
+            return second;
+        }
     }
 
 }

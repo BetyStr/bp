@@ -6,11 +6,13 @@ import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
@@ -54,8 +56,8 @@ public abstract class Game implements Playable {
         }
     }
 
-    public Collection<Board> getMementoHistory() {
-        return Collections.unmodifiableCollection(mementoHistory);
+    public Deque<Board> getMementoHistory() {
+        return new LinkedList<>(mementoHistory);
     }
 
     public Board getBoard() {
@@ -138,12 +140,20 @@ public abstract class Game implements Playable {
      * @return set of all possible moves than can do current player.
      */
     public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
-        return board.getAllPiecesFromBoard()
+        var inverseComparator = new Comparator<Coordinates>() {
+            @Override
+            public int compare(Coordinates o1, Coordinates o2) {
+                return -1 * o1.compareTo(o2);
+            }
+        };
+        var result = new TreeSet<>(inverseComparator);
+        result.addAll(board.getAllPiecesFromBoard()
                 .stream()
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
                 .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toUnmodifiableSet()));
+        return result;
     }
 
     @Override

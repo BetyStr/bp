@@ -6,6 +6,7 @@ import cz.muni.fi.pb162.project.Color;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import java.util.Collection;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,8 +64,8 @@ public class Castling implements Move {
         }
     }
 
-    private boolean pieceMoveAlready(Collection<Board> memory, Coordinates position) {
-        var piece = memory.iterator().next().getPiece(position);
+    private boolean pieceMoveAlready(Deque<Board> memory, Coordinates position) {
+        var piece = memory.peek() != null ? memory.peek().getPiece(position) : null;
         return !memory.stream().allMatch(board -> board.getPiece(position).equals(piece));
     }
 }
