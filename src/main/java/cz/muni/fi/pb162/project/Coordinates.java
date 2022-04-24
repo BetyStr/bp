@@ -15,7 +15,7 @@ public record Coordinates(int letterNumber, int number) {
      * Addition of two coordinates.
      *
      * @param other is second coordinates.
-     * @return mean of coordinates.
+     * @return new coordinates, which is created by adding the {@code other}.
      */
     public Coordinates add(Coordinates other) {
         return new Coordinates(letterNumber + other.letterNumber, number + other.number);

@@ -1,5 +1,6 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,7 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class BoardTest {
 
-    private Board board = new Board();
+    private final Board board = new Board();
+
+    @Test
+    void attributesAndMethodsAmount() {
+        BasicRulesTester.attributesAmount(Board.class, 2);
+        BasicRulesTester.methodsAmount(Board.class, 7);
+    }
 
     @Test
     void getRound() {
@@ -34,14 +41,14 @@ class BoardTest {
 
     @Test
     void inRange() {
-        assertTrue(board.inRange(new Coordinates(2, 4)));
-        assertTrue(board.inRange(new Coordinates(0, 0)));
-        assertTrue(board.inRange(new Coordinates(7, 7)));
-        assertTrue(board.inRange(new Coordinates(6, 1)));
-        assertFalse(board.inRange(new Coordinates(5, 15)));
-        assertFalse(board.inRange(new Coordinates(0, 9)));
-        assertFalse(board.inRange(new Coordinates(8, 0)));
-        assertFalse(board.inRange(new Coordinates(-4, -7)));
+        assertTrue(Board.inRange(new Coordinates(2, 4)));
+        assertTrue(Board.inRange(new Coordinates(0, 0)));
+        assertTrue(Board.inRange(new Coordinates(7, 7)));
+        assertTrue(Board.inRange(new Coordinates(6, 1)));
+        assertFalse(Board.inRange(new Coordinates(5, 15)));
+        assertFalse(Board.inRange(new Coordinates(0, 9)));
+        assertFalse(Board.inRange(new Coordinates(8, 0)));
+        assertFalse(Board.inRange(new Coordinates(-4, -7)));
     }
 
     @Test

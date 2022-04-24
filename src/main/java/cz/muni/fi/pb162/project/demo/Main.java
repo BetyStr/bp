@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project.demo;
 
 import cz.muni.fi.pb162.project.Coordinates;
-import cz.muni.fi.pb162.project.Player;
+import cz.muni.fi.pb162.project.utils.BoardNotation;
 
 /**
  * Class for running main method.
@@ -17,9 +17,7 @@ public class Main {
      * @param args command line arguments, will be ignored.
      */
     public static void main(String[] args) {
-        Player player = new Player();
-        player.setName("Matko");
-        System.out.println(player.getName());
+        System.out.println(BoardNotation.getNotationOfCoordinates(1, 3));
 
         Coordinates one = new Coordinates(1, 7);
         Coordinates two = new Coordinates(5, 0);

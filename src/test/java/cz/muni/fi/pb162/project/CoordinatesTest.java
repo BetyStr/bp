@@ -1,10 +1,9 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
-import cz.muni.fi.pb162.project.utils.BoardNotation;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Alzbeta Strompova
@@ -21,7 +20,7 @@ class CoordinatesTest {
     @Test
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Coordinates.class, 2);
-        BasicRulesTester.methodsAmount(Coordinates.class, 6);
+        BasicRulesTester.methodsAmount(Coordinates.class, 7);
     }
 
     @Test
@@ -67,13 +66,13 @@ class CoordinatesTest {
 
     @Test
     void testToString() {
-        assertEquals("b2" , new Coordinates(1,1).toString());
-        assertEquals("h1" , new Coordinates(7,0).toString());
-        assertEquals("a7" , new Coordinates(0,6).toString());
-        assertEquals("c5" , new Coordinates(2,4).toString());
-        assertEquals("e4" , new Coordinates(4,3).toString());
-        assertEquals("f6" , new Coordinates(5,5).toString());
-        assertEquals("d3" , new Coordinates(3,2).toString());
-        assertEquals("g8" , new Coordinates(6,7).toString());
+        assertEquals("b2", new Coordinates(1, 1).toString());
+        assertEquals("h1", new Coordinates(7, 0).toString());
+        assertEquals("a7", new Coordinates(0, 6).toString());
+        assertEquals("c5", new Coordinates(2, 4).toString());
+        assertEquals("e4", new Coordinates(4, 3).toString());
+        assertEquals("f6", new Coordinates(5, 5).toString());
+        assertEquals("d3", new Coordinates(3, 2).toString());
+        assertEquals("g8", new Coordinates(6, 7).toString());
     }
 }

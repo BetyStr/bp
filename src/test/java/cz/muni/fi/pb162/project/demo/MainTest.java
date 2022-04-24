@@ -14,7 +14,7 @@ class MainTest {
 
     private static final String EXPECTED_OUTPUT =
             """
-                    Matko
+                    b4
                     4.0
                     6
                     7

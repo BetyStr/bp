@@ -13,7 +13,7 @@ public class Piece {
     private final long id;
 
     /**
-     * Constructor which set up uniq id
+     * Constructor which set up uniq id.
      */
     public Piece() {
         id = ID_COUNTER.getAndIncrement();
