@@ -7,7 +7,7 @@ package cz.muni.fi.pb162.project;
  */
 public class Piece {
 
-    private final long id;
+    private long id;
 
     /**
      * Constructor which set up uniq id.

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
- * @author Radek Oslejsek, Petr Adamek, Marek Sabo, Alzbeta Strompova
+ * @author Radek Oslejsek, Petr Adamek, Marek Sabo
  */
 public class BasicRulesTester {
 

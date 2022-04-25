@@ -3,7 +3,7 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Alzbeta Strompova
