@@ -12,19 +12,19 @@
       It is calculated by components (as well as complex numbers).
 4. Create a `Piece` class with attribute `id` of type `long`.
     - Add constructor and getter. We will not need setter.
-5. Edit the executable class `Main`
+5. Edit the executable class `Main`.
     - Remove the print of Hello world!.
-    - Create a new `Player`. Set name `"Matko"` and print name using setter and getter.
-    - Create two coordinates. The First has coordinates `[1, 7]` and the second has `[5, 8]`.
+    - Create a new `Player`. Set name "Matko" and print name using setter and getter.
+    - Create two coordinates. The First has coordinates `(1, 7)` and the second has `(5, 8)`.
     - Print the average of the first coordinates.
     - Compute first plus second coordinates and print the result on separate lines.
 
 Hints:
-- do not forget the documentation
-    - every class must have `@author <YourName>` for example `@author Jan Hrasko`
-    - every public method must have documentation (except getters and setters)
-        - if the method has a return value then must have `@returns` in the documentation
-        - if the method has input parameters then must have `@param <nameOfParameter>` in the documentation
-    - if you type `\**` above the method and press enter, you will automatically generate tags
-      that you must fill into a documentation of the method
-- if you want to write `System.out.println` you can write `sout` and press enter
+- Do not forget the documentation.
+    - Every class must have `@author <YourName>` for example `@author Jan Hrasko`.
+    - Every public method must have documentation (except getters, setters and override methods).
+      - If the method has an input parameters then must have `@param <nameOfParameter>` in the documentation.
+      - If the method has a return value then must have `@returns` in the documentation.
+    - If you type `\**` above the method and press enter, you will automatically generate tags that 
+      you must fill into a documentation of the method.
+- If you want to write `System.out.println` you can write `sout` and press enter.
