@@ -1,7 +1,9 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.moves.Castling;
+import cz.muni.fi.pb162.project.moves.Move;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,12 +14,24 @@ import java.util.stream.Collectors;
  *
  * @author Alzbeta Strompova
  */
-public class Piece {
+public class Piece implements Prototype<Piece> {
 
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final long id;
-    private final Color color;
+    private Color color;
     private TypeOfPiece typeOfPiece;
+    private List<Move> moves;
+
+    /**
+     *
+     * @param color es
+     * @param typeOfPiece s
+     * @param moves f
+     */
+    public Piece(Color color, TypeOfPiece typeOfPiece, List<Move> moves) {
+        this(color, typeOfPiece);
+        this.moves = moves;
+    }
 
     /**
      * Constructor takes color and type of piece and set up uniq id
@@ -37,6 +51,10 @@ public class Piece {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public TypeOfPiece getTypeOfPiece() {
@@ -67,8 +85,7 @@ public class Piece {
      * @return coordinates of all possible move at actual board
      */
     public Set<Coordinates> getAllPossibleMoves(Game game, Boolean withCastling) {
-        return typeOfPiece
-                .getMoves()
+        return moves
                 .stream()
                 .filter(x -> withCastling || x.getClass() != Castling.class)
                 .map(strategy -> strategy
@@ -101,4 +118,8 @@ public class Piece {
         return Objects.hash(id);
     }
 
+    @Override
+    public Piece makeClone() {
+        return new Piece(color, typeOfPiece, moves);
+    }
 }

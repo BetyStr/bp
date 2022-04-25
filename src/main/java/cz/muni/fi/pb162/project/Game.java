@@ -5,7 +5,6 @@ import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 public abstract class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Deque<Board> mementoHistory = new LinkedList<>();
+    private Deque<Board> mementoHistory = new LinkedList<>();
 
     private Board board;
     private Player playerOne;
@@ -53,6 +52,7 @@ public abstract class Game implements Playable {
             playerTwo = target.playerTwo;
             stateOfGame = target.stateOfGame;
             board = target.board;
+            mementoHistory = target.mementoHistory;
         }
     }
 

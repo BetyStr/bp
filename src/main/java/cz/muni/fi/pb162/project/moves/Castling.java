@@ -5,7 +5,6 @@ import cz.muni.fi.pb162.project.Chess;
 import cz.muni.fi.pb162.project.Color;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,13 +36,13 @@ public class Castling implements Move {
 
     private void bigCastling(Coordinates position, Board board, HashSet<Coordinates> result, Color color, Chess chess) {
         for (int i = 1; i < 4; i++) {
-            if(!board.isEmpty(position.letterNumber() - i, position.number()) ||
+            if (!board.isEmpty(position.letterNumber() - i, position.number()) ||
                     chess.isInDanger(position.letterNumber() - i, position.number(), color)) {
                 return;
             }
         }
-        if(!pieceMoveAlready(chess.getMementoHistory(),
-                new Coordinates(position.letterNumber() - 4, position.number())))  {
+        if (!pieceMoveAlready(chess.getMementoHistory(),
+                new Coordinates(position.letterNumber() - 4, position.number()))) {
             result.add(new Coordinates(position.letterNumber() - 2, position.number()));
 
         }
@@ -52,13 +51,13 @@ public class Castling implements Move {
     private void smallCastling(Coordinates position, Board board, HashSet<Coordinates> result,
                                Color color, Chess chess) {
         for (int i = 1; i < 3; i++) {
-            if(!board.isEmpty(position.letterNumber() + i, position.number()) ||
+            if (!board.isEmpty(position.letterNumber() + i, position.number()) ||
                     chess.isInDanger(position.letterNumber() + i, position.number(), color)) {
                 return;
             }
         }
-        if(!pieceMoveAlready(chess.getMementoHistory(),
-                new Coordinates(position.letterNumber() + 3, position.number())))  {
+        if (!pieceMoveAlready(chess.getMementoHistory(),
+                new Coordinates(position.letterNumber() + 3, position.number()))) {
             result.add(new Coordinates(position.letterNumber() + 2, position.number()));
 
         }
