@@ -5,13 +5,11 @@ package cz.muni.fi.pb162.project;
  *
  * @author Alzbeta Strompova
  */
-public enum TypeOfPiece {
+public enum PieceType {
     KING,
     QUEEN,
     BISHOP,
     ROOK,
     KNIGHT,
-    PAWN,
-    DRAUGHTS_KING,
-    DRAUGHTS_MAN
+    PAWN
 }

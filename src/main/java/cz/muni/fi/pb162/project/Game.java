@@ -18,7 +18,7 @@ public class Game implements Playable {
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Constructor because Builder.
+     * Constructor.
      *
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
@@ -41,8 +41,12 @@ public class Game implements Playable {
         return playerTwo;
     }
 
-    protected Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
+    }
+
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
     }
 
     public void setStateOfGame(StateOfGame stateOfGame) {
@@ -69,27 +73,27 @@ public class Game implements Playable {
 
     @Override
     public void setInitialSet() {
-        putPieceOnBoard(4, 0, new Piece(Color.WHITE, TypeOfPiece.KING));
-        putPieceOnBoard(3, 0, new Piece(Color.WHITE, TypeOfPiece.QUEEN));
-        putPieceOnBoard(0, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
-        putPieceOnBoard(7, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
-        putPieceOnBoard(1, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(6, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(2, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
-        putPieceOnBoard(5, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
+        putPieceOnBoard(4, 0, new Piece(Color.WHITE, PieceType.KING));
+        putPieceOnBoard(3, 0, new Piece(Color.WHITE, PieceType.QUEEN));
+        putPieceOnBoard(0, 0, new Piece(Color.WHITE, PieceType.ROOK));
+        putPieceOnBoard(7, 0, new Piece(Color.WHITE, PieceType.ROOK));
+        putPieceOnBoard(1, 0, new Piece(Color.WHITE, PieceType.KNIGHT));
+        putPieceOnBoard(6, 0, new Piece(Color.WHITE, PieceType.KNIGHT));
+        putPieceOnBoard(2, 0, new Piece(Color.WHITE, PieceType.BISHOP));
+        putPieceOnBoard(5, 0, new Piece(Color.WHITE, PieceType.BISHOP));
 
-        putPieceOnBoard(4, 7, new Piece(Color.BLACK, TypeOfPiece.KING));
-        putPieceOnBoard(3, 7, new Piece(Color.BLACK, TypeOfPiece.QUEEN));
-        putPieceOnBoard(0, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
-        putPieceOnBoard(7, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
-        putPieceOnBoard(1, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(6, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(2, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
-        putPieceOnBoard(5, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
+        putPieceOnBoard(4, 7, new Piece(Color.BLACK, PieceType.KING));
+        putPieceOnBoard(3, 7, new Piece(Color.BLACK, PieceType.QUEEN));
+        putPieceOnBoard(0, 7, new Piece(Color.BLACK, PieceType.ROOK));
+        putPieceOnBoard(7, 7, new Piece(Color.BLACK, PieceType.ROOK));
+        putPieceOnBoard(1, 7, new Piece(Color.BLACK, PieceType.KNIGHT));
+        putPieceOnBoard(6, 7, new Piece(Color.BLACK, PieceType.KNIGHT));
+        putPieceOnBoard(2, 7, new Piece(Color.BLACK, PieceType.BISHOP));
+        putPieceOnBoard(5, 7, new Piece(Color.BLACK, PieceType.BISHOP));
 
         for (int i = 0; i < Board.SIZE; i++) {
-            putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.PAWN));
-            putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.PAWN));
+            putPieceOnBoard(i, 1, new Piece(Color.WHITE, PieceType.PAWN));
+            putPieceOnBoard(i, 6, new Piece(Color.BLACK, PieceType.PAWN));
         }
     }
 
@@ -100,15 +104,14 @@ public class Game implements Playable {
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
-                && piece.getTypeOfPiece().equals(TypeOfPiece.PAWN)) {
-            piece.setTypeOfPiece(TypeOfPiece.QUEEN);
+                && piece.getTypeOfPiece().equals(PieceType.PAWN)) {
+            piece.setTypeOfPiece(PieceType.QUEEN);
         }
     }
 
     @Override
     public void play() {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
-            System.out.println(board);
             var next = getCurrentPlayer();
             updateStatus();
             System.out.printf("Next one is %s%n", next);
@@ -127,7 +130,7 @@ public class Game implements Playable {
         var kings = getBoard()
                 .getAllPiecesFromBoard()
                 .stream()
-                .filter(x -> x.getTypeOfPiece().equals(TypeOfPiece.KING))
+                .filter(x -> x.getTypeOfPiece().equals(PieceType.KING))
                 .toList();
         if (kings.size() < 2) {
             setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)

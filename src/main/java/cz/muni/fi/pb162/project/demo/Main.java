@@ -26,6 +26,9 @@ public class Main {
         var chess = new Game(player1, player2, new Board());
         chess.setInitialSet();
         chess.move(new Coordinates(1,1), new Coordinates(1,2));
+        for (int i = 0; i < 8; i++) {
+            System.out.println(chess.getBoard().getPiece(1, i));
+        }
     }
 
 }

@@ -15,6 +15,27 @@ public class Board {
     private final Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
 
+    /**
+     * Control if coordinates({@code x}, {@code y}) is in board.
+     *
+     * @param x first coordinate of coordinates to check
+     * @param y second coordinate of coordinates to check
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
+     */
+    private static boolean inRange(int x, int y) {
+        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
+    }
+
+    /**
+     * Control if {@code coordinates} is in board.
+     *
+     * @param coordinates to check.
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
+     */
+    public static boolean inRange(Coordinates coordinates) {
+        return inRange(coordinates.letterNumber(), coordinates.number());
+    }
+
     public int getRound() {
         return round;
     }
@@ -41,7 +62,7 @@ public class Board {
      * Return piece at {@code position}.
      *
      * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
+     * @param number       second coordinate of coordinates from which we want piece
      * @return piece at {@code position}
      */
     public Piece getPiece(int letterNumber, int number) {
@@ -59,27 +80,6 @@ public class Board {
      */
     public Piece getPiece(Coordinates position) {
         return getPiece(position.letterNumber(), position.number());
-    }
-
-    /**
-     * Control if coordinates({@code x}, {@code y}) is in board.
-     *
-     * @param x first coordinate of coordinates to check
-     * @param y second coordinate of coordinates to check
-     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
-     */
-    private boolean inRange(int x, int y) {
-        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
-    }
-
-    /**
-     * Control if {@code coordinates} is in board.
-     *
-     * @param coordinates to check.
-     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
-     */
-    public boolean inRange(Coordinates coordinates) {
-        return inRange(coordinates.letterNumber(), coordinates.number());
     }
 
     /**
