@@ -7,13 +7,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * Class creating draughts pieces.
+ *
  * @author Alzbeta Strompova
  */
 public class DraughtsPieceFactory extends PieceFactory {
 
     /**
+     * Constructor
      *
-     * @param pieceTypes ds
+     * @param pieceTypes set of all {@code TypeOfPieces} in Draughts.
      */
     public DraughtsPieceFactory(Set<TypeOfPiece> pieceTypes) {
         super(pieceTypes

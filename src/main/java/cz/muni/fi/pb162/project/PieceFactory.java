@@ -1,15 +1,17 @@
 package cz.muni.fi.pb162.project;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
 /**
+ * Abstract class represent factory creating piece.
+ *
  * @author Alzbeta Strompova
  */
 public abstract class PieceFactory {
 
-    private final Map<TypeOfPiece, Piece> pieces = new HashMap<>();
+    private final Map<TypeOfPiece, Piece> pieces = new EnumMap<>(TypeOfPiece.class);
 
     protected PieceFactory(Set<Piece> pieces) {
         for (Piece piece : pieces) {
@@ -18,9 +20,11 @@ public abstract class PieceFactory {
     }
 
     /**
-     * @param typeOfPiece e
-     * @param color       w
-     * @return w
+     * Method returns piece with type {@code typeOfPiece}, color {@code color} and unique {@code id}.
+     *
+     * @param typeOfPiece of new piece.
+     * @param color       of new piece.
+     * @return new piece with type {@code typeOfPiece}, color {@code color} and unique {@code id}.
      */
     public Piece createPiece(TypeOfPiece typeOfPiece, Color color) {
         var piece = pieces.get(typeOfPiece);

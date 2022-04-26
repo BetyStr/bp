@@ -23,10 +23,11 @@ public class Piece implements Prototype<Piece> {
     private List<Move> moves;
 
     /**
+     * Constructor takes color, type and moves of piece and set up uniq id.
      *
-     * @param color es
-     * @param typeOfPiece s
-     * @param moves f
+     * @param color       which our piece will have.
+     * @param typeOfPiece which our piece will have.
+     * @param moves       which our piece will have.
      */
     public Piece(Color color, TypeOfPiece typeOfPiece, List<Move> moves) {
         this(color, typeOfPiece);
@@ -34,10 +35,10 @@ public class Piece implements Prototype<Piece> {
     }
 
     /**
-     * Constructor takes color and type of piece and set up uniq id
+     * Constructor takes color and type of piece and set up uniq id.
      *
-     * @param color       which our piece will have
-     * @param typeOfPiece which our piece will have
+     * @param color       which our piece will have.
+     * @param typeOfPiece which our piece will have.
      */
     public Piece(Color color, TypeOfPiece typeOfPiece) {
         id = ID_COUNTER.getAndIncrement();
@@ -80,7 +81,7 @@ public class Piece implements Prototype<Piece> {
      * Returns set of coordinates x, y which represent position at board
      * when the piece can move
      *
-     * @param game has board which representing actual layout of pieces
+     * @param game         has board which representing actual layout of pieces
      * @param withCastling boolean decides if result contains castling moves
      * @return coordinates of all possible move at actual board
      */

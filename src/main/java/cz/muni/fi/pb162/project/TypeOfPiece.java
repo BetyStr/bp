@@ -6,8 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Enum represent type of piece with attribute {@code moves} which is List
- * of all possible types of movement of specific type of piece.
+ * Enum represent type of piece.
  *
  * @author Alzbeta Strompova
  */

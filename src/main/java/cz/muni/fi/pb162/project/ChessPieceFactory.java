@@ -10,13 +10,16 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * Class creating chess pieces.
+ *
  * @author Alzbeta Strompova
  */
 public class ChessPieceFactory extends PieceFactory {
 
     /**
+     * Constructor
      *
-     * @param pieceTypes fgg
+     * @param pieceTypes set of all {@code TypeOfPieces} in Chess.
      */
     public ChessPieceFactory(Set<TypeOfPiece> pieceTypes) {
         super(pieceTypes
