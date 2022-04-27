@@ -4,9 +4,7 @@ import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Scanner;
 
 /**
- * Abstract Factory is a creational design pattern that lets you produce
- * families of related objects without specifying their concrete classes. <p>
- * Abstract class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
  *
  * @author Alzbeta Strompova
  */
@@ -20,7 +18,7 @@ public abstract class Game implements Playable {
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Protected constructor.
+     * Constructor.
      *
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
@@ -43,8 +41,12 @@ public abstract class Game implements Playable {
         return playerTwo;
     }
 
-    protected Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
+    }
+
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
     }
 
     public void setStateOfGame(StateOfGame stateOfGame) {
@@ -72,7 +74,6 @@ public abstract class Game implements Playable {
     @Override
     public void play() {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
-            System.out.println(board);
             var next = getCurrentPlayer();
             updateStatus();
             System.out.printf("Next one is %s%n", next);

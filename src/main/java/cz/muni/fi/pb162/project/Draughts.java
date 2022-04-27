@@ -22,14 +22,14 @@ public class Draughts extends Game {
     @Override
     public void setInitialSet() {
         for (int i = 0; i < Board.SIZE; i += 2) {
-            getBoard().putPieceOnBoard(i, 0, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 2, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 0, new Piece(Color.WHITE, PieceType.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 2, new Piece(Color.WHITE, PieceType.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 6, new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN));
         }
         for (int i = 1; i < Board.SIZE; i += 2) {
-            getBoard().putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 5, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 7, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 1, new Piece(Color.WHITE, PieceType.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 5, new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 7, new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN));
         }
     }
 
@@ -57,6 +57,5 @@ public class Draughts extends Game {
                     : StateOfGame.WHITE_PLAYER_WIN);
         }
     }
-
 
 }

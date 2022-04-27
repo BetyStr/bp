@@ -15,6 +15,27 @@ public class Board {
     private final Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
 
+    /**
+     * Control if coordinates({@code x}, {@code y}) is in board.
+     *
+     * @param x first coordinate of coordinates to check
+     * @param y second coordinate of coordinates to check
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
+     */
+    private static boolean inRange(int x, int y) {
+        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
+    }
+
+    /**
+     * Control if {@code coordinates} is in board.
+     *
+     * @param coordinates to check.
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
+     */
+    public static boolean inRange(Coordinates coordinates) {
+        return inRange(coordinates.letterNumber(), coordinates.number());
+    }
+
     public int getRound() {
         return round;
     }
@@ -27,7 +48,7 @@ public class Board {
      * Return color of piece at {@code position}.
      *
      * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
+     * @param number       second coordinate of coordinates from which we want piece
      * @return color of piece at {@code position}
      */
     public Color getColor(int letterNumber, int number) {
@@ -41,7 +62,7 @@ public class Board {
      * Return piece at {@code position}.
      *
      * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
+     * @param number       second coordinate of coordinates from which we want piece
      * @return piece at {@code position}
      */
     public Piece getPiece(int letterNumber, int number) {
@@ -59,27 +80,6 @@ public class Board {
      */
     public Piece getPiece(Coordinates position) {
         return getPiece(position.letterNumber(), position.number());
-    }
-
-    /**
-     * Control if coordinates({@code x}, {@code y}) is in board.
-     *
-     * @param x first coordinate of coordinates to check
-     * @param y second coordinate of coordinates to check
-     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
-     */
-    private boolean inRange(int x, int y) {
-        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
-    }
-
-    /**
-     * Control if {@code coordinates} is in board.
-     *
-     * @param coordinates to check.
-     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
-     */
-    public boolean inRange(Coordinates coordinates) {
-        return inRange(coordinates.letterNumber(), coordinates.number());
     }
 
     /**
@@ -138,7 +138,7 @@ public class Board {
 
     @Override
     public String toString() {
-        char space = '\u2003';
+        var space = " ";
         char separator = '|';
         var result = new StringBuilder().append(space).append(space);
         // numbers
@@ -148,7 +148,7 @@ public class Board {
         result.append(System.lineSeparator());
         for (int i = 0; i < SIZE; i++) {
             // board
-            result.append(space).append(space).append("-".repeat(47));
+            result.append(space).append(space).append("-".repeat(4 * SIZE));
             result.append(System.lineSeparator());
             // letters
             result.append((char) (65 + i));
@@ -159,7 +159,7 @@ public class Board {
             }
             result.append(space).append(separator).append(System.lineSeparator());
         }
-        return result.append(space).append(space).append("-".repeat(47)).toString();
+        return result.append(space).append(space).append("-".repeat(4 * SIZE)).toString();
     }
 
 }
