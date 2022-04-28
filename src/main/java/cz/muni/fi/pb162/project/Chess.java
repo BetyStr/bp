@@ -120,7 +120,7 @@ public class Chess extends Game {
         var value = getBoard().getAllPiecesFromBoard()
                 .stream()
                 .filter(q -> q.getColor().equals(color))
-                .map(q -> q.getAllPossibleMoves(this))
+                .map(q -> q.getAllPossibleMoves(this, false))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet())
                 .contains(new Coordinates(x, y));
