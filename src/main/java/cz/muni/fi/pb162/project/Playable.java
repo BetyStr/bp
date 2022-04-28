@@ -1,13 +1,11 @@
 package cz.muni.fi.pb162.project;
 
-
-
 /**
  * Interface to help implement game
  *
  * @author Alzbeta Strompova
  */
-public interface Playable extends Prototype<Playable>, Caretaker {
+public interface Playable extends Caretaker {
 
     /**
      * Method that set initial layout for game

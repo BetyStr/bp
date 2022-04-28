@@ -1,6 +1,8 @@
 package cz.muni.fi.pb162.project;
 
+import cz.muni.fi.pb162.project.moves.Move;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
@@ -11,23 +13,26 @@ import java.util.stream.Collectors;
  *
  * @author Alzbeta Strompova
  */
-public class Piece {
+public class Piece implements Prototype {
 
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final long id;
-    private final Color color;
-    private TypeOfPiece typeOfPiece;
+    private final List<Move> moves;
+    private Color color;
+    private PieceType pieceType;
 
     /**
-     * Constructor takes color and type of piece and set up uniq id
+     * Constructor takes color, type and moves of piece and set up uniq id.
      *
-     * @param color       which our piece will have
-     * @param typeOfPiece which our piece will have
+     * @param color     which our piece will have.
+     * @param pieceType which our piece will have.
+     * @param moves     which our piece will have.
      */
-    public Piece(Color color, TypeOfPiece typeOfPiece) {
+    public Piece(Color color, PieceType pieceType, List<Move> moves) {
         id = ID_COUNTER.getAndIncrement();
         this.color = color;
-        this.typeOfPiece = typeOfPiece;
+        this.pieceType = pieceType;
+        this.moves = moves;
     }
 
     public long getId() {
@@ -38,12 +43,16 @@ public class Piece {
         return color;
     }
 
-    public TypeOfPiece getTypeOfPiece() {
-        return typeOfPiece;
+    public void setColor(Color color) {
+        this.color = color;
     }
 
-    public void setTypeOfPiece(TypeOfPiece typeOfPiece) {
-        this.typeOfPiece = typeOfPiece;
+    public PieceType getTypeOfPiece() {
+        return pieceType;
+    }
+
+    public void setTypeOfPiece(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
     /**
@@ -54,14 +63,13 @@ public class Piece {
      * @return coordinates of all possible move at actual board
      */
     public Set<Coordinates> getAllPossibleMoves(Game game) {
-        return typeOfPiece
-                .getMoves()
+        return moves
                 .stream()
                 .map(strategy -> strategy
                         .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .filter(game.getBoard()::inRange)
+                .filter(Board::inRange)
                 .collect(Collectors.toSet());
     }
 
@@ -87,4 +95,8 @@ public class Piece {
         return Objects.hash(id);
     }
 
+    @Override
+    public Piece makeClone() {
+        return new Piece(color, pieceType, moves);
+    }
 }
