@@ -100,7 +100,12 @@ public abstract class Game implements Playable, Caretaker {
             throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
         }
         var letterNumber = position.charAt(0);
-        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        var number = 0;
+        try {
+            number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        } catch (NumberFormatException ex) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+        }
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
