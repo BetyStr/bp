@@ -32,33 +32,35 @@ public class Chess extends Game {
 
     @Override
     public void setInitialSet() {
-        putPieceOnBoard(4, 0, new Piece(Color.WHITE, TypeOfPiece.KING));
-        putPieceOnBoard(3, 0, new Piece(Color.WHITE, TypeOfPiece.QUEEN));
-        putPieceOnBoard(0, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
-        putPieceOnBoard(7, 0, new Piece(Color.WHITE, TypeOfPiece.ROOK));
-        putPieceOnBoard(1, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(6, 0, new Piece(Color.WHITE, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(2, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
-        putPieceOnBoard(5, 0, new Piece(Color.WHITE, TypeOfPiece.BISHOP));
+        var factory = new ChessPieceFactory();
 
-        putPieceOnBoard(4, 7, new Piece(Color.BLACK, TypeOfPiece.KING));
-        putPieceOnBoard(3, 7, new Piece(Color.BLACK, TypeOfPiece.QUEEN));
-        putPieceOnBoard(0, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
-        putPieceOnBoard(7, 7, new Piece(Color.BLACK, TypeOfPiece.ROOK));
-        putPieceOnBoard(1, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(6, 7, new Piece(Color.BLACK, TypeOfPiece.KNIGHT));
-        putPieceOnBoard(2, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
-        putPieceOnBoard(5, 7, new Piece(Color.BLACK, TypeOfPiece.BISHOP));
+        putPieceOnBoard(4, 0, factory.createPiece(PieceType.KING, Color.WHITE));
+        putPieceOnBoard(3, 0, factory.createPiece(PieceType.QUEEN, Color.WHITE));
+        putPieceOnBoard(0, 0, factory.createPiece(PieceType.ROOK, Color.WHITE));
+        putPieceOnBoard(7, 0, factory.createPiece(PieceType.ROOK, Color.WHITE));
+        putPieceOnBoard(1, 0, factory.createPiece(PieceType.KNIGHT, Color.WHITE));
+        putPieceOnBoard(6, 0, factory.createPiece(PieceType.KNIGHT, Color.WHITE));
+        putPieceOnBoard(2, 0, factory.createPiece(PieceType.BISHOP, Color.WHITE));
+        putPieceOnBoard(5, 0, factory.createPiece(PieceType.BISHOP, Color.WHITE));
+
+        putPieceOnBoard(4, 7, factory.createPiece(PieceType.KING, Color.BLACK));
+        putPieceOnBoard(3, 7, factory.createPiece(PieceType.QUEEN, Color.BLACK));
+        putPieceOnBoard(0, 7, factory.createPiece(PieceType.ROOK, Color.BLACK));
+        putPieceOnBoard(7, 7, factory.createPiece(PieceType.ROOK, Color.BLACK));
+        putPieceOnBoard(1, 7, factory.createPiece(PieceType.KNIGHT, Color.BLACK));
+        putPieceOnBoard(6, 7, factory.createPiece(PieceType.KNIGHT, Color.BLACK));
+        putPieceOnBoard(2, 7, factory.createPiece(PieceType.BISHOP, Color.BLACK));
+        putPieceOnBoard(5, 7, factory.createPiece(PieceType.BISHOP, Color.BLACK));
 
         for (int i = 0; i < Board.SIZE; i++) {
-            putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.PAWN));
-            putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.PAWN));
+            putPieceOnBoard(i, 1, factory.createPiece(PieceType.PAWN, Color.WHITE));
+            putPieceOnBoard(i, 6, factory.createPiece(PieceType.PAWN, Color.BLACK));
         }
     }
 
     private void checkCastling(Coordinates oldPosition, Coordinates newPosition) {
         var piece = getBoard().getPiece(oldPosition);
-        if (!piece.getTypeOfPiece().equals(TypeOfPiece.KING)) {
+        if (!piece.getTypeOfPiece().equals(PieceType.KING)) {
             return;
         }
         int diff = Math.abs(oldPosition.letterNumber() - newPosition.letterNumber());
@@ -78,8 +80,8 @@ public class Chess extends Game {
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
-                && piece.getTypeOfPiece().equals(TypeOfPiece.PAWN)) {
-            piece.setTypeOfPiece(TypeOfPiece.QUEEN);
+                && piece.getTypeOfPiece().equals(PieceType.PAWN)) {
+            piece.setTypeOfPiece(PieceType.QUEEN);
         }
     }
 
@@ -91,7 +93,7 @@ public class Chess extends Game {
         var kings = getBoard()
                 .getAllPiecesFromBoard()
                 .stream()
-                .filter(x -> x.getTypeOfPiece().equals(TypeOfPiece.KING))
+                .filter(x -> x.getTypeOfPiece().equals(PieceType.KING))
                 .toList();
         if (kings.size() < 2) {
             setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
@@ -113,7 +115,7 @@ public class Chess extends Game {
     public boolean isInDanger(int x, int y, Color color) {
         var emptyPosition = getBoard().isEmpty(x, y);
         if (emptyPosition) {
-            putPieceOnBoard(x, y, new Piece(color.getOppositeColor(), TypeOfPiece.QUEEN));
+            putPieceOnBoard(x, y, new ChessPieceFactory().createPiece(PieceType.QUEEN, color.getOppositeColor()));
         }
         var value = getBoard().getAllPiecesFromBoard()
                 .stream()

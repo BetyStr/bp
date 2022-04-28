@@ -3,7 +3,7 @@ package cz.muni.fi.pb162.project;
 /**
  * Record represent player of board game
  *
- * @param name is name of player
+ * @param name  is name of player
  * @param color is color of player
  * @author Alzbeta Strompova
  */

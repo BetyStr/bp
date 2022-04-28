@@ -1,6 +1,5 @@
 package cz.muni.fi.pb162.project;
 
-
 /**
  * Interface to help implement game
  *

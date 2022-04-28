@@ -1,10 +1,8 @@
 package cz.muni.fi.pb162.project.demo;
 
-import cz.muni.fi.pb162.project.Coordinates;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Random;
+import cz.muni.fi.pb162.project.Chess;
+import cz.muni.fi.pb162.project.Color;
+import cz.muni.fi.pb162.project.Player;
 
 /**
  * Class for running main method.
@@ -13,7 +11,6 @@ import java.util.Random;
  */
 public class Main {
 
-    private static final Random RANDOM = new Random();
 
     /**
      * Runs the code.
@@ -21,27 +18,12 @@ public class Main {
      * @param args command line arguments, will be ignored.
      */
     public static void main(String[] args) {
-        var hashSet = new HashSet<Coordinates>();
-        var start = System.currentTimeMillis();
-        testSpeed(hashSet);
-        var finish = System.currentTimeMillis();
-        System.out.println(finish - start);
+        var player1 = new Player("Matko", Color.WHITE);
+        var player2 = new Player("Janko", Color.BLACK);
 
-        var arrayList = new ArrayList<Coordinates>();
-        start = System.currentTimeMillis();
-        testSpeed(arrayList);
-        finish = System.currentTimeMillis();
-        System.out.println(finish - start);
-
-    }
-
-    private static void testSpeed(Collection<Coordinates> coordinates) {
-        for (int i = 0; i < 100000; i++) {
-            coordinates.add(new Coordinates(RANDOM.nextInt(15), RANDOM.nextInt(42)));
-        }
-        for (int i = 0; i < 10000; i++) {
-            coordinates.remove(new Coordinates(RANDOM.nextInt(15), RANDOM.nextInt(42)));
-        }
+        var chess = new Chess(player1, player2);
+        chess.setInitialSet();
+        System.out.println(chess.getBoard());
     }
 
 }

@@ -11,16 +11,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Abstract Factory is a creational design pattern that lets you produce
- * families of related objects without specifying their concrete classes. <p>
- * Abstract class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Playable {
+public abstract class Game implements Playable, Caretaker {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Deque<Board> mementoHistory = new LinkedList<>();
+    private Deque<Board> mementoHistory = new LinkedList<>();
 
     private Board board;
     private Player playerOne;
@@ -48,8 +46,10 @@ public abstract class Game implements Playable {
             playerTwo = target.playerTwo;
             stateOfGame = target.stateOfGame;
             board = target.board;
+            mementoHistory = target.mementoHistory;
         }
     }
+
 
     public Collection<Board> getMementoHistory() {
         return Collections.unmodifiableCollection(mementoHistory);
@@ -67,8 +67,12 @@ public abstract class Game implements Playable {
         return playerTwo;
     }
 
-    protected Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
+    }
+
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
     }
 
     public void setStateOfGame(StateOfGame stateOfGame) {
@@ -138,7 +142,7 @@ public abstract class Game implements Playable {
             return false;
         }
         return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || board.equals(game.board);
+                stateOfGame != game.stateOfGame || !Objects.equals(board, game.board);
     }
 
     @Override
