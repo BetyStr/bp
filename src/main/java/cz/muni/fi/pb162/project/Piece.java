@@ -8,23 +8,23 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author Alzbeta Strompova
  */
-public class Piece {
+public class Piece implements Prototype {
 
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final long id;
     private final Color color;
-    private TypeOfPiece typeOfPiece;
+    private PieceType pieceType;
 
     /**
      * Constructor takes color and type of piece and set up uniq id
      *
-     * @param color       which our piece will have
-     * @param typeOfPiece which our piece will have
+     * @param color     which our piece will have
+     * @param pieceType which our piece will have
      */
-    public Piece(Color color, TypeOfPiece typeOfPiece) {
+    public Piece(Color color, PieceType pieceType) {
         id = ID_COUNTER.getAndIncrement();
         this.color = color;
-        this.typeOfPiece = typeOfPiece;
+        this.pieceType = pieceType;
     }
 
     public long getId() {
@@ -35,17 +35,22 @@ public class Piece {
         return color;
     }
 
-    public TypeOfPiece getTypeOfPiece() {
-        return typeOfPiece;
+    public PieceType getTypeOfPiece() {
+        return pieceType;
     }
 
-    public void setTypeOfPiece(TypeOfPiece typeOfPiece) {
-        this.typeOfPiece = typeOfPiece;
+    public void setTypeOfPiece(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
     @Override
     public String toString() {
-        return getTypeOfPiece().getSymbol(getColor());
+        return String.valueOf(pieceType.name().charAt(0));
+    }
+
+    @Override
+    public Piece makeClone() {
+        return new Piece(color, pieceType);
     }
 
     @Override
@@ -53,7 +58,7 @@ public class Piece {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() == o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Piece piece = (Piece) o;

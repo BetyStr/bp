@@ -9,9 +9,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * Abstract Factory is a creational design pattern that lets you produce
- * families of related objects without specifying their concrete classes. <p>
- * Abstract class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
  *
  * @author Alzbeta Strompova
  */
@@ -54,8 +52,12 @@ public abstract class Game implements Playable, Caretaker {
         return playerTwo;
     }
 
-    protected Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
+    }
+
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
     }
 
     public void setStateOfGame(StateOfGame stateOfGame) {
@@ -83,7 +85,6 @@ public abstract class Game implements Playable, Caretaker {
     @Override
     public void play() {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
-            System.out.println(board);
             var next = getCurrentPlayer();
             updateStatus();
             System.out.printf("Next one is %s%n", next);
@@ -91,7 +92,6 @@ public abstract class Game implements Playable, Caretaker {
             var toPosition = getInputFromPlayer();
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
-            hitSave();
         }
         System.out.println(board);
     }
@@ -112,7 +112,7 @@ public abstract class Game implements Playable, Caretaker {
             return false;
         }
         return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || board.equals(game.board);
+                stateOfGame != game.stateOfGame || !Objects.equals(board, game.board);
     }
 
     @Override
