@@ -6,24 +6,24 @@ import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * Abstract Factory is a creational design pattern that lets you produce
- * families of related objects without specifying their concrete classes. <p>
- * Abstract class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Playable {
+public abstract class Game implements Playable, Caretaker {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private final Deque<Board> mementoHistory = new LinkedList<>();
+    private Deque<Board> mementoHistory = new LinkedList<>();
 
     private Board board;
     private Player playerOne;
@@ -51,6 +51,7 @@ public abstract class Game implements Playable {
             playerTwo = target.playerTwo;
             stateOfGame = target.stateOfGame;
             board = target.board;
+            mementoHistory = target.mementoHistory;
         }
     }
 
@@ -70,8 +71,12 @@ public abstract class Game implements Playable {
         return playerTwo;
     }
 
-    protected Player getCurrentPlayer() {
+    public Player getCurrentPlayer() {
         return playerOne.color().ordinal() == board.getRound() % 2 ? playerOne : playerTwo;
+    }
+
+    public StateOfGame getStateOfGame() {
+        return stateOfGame;
     }
 
     public void setStateOfGame(StateOfGame stateOfGame) {
@@ -95,17 +100,12 @@ public abstract class Game implements Playable {
             throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
         }
         var letterNumber = position.charAt(0);
-        var number = 0;
-        try {
-            number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        } catch (NumberFormatException ex) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
+        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
     @Override
-    public void play() throws EmptySquareException, NotAllowedMoveException {
+    public void play() throws NotAllowedMoveException, EmptySquareException {
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
             System.out.println(board);
             var next = getCurrentPlayer();
@@ -138,12 +138,20 @@ public abstract class Game implements Playable {
      * @return set of all possible moves than can do current player.
      */
     public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
-        return board.getAllPiecesFromBoard()
+        var inverseComparator = new Comparator<Coordinates>() {
+            @Override
+            public int compare(Coordinates o1, Coordinates o2) {
+                return -1 * o1.compareTo(o2);
+            }
+        };
+        var result = new TreeSet<>(inverseComparator);
+        result.addAll(board.getAllPiecesFromBoard()
                 .stream()
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
                 .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(Collectors.toUnmodifiableSet()));
+        return result;
     }
 
     @Override
@@ -156,7 +164,7 @@ public abstract class Game implements Playable {
             return false;
         }
         return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || board.equals(game.board);
+                stateOfGame != game.stateOfGame || !Objects.equals(board, game.board);
     }
 
     @Override

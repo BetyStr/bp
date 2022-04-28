@@ -29,15 +29,16 @@ public class Draughts extends Game {
 
     @Override
     public void setInitialSet() {
+        var factory = new DraughtsPieceFactory();
         for (int i = 0; i < Board.SIZE; i += 2) {
-            getBoard().putPieceOnBoard(i, 0, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 2, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 0, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE));
+            getBoard().putPieceOnBoard(i, 2, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE));
+            getBoard().putPieceOnBoard(i, 6, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK));
         }
         for (int i = 1; i < Board.SIZE; i += 2) {
-            getBoard().putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 5, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 7, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 1, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE));
+            getBoard().putPieceOnBoard(i, 5, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK));
+            getBoard().putPieceOnBoard(i, 7, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK));
         }
     }
 

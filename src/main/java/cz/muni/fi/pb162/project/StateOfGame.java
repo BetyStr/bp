@@ -16,4 +16,5 @@ public enum StateOfGame {
     public String toString() {
         return name().toLowerCase();
     }
+
 }
