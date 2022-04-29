@@ -15,8 +15,8 @@ public interface Playable {
     /**
      * Method that do one move in game. Get piece from {@code oldPosition} and put it to {@code newPosition}.
      *
-     * @param oldPosition coordinates of piece we want to move
-     * @param newPosition coordinates of place we want to put this piece
+     * @param oldPosition coordinate of piece we want to move.
+     * @param newPosition coordinate of place we want to put this piece.
      */
     void move(Coordinate oldPosition, Coordinate newPosition);
 
