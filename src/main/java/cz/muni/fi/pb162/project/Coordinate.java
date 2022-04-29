@@ -1,11 +1,11 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Class representing coordinates of board
+ * Class representing coordinate of board.
  *
  * @author Alzbeta Strompova
  */
-public class Coordinates {
+public class Coordinate {
 
     private int letterNumber;
     private int number;
@@ -16,7 +16,7 @@ public class Coordinates {
      * @param letterNumber first coordinate of board
      * @param number       second coordinate of board
      */
-    public Coordinates(int letterNumber, int number) {
+    public Coordinate(int letterNumber, int number) {
         this.letterNumber = letterNumber;
         this.number = number;
     }
@@ -40,19 +40,19 @@ public class Coordinates {
     /**
      * Addition of two coordinates.
      *
-     * @param other is second coordinates.
-     * @return new coordinates, which is created by adding the {@code other}.
+     * @param other is second coordinate.
+     * @return new coordinate, which is created by adding the {@code other}.
      */
-    public Coordinates add(Coordinates other) {
-        return new Coordinates(letterNumber + other.letterNumber, number + other.number);
+    public Coordinate add(Coordinate other) {
+        return new Coordinate(letterNumber + other.letterNumber, number + other.number);
     }
 
     /**
-     * Compute average of coordinates.
+     * Compute average of coordinate.
      *
-     * @return average of coordinates.
+     * @return average of coordinate.
      */
-    public double averageOfCoordinates() {
+    public double averageOfCoordinate() {
         return (letterNumber + number) / 2.0;
     }
 

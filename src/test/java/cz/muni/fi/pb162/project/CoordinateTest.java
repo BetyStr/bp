@@ -8,19 +8,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Alzbeta Strompova
  */
-class CoordinatesTest {
+class CoordinateTest {
 
-    private final Coordinates one = new Coordinates(1, 3);
-    private final Coordinates two = new Coordinates(-2, 0);
-    private final Coordinates three = new Coordinates(3, 9);
-    private final Coordinates four = new Coordinates(0, -23);
-    private final Coordinates five = new Coordinates(15, -4);
-    private final Coordinates six = new Coordinates(-7, 7);
+    private final Coordinate one = new Coordinate(1, 3);
+    private final Coordinate two = new Coordinate(-2, 0);
+    private final Coordinate three = new Coordinate(3, 9);
+    private final Coordinate four = new Coordinate(0, -23);
+    private final Coordinate five = new Coordinate(15, -4);
+    private final Coordinate six = new Coordinate(-7, 7);
 
     @Test
     void attributesAndMethodsAmount() {
-        BasicRulesTester.attributesAmount(Coordinates.class, 2);
-        BasicRulesTester.methodsAmount(Coordinates.class, 6);
+        BasicRulesTester.attributesAmount(Coordinate.class, 2);
+        BasicRulesTester.methodsAmount(Coordinate.class, 6);
     }
 
     @Test
@@ -78,8 +78,8 @@ class CoordinatesTest {
 
     @Test
     void averageOfCoordinates() {
-        assertEquals(-11.5, four.averageOfCoordinates());
-        assertEquals(5.5, five.averageOfCoordinates());
-        assertEquals(0, six.averageOfCoordinates());
+        assertEquals(-11.5, four.averageOfCoordinate());
+        assertEquals(5.5, five.averageOfCoordinate());
+        assertEquals(0, six.averageOfCoordinate());
     }
 }

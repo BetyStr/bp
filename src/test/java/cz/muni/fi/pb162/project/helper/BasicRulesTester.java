@@ -4,20 +4,18 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import org.assertj.core.api.Assertions;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.Assert;
 
 
 /**
  * @author Radek Oslejsek, Petr Adamek, Marek Sabo
  */
-public class BasicRulesTester {
+public class BasicRulesTester extends Assert {
 
     public static void attributesFinal(Class clazz) {
         Field[] attributes = BasicRulesTester.getFields(clazz);
         for (Field field : attributes) {
-            assertTrue(Modifier.isFinal(field.getModifiers()), "Attributes should be final");
+            assertTrue("Attributes should be final", Modifier.isFinal(field.getModifiers()));
         }
     }
 
@@ -46,8 +44,8 @@ public class BasicRulesTester {
      * @param checkedClass class to be checked
      */
     public static void testAncestor(Class ancestor, Class checkedClass) {
-        assertEquals(ancestor, checkedClass.getSuperclass(),
-                "Class " + checkedClass + "  should inherit from class " + ancestor);
+        assertEquals("Class " + checkedClass + "  should inherit from class " + ancestor,
+                ancestor, checkedClass.getSuperclass());
     }
 
     private static Field[] getFields(Class clazz) {

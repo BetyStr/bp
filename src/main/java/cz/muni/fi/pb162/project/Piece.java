@@ -1,13 +1,13 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Class represent piece of board game
+ * Class represent piece of board game.
  *
  * @author Alzbeta Strompova
  */
 public class Piece {
 
-    private long id;
+    private final long id;
 
     /**
      * Constructor which set up uniq id.
