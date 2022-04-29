@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Interface to help implement game
+ * Interface to help implement board game.
  *
  * @author Alzbeta Strompova
  */
@@ -18,7 +18,7 @@ public interface Playable {
      * @param oldPosition coordinates of piece we want to move
      * @param newPosition coordinates of place we want to put this piece
      */
-    void move(Coordinates oldPosition, Coordinates newPosition);
+    void move(Coordinate oldPosition, Coordinate newPosition);
 
     /**
      * Method that represent playing board game until is finish.

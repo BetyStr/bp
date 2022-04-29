@@ -1,6 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.utils.BoardNotation;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -23,10 +24,10 @@ public class Game implements Playable {
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
      */
-    public Game(Player playerOne, Player playerTwo, Board board) {
+    public Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.board = board;
+        this.board = new Board();
     }
 
     public Board getBoard() {
@@ -64,7 +65,7 @@ public class Game implements Playable {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinates getInputFromPlayer() {
+    private Coordinate getInputFromPlayer() {
         var position = SCANNER.next().trim();
         var letterNumber = position.charAt(0);
         var number = Integer.parseInt(String.valueOf(position.charAt(1)));
@@ -98,7 +99,7 @@ public class Game implements Playable {
     }
 
     @Override
-    public void move(Coordinates oldPosition, Coordinates newPosition) {
+    public void move(Coordinate oldPosition, Coordinate newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
@@ -120,22 +121,20 @@ public class Game implements Playable {
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
         }
-        System.out.println(board);
     }
 
     /**
      * Method that control if it needs to be change status of game.
      */
     public void updateStatus() {
-        var kings = getBoard()
-                .getAllPiecesFromBoard()
-                .stream()
+        var kings = Arrays.stream(getBoard()
+                        .getAllPiecesFromBoard())
                 .filter(x -> x.getTypeOfPiece().equals(PieceType.KING))
                 .toList();
         if (kings.size() < 2) {
             setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
-                    ? StateOfGame.BLACK_PLAYER_WIN
-                    : StateOfGame.WHITE_PLAYER_WIN);
+                    ? StateOfGame.WHITE_PLAYER_WIN
+                    : StateOfGame.BLACK_PLAYER_WIN);
         }
     }
 
