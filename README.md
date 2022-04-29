@@ -1,16 +1,27 @@
 ## Fifth iteration
 
 1. Add `DRAUGHTS_KING` and  `DRAUGHTS_MAN` to `PieceType`. 
-2. Create classes `Chess` and `Draughts` that inherit from the class `Game`.
-- Draughts will have different initial set, move and conditions of ending.
-  - Move will remove piece between old position and new position.  
-- Move all specific code about chess to `Chees`. 
-- Make `Game` abstract with abstract method `updateStatus`.
-3. Add control of castling in `move` in `Chess`.
-- When castling occurs then input of method `Move` will be old position and new position of King. 
-  You must in this method move Rook. (It is not necessary to check whether castling may occur. 
-  Assume that all conditions are fulfilled.) 
-4. Add `toString` to `Board`.
+2. Create classes `Chess` that will inherit from the class `Game`.
+   - Make `Game` abstract with abstract method `updateStatus`.
+   - Move all specific code about chess to `Chess`.
+3. Create class `Draughts`. It will have different initial set, move and conditions of ending from `Chess`.
+   - It will inherit from class `Game`.
+     - Method `setInitialSet` sets initial layout of draughts pieces.
+     - Method `move` will work with two options.
+       - If you move piece only by 1 square that method put piece to new position. 
+       - If you move piece by 2 square that method remove piece between old position and new position. 
+         > For example if you move piece from `(0,0)` to `(2,2)` than you must remove piece on `(1,1)`.
+       - You Can assume that you get valid input.
+   - Method `updateStatus` changes status if a player wins. If there is no piece of one color on the board, 
+    the player of the other color has won.
+4. Add control of castling in method `move` in `Chess`.
+   - When castling occurs then input of method `move` will be old position and new position of king. 
+     You must in this method move rook. (It is not necessary to check whether castling may occur. 
+     Assume that all conditions are fulfilled.)
+   
+   <img src="images/castling.jpg" alt="castling" width="600"/>.
+
+5. Add `toString` to `Board`. Return value `toString()` of board with initial position of pieces looks like this
 ```
    1   2   3   4   5   6   7   8
   --------------------------------
@@ -33,3 +44,7 @@ H | R | P |   |   |   |   | P | R |
 ```
 
 Hints:
+- Use `StringBuilder` instead of adding strings using the plus sign.
+- Use `System.lineSeparator()` instead of `\n`.
+- [Initial position of Draughts.](https://en.wikipedia.org/wiki/English_draughts#Starting_position)
+ 

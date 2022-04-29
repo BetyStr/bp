@@ -1,10 +1,10 @@
 package cz.muni.fi.pb162.project.utils;
 
-import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Coordinate;
 
 /**
  * "Static" final class for manipulation with Board notation.
- * Board have coordinates 1 - {@code Board.SIZE} and A,B,C... because this is better readable for humans.
+ * Board have coordinates 1 - {@code Board.SIZE} and A,B,C... because this is better readable for people.
  *
  * @author Alzbeta Strompova
  */
@@ -15,8 +15,7 @@ public final class BoardNotation {
     /**
      * Private constructor to prevent implementation
      */
-    private BoardNotation() {
-    }
+    private BoardNotation() {}
 
     private static char getLetterFromNumber(int number) {
         return (char) (number + UNICODE_VALUE_FOR_A);
@@ -44,7 +43,7 @@ public final class BoardNotation {
      * @param y 1-8 => 0-7
      * @return a5 example 04
      */
-    public static Coordinates getCoordinatesOfNotation(char x, int y) {
-        return new Coordinates(getNumberFromLetter(x), y - 1);
+    public static Coordinate getCoordinatesOfNotation(char x, int y) {
+        return new Coordinate(getNumberFromLetter(x), y - 1);
     }
 }

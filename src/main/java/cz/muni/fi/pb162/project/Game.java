@@ -4,7 +4,7 @@ import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Scanner;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
@@ -23,10 +23,10 @@ public abstract class Game implements Playable {
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
      */
-    protected Game(Player playerOne, Player playerTwo, Board board) {
+    protected Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.board = board;
+        this.board = new Board();
     }
 
     public Board getBoard() {
@@ -64,7 +64,7 @@ public abstract class Game implements Playable {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinates getInputFromPlayer() {
+    private Coordinate getInputFromPlayer() {
         var position = SCANNER.next().trim();
         var letterNumber = position.charAt(0);
         var number = Integer.parseInt(String.valueOf(position.charAt(1)));

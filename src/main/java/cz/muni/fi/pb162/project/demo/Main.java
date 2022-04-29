@@ -18,8 +18,8 @@ public class Main {
      * @param args command line arguments, will be ignored.
      */
     public static void main(String[] args) {
-        var player1 = new Player("Matko", Color.WHITE);
-        var player2 = new Player("Janko", Color.BLACK);
+        var player1 = new Player("Mat", Color.WHITE);
+        var player2 = new Player("Pat", Color.BLACK);
 
         var chess = new Chess(player1, player2);
         chess.setInitialSet();

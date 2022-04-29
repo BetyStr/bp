@@ -34,11 +34,11 @@ public class Piece implements Prototype {
         return color;
     }
 
-    public PieceType getTypeOfPiece() {
+    public PieceType getPieceType() {
         return pieceType;
     }
 
-    public void setTypeOfPiece(PieceType pieceType) {
+    public void setPieceType(PieceType pieceType) {
         this.pieceType = pieceType;
     }
 
