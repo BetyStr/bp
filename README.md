@@ -43,4 +43,4 @@ Hints:
 - In Piece class create a private constant of instance `AtomicLong` (`import java.util.concurrent.atomic.AtomicLong;`).
 - Class `AtomicLong` have method `getAndIncrement`.
 - Do not forget change in your code `getLetterNumber()` and `getNumber()` to `number()` and `letterNumber()`.
-- Value for char `A` is `97`.
+- Value for char `a` is `97`.
