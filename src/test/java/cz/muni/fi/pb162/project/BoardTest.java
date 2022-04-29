@@ -34,21 +34,33 @@ class BoardTest {
 
     @Test
     void getPiece() {
+        var piece = new Piece();
+        board.putPieceOnBoard(3, 4, piece);
+        board.putPieceOnBoard(6, 1, piece);
+        var piece2 = new Piece();
+        board.putPieceOnBoard(2, 2, piece2);
+        board.putPieceOnBoard(5, 7, piece2);
+
         assertNull(board.getPiece(1, 3));
         assertNull(board.getPiece(7, 6));
-//        assertThrows(IndexOutOfBoundsException.class, board.getPiece(9,9));
+        assertNull(board.getPiece(9, 9));
+        assertNull(board.getPiece(2, -2));
+        assertEquals(piece, board.getPiece(3, 4));
+        assertEquals(piece, board.getPiece(6, 1));
+        assertEquals(piece2, board.getPiece(2, 2));
+        assertEquals(piece2, board.getPiece(5, 7));
     }
 
     @Test
     void inRange() {
-        assertTrue(Board.inRange(new Coordinates(2, 4)));
-        assertTrue(Board.inRange(new Coordinates(0, 0)));
-        assertTrue(Board.inRange(new Coordinates(7, 7)));
-        assertTrue(Board.inRange(new Coordinates(6, 1)));
-        assertFalse(Board.inRange(new Coordinates(5, 15)));
-        assertFalse(Board.inRange(new Coordinates(0, 9)));
-        assertFalse(Board.inRange(new Coordinates(8, 0)));
-        assertFalse(Board.inRange(new Coordinates(-4, -7)));
+        assertTrue(Board.inRange(new Coordinate(2, 4)));
+        assertTrue(Board.inRange(new Coordinate(0, 0)));
+        assertTrue(Board.inRange(new Coordinate(7, 7)));
+        assertTrue(Board.inRange(new Coordinate(6, 1)));
+        assertFalse(Board.inRange(new Coordinate(5, 15)));
+        assertFalse(Board.inRange(new Coordinate(0, 9)));
+        assertFalse(Board.inRange(new Coordinate(8, 0)));
+        assertFalse(Board.inRange(new Coordinate(-4, -7)));
     }
 
     @Test
@@ -66,9 +78,7 @@ class BoardTest {
         assertFalse(board.isEmpty(6, 1));
         assertFalse(board.isEmpty(2, 2));
         assertFalse(board.isEmpty(5, 7));
-
     }
-
 
     @Test
     void findCoordinatesOfPieceById() {
@@ -82,8 +92,5 @@ class BoardTest {
         var result2 = board.findCoordinatesOfPieceById(piece2.getId());
         assertEquals(2, result2.letterNumber());
         assertEquals(7, result2.number());
-        var result3 = board.findCoordinatesOfPieceById(piece.getId() + piece.getId());
-        assertNull(result3);
-
     }
 }
