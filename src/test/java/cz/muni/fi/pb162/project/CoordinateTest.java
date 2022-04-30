@@ -8,19 +8,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Alzbeta Strompova
  */
-class CoordinatesTest {
+class CoordinateTest {
 
-    private final Coordinates one = new Coordinates(1, 3);
-    private final Coordinates two = new Coordinates(-2, 0);
-    private final Coordinates three = new Coordinates(3, 9);
-    private final Coordinates four = new Coordinates(0, -23);
-    private final Coordinates five = new Coordinates(15, -4);
-    private final Coordinates six = new Coordinates(-7, 7);
+    private final Coordinate one = new Coordinate(1, 3);
+    private final Coordinate two = new Coordinate(-2, 0);
+    private final Coordinate three = new Coordinate(3, 9);
+    private final Coordinate four = new Coordinate(0, -23);
+    private final Coordinate five = new Coordinate(15, -4);
+    private final Coordinate six = new Coordinate(-7, 7);
 
     @Test
     void attributesAndMethodsAmount() {
-        BasicRulesTester.attributesAmount(Coordinates.class, 2);
-        BasicRulesTester.methodsAmount(Coordinates.class, 7);
+        BasicRulesTester.attributesAmount(Coordinate.class, 2);
+        BasicRulesTester.methodsAmount(Coordinate.class, 7);
+        BasicRulesTester.attributesFinal(Player.class);
     }
 
     @Test
@@ -66,13 +67,13 @@ class CoordinatesTest {
 
     @Test
     void testToString() {
-        assertEquals("b2", new Coordinates(1, 1).toString());
-        assertEquals("h1", new Coordinates(7, 0).toString());
-        assertEquals("a7", new Coordinates(0, 6).toString());
-        assertEquals("c5", new Coordinates(2, 4).toString());
-        assertEquals("e4", new Coordinates(4, 3).toString());
-        assertEquals("f6", new Coordinates(5, 5).toString());
-        assertEquals("d3", new Coordinates(3, 2).toString());
-        assertEquals("g8", new Coordinates(6, 7).toString());
+        assertEquals("b2", new Coordinate(1, 1).toString());
+        assertEquals("h1", new Coordinate(7, 0).toString());
+        assertEquals("a7", new Coordinate(0, 6).toString());
+        assertEquals("c5", new Coordinate(2, 4).toString());
+        assertEquals("e4", new Coordinate(4, 3).toString());
+        assertEquals("f6", new Coordinate(5, 5).toString());
+        assertEquals("d3", new Coordinate(3, 2).toString());
+        assertEquals("g8", new Coordinate(6, 7).toString());
     }
 }

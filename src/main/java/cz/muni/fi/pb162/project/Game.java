@@ -9,11 +9,11 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Playable, Caretaker {
+public abstract class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
     private final Deque<Board> mementoHistory = new LinkedList<>();
@@ -24,17 +24,16 @@ public abstract class Game implements Playable, Caretaker {
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Protected constructor because Builder.
+     * Constructor.
      *
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
      */
-    protected Game(Player playerOne, Player playerTwo, Board board) {
+    protected Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.board = board;
+        this.board = new Board();
     }
-
 
     public Collection<Board> getMementoHistory() {
         return Collections.unmodifiableCollection(mementoHistory);
@@ -75,7 +74,7 @@ public abstract class Game implements Playable, Caretaker {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinates getInputFromPlayer() {
+    private Coordinate getInputFromPlayer() {
         var position = SCANNER.next().trim();
         var letterNumber = position.charAt(0);
         var number = Integer.parseInt(String.valueOf(position.charAt(1)));
@@ -92,8 +91,9 @@ public abstract class Game implements Playable, Caretaker {
             var toPosition = getInputFromPlayer();
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
+            hitSave();
+            System.out.println(board);
         }
-        System.out.println(board);
     }
 
     /**
@@ -111,8 +111,8 @@ public abstract class Game implements Playable, Caretaker {
         if (!(o instanceof Game game)) {
             return false;
         }
-        return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || !Objects.equals(board, game.board);
+        return Objects.equals(playerOne, game.playerOne) && Objects.equals(playerTwo, game.playerTwo) &&
+                stateOfGame == game.stateOfGame && Objects.equals(board, game.board);
     }
 
     @Override
@@ -128,7 +128,7 @@ public abstract class Game implements Playable, Caretaker {
     @Override
     public void hitUndo() {
         if (!mementoHistory.isEmpty()) {
-            board.restore(mementoHistory.pop());
+            board.restore(mementoHistory.poll());
         }
     }
 

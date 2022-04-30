@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Coordinate;
 import cz.muni.fi.pb162.project.Game;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,9 +50,9 @@ public class Diagonal implements Move {
 
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+    public Set<Coordinate> getAllowedMoves(Game game, Coordinate position) {
         var board = game.getBoard();
-        var result = new HashSet<Coordinates>();
+        var result = new HashSet<Coordinate>();
         var color = board.getPiece(position).getColor();
         Color goal;
 
@@ -63,10 +63,10 @@ public class Diagonal implements Move {
                 var right = position.number() + i * movement.getRight();
                 goal = board.getColor(left, right);
                 if (goal == null) {
-                    result.add(new Coordinates(left, right));
+                    result.add(new Coordinate(left, right));
                 } else {
                     if (color.getOppositeColor().equals(goal)) {
-                        result.add(new Coordinates(left, right));
+                        result.add(new Coordinate(left, right));
                     }
                     break;
                 }

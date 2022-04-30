@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project.moves;
 
 
-import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Coordinate;
 import cz.muni.fi.pb162.project.Game;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,7 +24,7 @@ public interface Move {
      * @param position position of piece
      * @return Set of allowed moves of specific movement some piece
      */
-    Set<Coordinates> getAllowedMoves(Game game, Coordinates position);
+    Set<Coordinate> getAllowedMoves(Game game, Coordinate position);
 
     /**
      * Helper static method that return Set of Pairs Integers. These Integers representing Diagonal shifts.
@@ -33,7 +33,7 @@ public interface Move {
      * @return set of Pairs Integers. These Integers representing Diagonal shifts.
      */
     static Set<Pair<Integer, Integer>> getDiagonalShift(boolean onlyForward) {
-        HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
+        Set<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
                 Pair.of(1, 1),
                 Pair.of(-1, 1)));
         if (!onlyForward) {

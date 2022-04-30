@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Board;
-import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Coordinate;
 import cz.muni.fi.pb162.project.Game;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,9 +34,9 @@ public class Straight implements Move {
     }
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+    public Set<Coordinate> getAllowedMoves(Game game, Coordinate position) {
         var board = game.getBoard();
-        var result = new HashSet<Coordinates>();
+        var result = new HashSet<Coordinate>();
         var color = board.getPiece(position).getColor();
 
         HashSet<Pair<Integer, Integer>> coordinates = new HashSet<>(Arrays.asList(
@@ -50,10 +50,10 @@ public class Straight implements Move {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 if (board.getColor(left, right) == null) {
-                    result.add(new Coordinates(left, right));
+                    result.add(new Coordinate(left, right));
                 } else {
                     if (color.getOppositeColor().equals(board.getColor(left, right))) {
-                        result.add(new Coordinates(left, right));
+                        result.add(new Coordinate(left, right));
                     }
                     break;
                 }
