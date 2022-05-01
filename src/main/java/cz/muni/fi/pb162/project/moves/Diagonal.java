@@ -56,20 +56,24 @@ public class Diagonal implements Move {
         var color = board.getPiece(position).getColor();
         Color goal;
 
-        var coordinates = Move.getDiagonalShift(onlyForward);
+        var coordinates = Move.getDiagonalShift(onlyForward, color);
         for (Pair<Integer, Integer> movement : coordinates) {
             for (int i = 1; i <= step; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 goal = board.getColor(left, right);
-                if (goal == null) {
-                    result.add(new Coordinate(left, right));
-                } else {
-                    if (color.getOppositeColor().equals(goal)) {
-                        result.add(new Coordinate(left, right));
-                    }
+                var coordinate = new Coordinate(left, right);
+                if (!Board.inRange(coordinate)) {
                     break;
                 }
+                if (goal == null) {
+                    result.add(coordinate);
+                    continue;
+                }
+                if (color.getOppositeColor().equals(goal)) {
+                    result.add(coordinate);
+                }
+                break;
             }
         }
         return result;

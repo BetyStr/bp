@@ -89,18 +89,16 @@ class DraughtsTest {
         assertEquals(24, pieces.length);
         assertTrue(Arrays.stream(pieces)
                 .allMatch(x -> x.getPieceType().equals(PieceType.DRAUGHTS_MAN)));
-        IntStream.range(0, 3)
-                .forEach(finalI -> assertTrue(IntStream.range(0, 7)
-                                .filter(x -> x % 2 == finalI % 2)
-                                .mapToObj(x -> game.getBoard().getPiece(x, finalI))
-                                .allMatch(x -> x.getColor().equals(Color.WHITE)),
-                        "Wrong order of pieces on the board in the " + finalI + "st column"));
-        IntStream.range(5, 8)
-                .forEach(finalI -> assertTrue(IntStream.range(0, 7)
-                                .filter(x -> x % 2 == finalI % 2)
-                                .mapToObj(x -> game.getBoard().getPiece(x, finalI))
-                                .allMatch(x -> x.getColor().equals(Color.BLACK)),
-                        "Wrong order of pieces on the board in the " + finalI + "st column"));
+        IntStream.range(0, 3).forEach(i -> columnStream(i, Color.WHITE));
+        IntStream.range(5, 8).forEach(i -> columnStream(i, Color.BLACK));
+    }
+
+    private void columnStream(int finalI, Color white) {
+        assertTrue(IntStream.range(0, 7)
+                        .filter(x -> x % 2 == finalI % 2)
+                        .mapToObj(x -> game.getBoard().getPiece(x, finalI))
+                        .allMatch(x -> x.getColor().equals(white)),
+                "Wrong order of pieces on the board in the " + finalI + ". column");
     }
 
     @Test
