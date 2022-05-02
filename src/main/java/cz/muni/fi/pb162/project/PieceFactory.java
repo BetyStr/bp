@@ -9,35 +9,21 @@ import java.util.Set;
  *
  * @author Alzbeta Strompova
  */
-public abstract class PieceFactory {
+public abstract class PieceFactory implements FactoryMethodOfPiece {
 
     private final Map<PieceType, Piece> pieces = new EnumMap<>(PieceType.class);
 
     protected PieceFactory(Set<PieceType> setOfPieceTypes) {
         var setOfPieces = createSetOfPrototypes(setOfPieceTypes);
         for (Piece piece : setOfPieces) {
-            pieces.put(piece.getTypeOfPiece(), piece);
+            pieces.put(piece.getPieceType(), piece);
         }
     }
 
-    /**
-     * Method returns a set of prototypes of pieces
-     * that have such types as they are in the input parameter {@code setOfPieceTypes}.
-     *
-     * @param setOfPieceTypes the set of types we want to be pieces.
-     * @return a set of prototypes of pieces
-     * that have such types as they are in the input parameter {@code setOfPieceTypes}.
-     */
+    @Override
     public abstract Set<Piece> createSetOfPrototypes(Set<PieceType> setOfPieceTypes);
 
-
-    /**
-     * Method returns piece with type {@code typeOfPiece}, color {@code color} and unique {@code id}.
-     *
-     * @param pieceType of new piece.
-     * @param color       of new piece.
-     * @return new piece with type {@code typeOfPiece}, color {@code color} and unique {@code id}.
-     */
+    @Override
     public Piece createPiece(PieceType pieceType, Color color) {
         var piece = pieces.get(pieceType);
         if (piece == null) {
