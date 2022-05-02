@@ -2,6 +2,7 @@ package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.moves.Move;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -47,22 +48,26 @@ public class Piece implements Prototype {
         this.color = color;
     }
 
-    public PieceType getTypeOfPiece() {
+    public PieceType getPieceType() {
         return pieceType;
     }
 
-    public void setTypeOfPiece(PieceType pieceType) {
+    public void setPieceType(PieceType pieceType) {
         this.pieceType = pieceType;
+    }
+
+    public List<Move> getMoves() {
+        return Collections.unmodifiableList(moves);
     }
 
     /**
      * Returns set of coordinates x, y which represent position at board
-     * when the piece can move
+     * when the piece can move.
      *
-     * @param game has board which representing actual layout of pieces
-     * @return coordinates of all possible move at actual board
+     * @param game has board which representing actual layout of pieces.
+     * @return coordinates of all possible move at actual board.
      */
-    public Set<Coordinates> getAllPossibleMoves(Game game) {
+    public Set<Coordinate> getAllPossibleMoves(Game game) {
         return moves
                 .stream()
                 .map(strategy -> strategy
@@ -75,7 +80,12 @@ public class Piece implements Prototype {
 
     @Override
     public String toString() {
-        return getTypeOfPiece().getSymbol(getColor());
+        return pieceType.getSymbol(color);
+    }
+
+    @Override
+    public Piece makeClone() {
+        return new Piece(color, pieceType, moves);
     }
 
     @Override
@@ -83,7 +93,7 @@ public class Piece implements Prototype {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() == o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Piece piece = (Piece) o;
@@ -95,8 +105,4 @@ public class Piece implements Prototype {
         return Objects.hash(id);
     }
 
-    @Override
-    public Piece makeClone() {
-        return new Piece(color, pieceType, moves);
-    }
 }

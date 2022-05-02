@@ -1,6 +1,7 @@
 package cz.muni.fi.pb162.project.moves;
 
-import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Board;
+import cz.muni.fi.pb162.project.Coordinate;
 import cz.muni.fi.pb162.project.Game;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,20 +34,21 @@ public class Jump implements Move {
 
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+    public Set<Coordinate> getAllowedMoves(Game game, Coordinate position) {
         var board = game.getBoard();
-        var result = new HashSet<Coordinates>();
-        var coordinates = Move.getDiagonalShift(onlyForward);
+        var result = new HashSet<Coordinate>();
+        var color = board.getColor(position.letterNumber(), position.number());
+        var coordinates = Move.getDiagonalShift(onlyForward, color);
 
         for (Pair<Integer, Integer> movement : coordinates) {
             var leftToJump = position.letterNumber() + movement.getLeft();
             var rightToJump = position.number() + movement.getRight();
             var leftGoal = leftToJump + movement.getLeft();
             var rightGoal = rightToJump + movement.getRight();
-            if (board.getColor(position.letterNumber(), position.number())
-                    .getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
-                    && board.getColor(leftGoal, rightGoal) == null) {
-                result.add(new Coordinates(leftToJump, rightToJump));
+            if (color.getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
+                    && board.getPiece(leftGoal, rightGoal) == null
+                    && Board.inRange(new Coordinate(leftGoal, rightGoal))) {
+                result.add(new Coordinate(leftGoal, rightGoal));
             }
         }
         return result;

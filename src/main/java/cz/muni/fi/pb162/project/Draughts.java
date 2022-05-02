@@ -1,5 +1,7 @@
 package cz.muni.fi.pb162.project;
 
+import java.util.Arrays;
+
 /**
  * Class for representing simplification of board game Draughts.
  * Subclass of abstract class {@code Game}.
@@ -15,7 +17,7 @@ public class Draughts extends Game {
      * @param playerTwo second of two players needed to play draughts.
      */
     public Draughts(Player playerOne, Player playerTwo) {
-        super(playerOne, playerTwo, new Board());
+        super(playerOne, playerTwo);
     }
 
     @Override
@@ -34,7 +36,7 @@ public class Draughts extends Game {
     }
 
     @Override
-    public void move(Coordinates oldPosition, Coordinates newPosition) {
+    public void move(Coordinate oldPosition, Coordinate newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
@@ -43,19 +45,31 @@ public class Draughts extends Game {
             var y = oldPosition.number() + (newPosition.number() - oldPosition.number()) / 2;
             putPieceOnBoard(x, y, null);
         }
+        // promotion
+        if ((newPosition.number() == 0 && piece.getColor().equals(Color.BLACK)
+                || newPosition.number() == 7 && piece.getColor().equals(Color.WHITE) )
+                && piece.getPieceType().equals(PieceType.DRAUGHTS_MAN)) {
+            piece.setPieceType(PieceType.DRAUGHTS_KING);
+        }
     }
 
     @Override
     public void updateStatus() {
-        if (getBoard().getAllPiecesFromBoard()
-                .stream()
-                .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
-                .toList()
-                .isEmpty()) {
-            setStateOfGame(getCurrentPlayer().color().equals(Color.WHITE)
-                    ? StateOfGame.BLACK_PLAYER_WIN
-                    : StateOfGame.WHITE_PLAYER_WIN);
+        if (checkWinner(Color.WHITE)) {
+            setStateOfGame(StateOfGame.WHITE_PLAYER_WIN);
         }
+        if (checkWinner(Color.BLACK)) {
+            setStateOfGame(StateOfGame.BLACK_PLAYER_WIN);
+        }
+    }
+
+    private boolean checkWinner(Color color) {
+        return Arrays.stream(getBoard()
+                        .getAllPiecesFromBoard())
+                .filter(x -> x.getColor().equals(color.getOppositeColor()))
+                .toList()
+                .isEmpty();
+
     }
 
 }

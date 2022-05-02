@@ -1,5 +1,7 @@
 package cz.muni.fi.pb162.project;
 
+import java.util.Arrays;
+
 /**
  * Class for representing simplification of board game Chess.
  * Subclass of abstract class {@code Game}.
@@ -15,7 +17,7 @@ public class Chess extends Game {
      * @param playerTwo second of two players needed to play chess
      */
     public Chess(Player playerOne, Player playerTwo) {
-        super(playerOne, playerTwo, new Board());
+        super(playerOne, playerTwo);
     }
 
     @Override
@@ -46,44 +48,45 @@ public class Chess extends Game {
         }
     }
 
-    private void checkCastling(Coordinates oldPosition, Coordinates newPosition) {
+    private void checkCastling(Coordinate oldPosition, Coordinate newPosition) {
         var piece = getBoard().getPiece(oldPosition);
-        if (!piece.getTypeOfPiece().equals(PieceType.KING)) {
+        if (!piece.getPieceType().equals(PieceType.KING)) {
             return;
         }
-        int diff = Math.abs(oldPosition.letterNumber() - newPosition.letterNumber());
-        if (diff > 1) {
-            putPieceOnBoard(oldPosition.letterNumber() + 1, oldPosition.number(),
-                    getBoard().getPiece(oldPosition.letterNumber() + diff + 1, oldPosition.number()));
-            putPieceOnBoard(oldPosition.letterNumber() + diff + 1, oldPosition.number(), null);
+        if (Math.abs(oldPosition.letterNumber() - newPosition.letterNumber()) > 1) {
+            if (newPosition.letterNumber() == 2) {
+                move(new Coordinate(0, oldPosition.number()),
+                        new Coordinate(3, oldPosition.number()));
+            } else {
+                move(new Coordinate(7, oldPosition.number()),
+                        new Coordinate(5, oldPosition.number()));
+            }
         }
-
     }
 
     @Override
-    public void move(Coordinates oldPosition, Coordinates newPosition) {
+    public void move(Coordinate oldPosition, Coordinate newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         checkCastling(oldPosition, newPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
-                && piece.getTypeOfPiece().equals(PieceType.PAWN)) {
-            piece.setTypeOfPiece(PieceType.QUEEN);
+                && piece.getPieceType().equals(PieceType.PAWN)) {
+            piece.setPieceType(PieceType.QUEEN);
         }
     }
 
     @Override
     public void updateStatus() {
-        var kings = getBoard()
-                .getAllPiecesFromBoard()
-                .stream()
-                .filter(x -> x.getTypeOfPiece().equals(PieceType.KING))
+        var kings = Arrays.stream(getBoard()
+                        .getAllPiecesFromBoard())
+                .filter(x -> x.getPieceType().equals(PieceType.KING))
                 .toList();
         if (kings.size() < 2) {
             setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
-                    ? StateOfGame.BLACK_PLAYER_WIN
-                    : StateOfGame.WHITE_PLAYER_WIN);
+                    ? StateOfGame.WHITE_PLAYER_WIN
+                    : StateOfGame.BLACK_PLAYER_WIN);
         }
     }
 

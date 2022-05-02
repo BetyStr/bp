@@ -18,7 +18,7 @@ public interface Originator<T> {
 
     /**
      * Method that "take snapshot" (create Memento that means state of class)
-     * and save it to originator attribute or some database/history/document
+     * and save it to caretaker attribute or some database/history/document
      *
      * @return Memento. State of class Originator class.
      */

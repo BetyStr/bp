@@ -1,6 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.utils.BoardNotation;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -11,11 +12,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Playable, Caretaker {
+public abstract class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
     private final Deque<Board> mementoHistory = new LinkedList<>();
@@ -26,15 +27,15 @@ public abstract class Game implements Playable, Caretaker {
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Protected constructor because Builder.
+     * Constructor.
      *
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
      */
-    protected Game(Player playerOne, Player playerTwo, Board board) {
+    protected Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.board = board;
+        this.board = new Board();
     }
 
     public Collection<Board> getMementoHistory() {
@@ -76,7 +77,7 @@ public abstract class Game implements Playable, Caretaker {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinates getInputFromPlayer() {
+    private Coordinate getInputFromPlayer() {
         var position = SCANNER.next().trim();
         var letterNumber = position.charAt(0);
         var number = Integer.parseInt(String.valueOf(position.charAt(1)));
@@ -85,8 +86,8 @@ public abstract class Game implements Playable, Caretaker {
 
     @Override
     public void play() {
+        System.out.println(board);
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
-            System.out.println(board);
             var next = getCurrentPlayer();
             updateStatus();
             System.out.printf("Next one is %s%n", next);
@@ -95,8 +96,8 @@ public abstract class Game implements Playable, Caretaker {
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
             hitSave();
+            System.out.println(board);
         }
-        System.out.println(board);
     }
 
     /**
@@ -109,9 +110,8 @@ public abstract class Game implements Playable, Caretaker {
      *
      * @return set of all possible moves than can do current player.
      */
-    public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
-        return board.getAllPiecesFromBoard()
-                .stream()
+    public Set<Coordinate> allPossibleMovesByCurrentPlayer() {
+        return Arrays.stream(board.getAllPiecesFromBoard())
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
                 .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
@@ -127,8 +127,8 @@ public abstract class Game implements Playable, Caretaker {
         if (!(o instanceof Game game)) {
             return false;
         }
-        return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || !Objects.equals(board, game.board);
+        return Objects.equals(playerOne, game.playerOne) && Objects.equals(playerTwo, game.playerTwo) &&
+                stateOfGame == game.stateOfGame && Objects.equals(board, game.board);
     }
 
     @Override
