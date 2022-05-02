@@ -5,10 +5,12 @@
    - All positions to return must be empty or occupied by the piece of opposite color.
    - Class `Knight` (L move) do not have any attribute.
      - It is straight move by two squares, rotation by 90 degrees to one of side and move by one square.
-   - Class `Pawn` is straight move only forward by one or two steps.
+   - Class `Pawn` is straight move only forward by one or two steps if the position is empty. 
      - If piece is not move already (his position is the second in case of white pieces 
        or the seventh column in case of black pieces) then the piece can move by one or two steps forward 
        otherwise only by one step.
+     - `Pawn` move included case that is a piece of opposite color one step further diagonally. 
+       (In our implementation, we neglect the movement En passant.)
 2. Add method `getSymbol` to `PieceType`.
    - The method returns string which contains only one unicode character.
      base on `color` (given as input parameter) and `piecetype`.
