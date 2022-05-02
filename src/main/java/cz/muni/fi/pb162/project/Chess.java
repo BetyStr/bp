@@ -2,6 +2,7 @@ package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class Chess extends Game {
      * @param playerTwo second of two players needed to play chess
      */
     public Chess(Player playerOne, Player playerTwo) {
-        super(playerOne, playerTwo, new Board());
+        super(playerOne, playerTwo);
     }
 
     /**
@@ -33,11 +34,11 @@ public class Chess extends Game {
     }
 
     /**
-     * Private constructor because design pattern builder
+     * Private constructor because design pattern builder.
      *
-     * @param playerOne first of two players needed to play chess
-     * @param playerTwo second of two players needed to play chess
-     * @param board     is 2-dimensional array to represent board of pieces
+     * @param playerOne first of two players needed to play chess.
+     * @param playerTwo second of two players needed to play chess.
+     * @param board     is 2-dimensional array to represent board of pieces.
      */
     private Chess(Player playerOne, Player playerTwo, Board board) {
         super(playerOne, playerTwo, board);
@@ -46,7 +47,6 @@ public class Chess extends Game {
     @Override
     public void setInitialSet() {
         var factory = new ChessPieceFactory();
-
         putPieceOnBoard(4, 0, factory.createPiece(PieceType.KING, Color.WHITE));
         putPieceOnBoard(3, 0, factory.createPiece(PieceType.QUEEN, Color.WHITE));
         putPieceOnBoard(0, 0, factory.createPiece(PieceType.ROOK, Color.WHITE));
@@ -71,84 +71,80 @@ public class Chess extends Game {
         }
     }
 
-    private void checkCastling(Coordinates oldPosition, Coordinates newPosition) {
+    private void checkCastling(Coordinate oldPosition, Coordinate newPosition) {
         var piece = getBoard().getPiece(oldPosition);
-        if (!piece.getTypeOfPiece().equals(PieceType.KING)) {
+        if (!piece.getPieceType().equals(PieceType.KING)) {
             return;
         }
-        int diff = Math.abs(oldPosition.letterNumber() - newPosition.letterNumber());
-        if (diff > 1) {
-            putPieceOnBoard(oldPosition.letterNumber() + 1, oldPosition.number(),
-                    getBoard().getPiece(oldPosition.letterNumber() + diff + 1, oldPosition.number()));
-            putPieceOnBoard(oldPosition.letterNumber() + diff + 1, oldPosition.number(), null);
+        if (Math.abs(oldPosition.letterNumber() - newPosition.letterNumber()) > 1) {
+            if (newPosition.letterNumber() == 2) {
+                move(new Coordinate(0, oldPosition.number()),
+                        new Coordinate(3, oldPosition.number()));
+            } else {
+                move(new Coordinate(7, oldPosition.number()),
+                        new Coordinate(5, oldPosition.number()));
+            }
         }
-
     }
 
     @Override
-    public void move(Coordinates oldPosition, Coordinates newPosition) {
+    public void move(Coordinate oldPosition, Coordinate newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         checkCastling(oldPosition, newPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
         // promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
-                && piece.getTypeOfPiece().equals(PieceType.PAWN)) {
-            piece.setTypeOfPiece(PieceType.QUEEN);
+                && piece.getPieceType().equals(PieceType.PAWN)) {
+            piece.setPieceType(PieceType.QUEEN);
         }
     }
 
     @Override
     public void updateStatus() {
-        if (allPossibleMovesByCurrentPlayer().isEmpty()) {
-            setStateOfGame(StateOfGame.PAT);
-        }
-        var kings = getBoard()
-                .getAllPiecesFromBoard()
-                .stream()
-                .filter(x -> x.getTypeOfPiece().equals(PieceType.KING))
+        var kings = Arrays.stream(getBoard()
+                        .getAllPiecesFromBoard())
+                .filter(x -> x.getPieceType().equals(PieceType.KING))
                 .toList();
         if (kings.size() < 2) {
             setStateOfGame(kings.get(0).getColor().equals(Color.WHITE)
-                    ? StateOfGame.BLACK_PLAYER_WIN
-                    : StateOfGame.WHITE_PLAYER_WIN);
+                    ? StateOfGame.WHITE_PLAYER_WIN
+                    : StateOfGame.BLACK_PLAYER_WIN);
         }
     }
 
     /**
-     * Method that control if position ({@code x}, {@code y}) is in danger by {@code color}.
+     * Method control if position ({@code x}, {@code y}) is in danger by {@code color}.
      * First I put some piece on this position ({@code x}, {@code y}) (if he is empty) because {@code Pawn}  move.
      * After test, I removed it.
      *
-     * @param x     first coordinate of position
-     * @param y     second coordinate of position
-     * @param color by which color we control that position is in danger.
+     * @param letterNumber first coordinate of position
+     * @param number       second coordinate of position
+     * @param color        by which color we control that position is in danger.
      * @return true if position is in danger by anu piece of {@code color}.
      */
-    public boolean isInDanger(int x, int y, Color color) {
-        var emptyPosition = getBoard().isEmpty(x, y);
+    public boolean isInDanger(int letterNumber, int number, Color color) {
+        var emptyPosition = getBoard().isEmpty(letterNumber, number);
         if (emptyPosition) {
-            putPieceOnBoard(x, y, new ChessPieceFactory().createPiece(PieceType.QUEEN, color.getOppositeColor()));
+            putPieceOnBoard(letterNumber, number,
+                    new ChessPieceFactory().createPiece(PieceType.QUEEN, color.getOppositeColor()));
         }
-        var value = getBoard().getAllPiecesFromBoard()
-                .stream()
+        var value = Arrays.stream(getBoard().getAllPiecesFromBoard())
                 .filter(q -> q.getColor().equals(color))
                 .map(q -> q.getAllPossibleMoves(this, false))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet())
-                .contains(new Coordinates(x, y));
+                .contains(new Coordinate(letterNumber, number));
         if (emptyPosition) {
-            putPieceOnBoard(x, y, null);
+            putPieceOnBoard(letterNumber, number, null);
         }
         return value;
     }
 
-    ///region Prototype
     @Override
     public Playable makeClone() {
         return new Chess(this);
     }
-    ///endregion Prototype
 
     ///region Builder
 
@@ -203,5 +199,5 @@ public class Chess extends Game {
             return new Chess(playerOne, playerTwo, board);
         }
     }
-    ///endregion Builder and Readable
+    ///endregion Builder
 }

@@ -44,7 +44,7 @@ public class ChessPieceFactory extends PieceFactory {
             case ROOK -> List.of(new Straight());
             case KNIGHT -> List.of(new Knight());
             case PAWN -> List.of(new Pawn());
-            default -> throw new IllegalArgumentException("Unknown type in chess");
+            default -> throw new IllegalArgumentException("Unknown type in chess.");
         };
         return new Piece(Color.WHITE, pieceType, listOfMoves);
     }

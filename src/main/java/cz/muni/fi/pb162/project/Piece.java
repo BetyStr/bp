@@ -3,6 +3,7 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.moves.Castling;
 import cz.muni.fi.pb162.project.moves.Move;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -48,23 +49,27 @@ public class Piece implements Prototype<Piece> {
         this.color = color;
     }
 
-    public PieceType getTypeOfPiece() {
+    public PieceType getPieceType() {
         return pieceType;
     }
 
-    public void setTypeOfPiece(PieceType pieceType) {
+    public void setPieceType(PieceType pieceType) {
         this.pieceType = pieceType;
+    }
+
+    public List<Move> getMoves() {
+        return Collections.unmodifiableList(moves);
     }
 
     /**
      * Returns set of coordinates x, y which represent position at board
-     * when the piece can move
+     * when the piece can move.
      *
      * @param game         has board which representing actual layout of pieces
      * @param withCastling boolean decides if result contains castling moves
      * @return coordinates of all possible move at actual board
      */
-    public Set<Coordinates> getAllPossibleMoves(Game game, Boolean withCastling) {
+    public Set<Coordinate> getAllPossibleMoves(Game game, Boolean withCastling) {
         return moves
                 .stream()
                 .filter(x -> withCastling || x.getClass() != Castling.class)
@@ -72,7 +77,6 @@ public class Piece implements Prototype<Piece> {
                         .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .filter(Board::inRange)
                 .collect(Collectors.toSet());
     }
 
@@ -83,14 +87,18 @@ public class Piece implements Prototype<Piece> {
      * @param game has board which representing actual layout of pieces
      * @return coordinates of all possible move at actual board
      */
-
-    public Set<Coordinates> getAllPossibleMoves(Game game) {
+    public Set<Coordinate> getAllPossibleMoves(Game game) {
         return getAllPossibleMoves(game, false);
     }
 
     @Override
     public String toString() {
-        return getTypeOfPiece().getSymbol(getColor());
+        return pieceType.getSymbol(color);
+    }
+
+    @Override
+    public Piece makeClone() {
+        return new Piece(color, pieceType, moves);
     }
 
     @Override
@@ -98,7 +106,7 @@ public class Piece implements Prototype<Piece> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() == o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Piece piece = (Piece) o;
@@ -110,8 +118,4 @@ public class Piece implements Prototype<Piece> {
         return Objects.hash(id);
     }
 
-    @Override
-    public Piece makeClone() {
-        return new Piece(color, pieceType, moves);
-    }
 }

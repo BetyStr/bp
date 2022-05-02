@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Coordinates;
+import cz.muni.fi.pb162.project.Coordinate;
 import cz.muni.fi.pb162.project.Game;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,26 +50,30 @@ public class Diagonal implements Move {
 
 
     @Override
-    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
+    public Set<Coordinate> getAllowedMoves(Game game, Coordinate position) {
         var board = game.getBoard();
-        var result = new HashSet<Coordinates>();
+        var result = new HashSet<Coordinate>();
         var color = board.getPiece(position).getColor();
         Color goal;
 
-        var coordinates = Move.getDiagonalShift(onlyForward);
+        var coordinates = Move.getDiagonalShift(onlyForward, color);
         for (Pair<Integer, Integer> movement : coordinates) {
             for (int i = 1; i <= step; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 goal = board.getColor(left, right);
-                if (goal == null) {
-                    result.add(new Coordinates(left, right));
-                } else {
-                    if (color.getOppositeColor().equals(goal)) {
-                        result.add(new Coordinates(left, right));
-                    }
+                var coordinate = new Coordinate(left, right);
+                if (!Board.inRange(coordinate)) {
                     break;
                 }
+                if (goal == null) {
+                    result.add(coordinate);
+                    continue;
+                }
+                if (color.getOppositeColor().equals(goal)) {
+                    result.add(coordinate);
+                }
+                break;
             }
         }
         return result;

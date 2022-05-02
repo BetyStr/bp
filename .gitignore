@@ -11,6 +11,7 @@
 !pb162_code_style.xml
 !pom.xml
 !.gitlab-ci.yml
+!images
 
 # From directories, ignore...
 ### Idea:

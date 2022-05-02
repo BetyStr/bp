@@ -4,6 +4,7 @@ import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,25 +17,36 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares
+ * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
-public abstract class Game implements Playable, Caretaker {
+public abstract class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
-    private Deque<Board> mementoHistory = new LinkedList<>();
 
+    private Deque<Board> mementoHistory = new LinkedList<>();
     private Board board;
     private Player playerOne;
     private Player playerTwo;
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
-     * Protected constructor because Builder.
+     * Constructor.
      *
      * @param playerOne first of two players needed to play board game.
      * @param playerTwo second of two players needed to play board game.
+     */
+    protected Game(Player playerOne, Player playerTwo) {
+        this(playerOne, playerTwo, new Board());
+    }
+
+    /**
+     * Constructor because of design pattern Builder.
+     *
+     * @param playerOne first of two players playing board game.
+     * @param playerTwo second of two players playing board game.
+     * @param board     playing board of the game.
      */
     protected Game(Player playerOne, Player playerTwo, Board board) {
         this.playerOne = playerOne;
@@ -50,7 +62,7 @@ public abstract class Game implements Playable, Caretaker {
             playerOne = target.playerOne;
             playerTwo = target.playerTwo;
             stateOfGame = target.stateOfGame;
-            board = target.board;
+            board = target.board.makeClone();
             mementoHistory = target.mementoHistory;
         }
     }
@@ -94,25 +106,20 @@ public abstract class Game implements Playable, Caretaker {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinates getInputFromPlayer() {
+    private Coordinate getInputFromPlayer() {
         var position = SCANNER.next().trim();
         if (position.length() != 2) {
             throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
         }
         var letterNumber = position.charAt(0);
-        var number = 0;
-        try {
-            number = Integer.parseInt(String.valueOf(position.charAt(1)));
-        } catch (NumberFormatException ex) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
-        }
+        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
     @Override
-    public void play() throws NotAllowedMoveException, EmptySquareException {
+    public void play() throws EmptySquareException, NotAllowedMoveException {
+        System.out.println(board);
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
-            System.out.println(board);
             var next = getCurrentPlayer();
             updateStatus();
             System.out.printf("Next one is %s%n", next);
@@ -128,8 +135,8 @@ public abstract class Game implements Playable, Caretaker {
             board.setRound(board.getRound() + 1);
             move(fromPosition, toPosition);
             hitSave();
+            System.out.println(board);
         }
-        System.out.println(board);
     }
 
     /**
@@ -138,20 +145,19 @@ public abstract class Game implements Playable, Caretaker {
     public abstract void updateStatus();
 
     /**
-     * Method that return set of all possible moves than can do current player.
+     * Method that return ordered set of all possible moves than can do current player.
      *
-     * @return set of all possible moves than can do current player.
+     * @return ordered set of all possible moves than can do current player.
      */
-    public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
-        var inverseComparator = new Comparator<Coordinates>() {
+    public Set<Coordinate> allPossibleMovesByCurrentPlayer() {
+        var inverseComparator = new Comparator<Coordinate>() {
             @Override
-            public int compare(Coordinates o1, Coordinates o2) {
+            public int compare(Coordinate o1, Coordinate o2) {
                 return -1 * o1.compareTo(o2);
             }
         };
         var result = new TreeSet<>(inverseComparator);
-        result.addAll(board.getAllPiecesFromBoard()
-                .stream()
+        result.addAll(Arrays.stream(board.getAllPiecesFromBoard())
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
                 .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
@@ -168,8 +174,8 @@ public abstract class Game implements Playable, Caretaker {
         if (!(o instanceof Game game)) {
             return false;
         }
-        return !Objects.equals(playerOne, game.playerOne) || !Objects.equals(playerTwo, game.playerTwo) ||
-                stateOfGame != game.stateOfGame || !Objects.equals(board, game.board);
+        return Objects.equals(playerOne, game.playerOne) && Objects.equals(playerTwo, game.playerTwo) &&
+                stateOfGame == game.stateOfGame && Objects.equals(board, game.board);
     }
 
     @Override

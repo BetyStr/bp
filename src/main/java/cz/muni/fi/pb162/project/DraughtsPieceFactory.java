@@ -34,7 +34,7 @@ public class DraughtsPieceFactory extends PieceFactory {
         List<Move> listOfMoves = switch (pieceType) {
             case DRAUGHTS_KING -> List.of(new Diagonal(1), new Jump());
             case DRAUGHTS_MAN -> List.of(new Diagonal(1, true), new Jump(true));
-            default -> throw new IllegalArgumentException("Unknown type in chess");
+            default -> throw new IllegalArgumentException("Unknown type in draughts.");
         };
         return new Piece(Color.WHITE, pieceType, listOfMoves);
     }
