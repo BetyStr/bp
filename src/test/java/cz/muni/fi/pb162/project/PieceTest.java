@@ -16,6 +16,7 @@ class PieceTest {
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Piece.class, 1);
         BasicRulesTester.methodsAmount(Piece.class, 1);
+        BasicRulesTester.attributesFinal(Piece.class, 1);
     }
 
     @Test

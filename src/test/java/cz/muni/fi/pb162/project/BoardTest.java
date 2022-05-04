@@ -1,6 +1,8 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
+import java.util.ArrayList;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +20,8 @@ class BoardTest {
     @Test
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Board.class, 2);
-        BasicRulesTester.methodsAmount(Board.class, 7);
+        BasicRulesTester.methodsAmount(Board.class, 8);
+        BasicRulesTester.attributesFinal(Board.class, 1);
     }
 
     @Test
@@ -53,22 +56,23 @@ class BoardTest {
 
     @Test
     void inRange() {
-        assertTrue(Board.inRange(new Coordinate(2, 4)));
-        assertTrue(Board.inRange(new Coordinate(0, 0)));
-        assertTrue(Board.inRange(new Coordinate(7, 7)));
-        assertTrue(Board.inRange(new Coordinate(6, 1)));
-        assertFalse(Board.inRange(new Coordinate(5, 15)));
-        assertFalse(Board.inRange(new Coordinate(0, 9)));
-        assertFalse(Board.inRange(new Coordinate(8, 0)));
-        assertFalse(Board.inRange(new Coordinate(-4, -7)));
+        assertTrue(Board.inRange(new Coordinates(2, 4)));
+        assertTrue(Board.inRange(new Coordinates(0, 0)));
+        assertTrue(Board.inRange(new Coordinates(7, 7)));
+        assertTrue(Board.inRange(new Coordinates(6, 1)));
+        assertFalse(Board.inRange(new Coordinates(5, 15)));
+        assertFalse(Board.inRange(new Coordinates(0, 9)));
+        assertFalse(Board.inRange(new Coordinates(8, 0)));
+        assertFalse(Board.inRange(new Coordinates(-4, -7)));
     }
 
     @Test
     void isEmptyAndPutPieceOnBoard() {
-        board.putPieceOnBoard(3, 4, new Piece());
-        board.putPieceOnBoard(6, 1, new Piece());
-        board.putPieceOnBoard(2, 2, new Piece());
-        board.putPieceOnBoard(5, 7, new Piece());
+        var piece = new Piece();
+        board.putPieceOnBoard(3, 4, piece);
+        board.putPieceOnBoard(6, 1, piece);
+        board.putPieceOnBoard(2, 2, piece);
+        board.putPieceOnBoard(5, 7, piece);
 
         assertTrue(board.isEmpty(1, 1));
         assertTrue(board.isEmpty(7, 6));
@@ -92,5 +96,8 @@ class BoardTest {
         var result2 = board.findCoordinatesOfPieceById(piece2.getId());
         assertEquals(2, result2.letterNumber());
         assertEquals(7, result2.number());
+        var result3 = board.findCoordinatesOfPieceById(piece.getId() + piece.getId() + 42);
+        assertNull(result3);
     }
+
 }

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 class PlayerTest {
 
     @Test
-    void attributesAndMethodsAmount() {
+    void attributesAndMethods() {
         BasicRulesTester.attributesAmount(Player.class, 1);
         BasicRulesTester.methodsAmount(Player.class, 2);
     }
@@ -28,4 +28,5 @@ class PlayerTest {
         player.setName("");
         assertEquals("", player.getName());
     }
+
 }
