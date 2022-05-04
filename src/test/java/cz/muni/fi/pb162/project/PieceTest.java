@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Alzbeta Strompova
@@ -21,11 +20,12 @@ class PieceTest {
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Piece.class, 3);
         BasicRulesTester.methodsAmount(Piece.class, 6);
+        BasicRulesTester.attributesFinal(Piece.class, 2);
     }
 
     @Test
     void inheritance() {
-        assertTrue(Prototype.class.isAssignableFrom(Piece.class));
+        BasicRulesTester.testInheritance(Prototype.class, Piece.class);
     }
 
     @Test
@@ -90,6 +90,7 @@ class PieceTest {
 
         assertEquals(piece3.getColor(), piece3Clone.getColor());
         assertEquals(piece3.getPieceType(), piece3Clone.getPieceType());
-        assertNotEquals(piece.getId(), piece3Clone.getId());
+        assertNotEquals(piece3.getId(), piece3Clone.getId());
     }
+
 }

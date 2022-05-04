@@ -14,4 +14,5 @@ class ColorTest {
         assertEquals(Color.WHITE, Color.BLACK.getOppositeColor());
         assertEquals(Color.BLACK, Color.WHITE.getOppositeColor());
     }
+
 }

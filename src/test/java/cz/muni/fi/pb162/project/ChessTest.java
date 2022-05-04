@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Alzbeta Strompova
@@ -14,7 +17,7 @@ class ChessTest {
 
     private final Player player = new Player("Pat", Color.BLACK);
     private final Player player2 = new Player("Mat", Color.WHITE);
-    private final Game game = new Chess(player, player2);
+    private final Chess game = new Chess(player, player2);
 
     @Test
     void attributesAndMethodsAmount() {
@@ -24,7 +27,7 @@ class ChessTest {
 
     @Test
     void inheritance() {
-        assertTrue(Playable.class.isAssignableFrom(Game.class));
+        BasicRulesTester.testInheritance(Game.class, Chess.class);
     }
 
     @Test
@@ -83,23 +86,23 @@ class ChessTest {
         game.setInitialSet();
         assertEquals(32, game.getBoard().getAllPiecesFromBoard().length);
         assertTrue(IntStream.range(0, 7)
-                        .mapToObj(x -> game.getBoard().getPiece(x ,1))
+                        .mapToObj(x -> game.getBoard().getPiece(x, 1))
                         .allMatch(x -> x.getPieceType().equals(PieceType.PAWN) && x.getColor().equals(Color.WHITE)),
                 "Wrong order of pieces on the board in the 1st column");
         assertTrue(IntStream.range(0, 7)
-                        .mapToObj(x -> game.getBoard().getPiece(x ,6))
+                        .mapToObj(x -> game.getBoard().getPiece(x, 6))
                         .allMatch(x -> x.getPieceType().equals(PieceType.PAWN) && x.getColor().equals(Color.BLACK)),
                 "Wrong order of pieces on the board in the 6th column");
         List<PieceType> pieces = List.of(PieceType.ROOK, PieceType.KNIGHT, PieceType.BISHOP,
                 PieceType.QUEEN, PieceType.KING, PieceType.BISHOP, PieceType.KNIGHT, PieceType.ROOK);
         var iter = pieces.iterator();
         assertTrue(IntStream.range(0, 7)
-                        .mapToObj(x -> game.getBoard().getPiece(x ,0))
+                        .mapToObj(x -> game.getBoard().getPiece(x, 0))
                         .allMatch(x -> x.getPieceType().equals(iter.next()) && x.getColor().equals(Color.WHITE)),
                 "Wrong order of pieces on the board in the 0th column");
         var iter2 = pieces.iterator();
         assertTrue(IntStream.range(0, 7)
-                        .mapToObj(x -> game.getBoard().getPiece(x ,7))
+                        .mapToObj(x -> game.getBoard().getPiece(x, 7))
                         .allMatch(x -> x.getPieceType().equals(iter2.next()) && x.getColor().equals(Color.BLACK)),
                 "Wrong order of pieces on the board in the 7th column");
     }
@@ -107,12 +110,12 @@ class ChessTest {
     @Test
     void move() {
         var piece = new Piece(Color.WHITE, PieceType.QUEEN);
-        game.putPieceOnBoard(1,0, piece);
-        game.move(new Coordinate(1, 0), new Coordinate(3, 2));
+        game.putPieceOnBoard(1, 0, piece);
+        game.move(new Coordinates(1, 0), new Coordinates(3, 2));
         assertEquals(piece.getId(), game.getBoard().getPiece(3, 2).getId());
         var piece2 = new Piece(Color.WHITE, PieceType.QUEEN);
-        game.putPieceOnBoard(7,6, piece2);
-        game.move(new Coordinate(7, 6), new Coordinate(3, 2));
+        game.putPieceOnBoard(7, 6, piece2);
+        game.move(new Coordinates(7, 6), new Coordinates(3, 2));
         assertEquals(piece2.getId(), game.getBoard().getPiece(3, 2).getId());
         assertEquals(1, game.getBoard().getAllPiecesFromBoard().length);
     }
@@ -120,43 +123,103 @@ class ChessTest {
     @Test
     void movePromotionWhiteSize() {
         var piece = new Piece(Color.WHITE, PieceType.PAWN);
-        game.putPieceOnBoard(7,6, piece);
-        game.move(new Coordinate(7, 6), new Coordinate(7, 7));
-        assertEquals(piece.getId(), game.getBoard().getPiece(7, 7).getId());
+        game.putPieceOnBoard(7, 6, piece);
+        game.move(new Coordinates(7, 6), new Coordinates(7, 7));
+        assertEquals(piece.getColor(), game.getBoard().getColor(7, 7));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(7, 7).getPieceType());
 
         var piece2 = new Piece(Color.WHITE, PieceType.PAWN);
-        game.putPieceOnBoard(3,6, piece2);
-        game.move(new Coordinate(3, 6), new Coordinate(3, 7));
-        assertEquals(piece2.getId(), game.getBoard().getPiece(3, 7).getId());
+        game.putPieceOnBoard(3, 6, piece2);
+        game.move(new Coordinates(3, 6), new Coordinates(3, 7));
+        assertEquals(piece2.getColor(), game.getBoard().getColor(3, 7));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(3, 7).getPieceType());
 
         var piece3 = new Piece(Color.WHITE, PieceType.PAWN);
-        game.putPieceOnBoard(7,4, piece3);
-        game.move(new Coordinate(7, 4), new Coordinate(7, 5));
+        game.putPieceOnBoard(7, 4, piece3);
+        game.move(new Coordinates(7, 4), new Coordinates(7, 5));
         assertEquals(piece3.getId(), game.getBoard().getPiece(7, 5).getId());
         assertEquals(PieceType.PAWN, game.getBoard().getPiece(7, 5).getPieceType());
+
+        var piece4 = new Piece(Color.WHITE, PieceType.BISHOP);
+        game.putPieceOnBoard(3, 6, piece4);
+        game.move(new Coordinates(3, 6), new Coordinates(3, 7));
+        assertEquals(piece4.getId(), game.getBoard().getPiece(3, 7).getId());
+        assertEquals(PieceType.BISHOP, game.getBoard().getPiece(3, 7).getPieceType());
     }
 
     @Test
     void movePromotionBlackSize() {
         var piece = new Piece(Color.BLACK, PieceType.PAWN);
-        game.putPieceOnBoard(7,1, piece);
-        game.move(new Coordinate(7, 1), new Coordinate(7, 0));
-        assertEquals(piece.getId(), game.getBoard().getPiece(7, 0).getId());
+        game.putPieceOnBoard(7, 1, piece);
+        game.move(new Coordinates(7, 1), new Coordinates(7, 0));
+        assertEquals(piece.getColor(), game.getBoard().getColor(7, 0));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(7, 0).getPieceType());
 
         var piece2 = new Piece(Color.BLACK, PieceType.PAWN);
-        game.putPieceOnBoard(3,1, piece2);
-        game.move(new Coordinate(3, 1), new Coordinate(3, 0));
-        assertEquals(piece2.getId(), game.getBoard().getPiece(3, 0).getId());
+        game.putPieceOnBoard(3, 1, piece2);
+        game.move(new Coordinates(3, 1), new Coordinates(3, 0));
+        assertEquals(piece2.getColor(), game.getBoard().getColor(3, 0));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(3, 0).getPieceType());
 
         var piece3 = new Piece(Color.BLACK, PieceType.PAWN);
-        game.putPieceOnBoard(0,5, piece3);
-        game.move(new Coordinate(0, 5), new Coordinate(0, 4));
-        assertEquals(piece3.getId(), game.getBoard().getPiece(0,4).getId());
-        assertEquals(PieceType.PAWN, game.getBoard().getPiece(0,4).getPieceType());
+        game.putPieceOnBoard(0, 5, piece3);
+        game.move(new Coordinates(0, 5), new Coordinates(0, 4));
+        assertEquals(piece3.getId(), game.getBoard().getPiece(0, 4).getId());
+        assertEquals(PieceType.PAWN, game.getBoard().getPiece(0, 4).getPieceType());
+
+        var piece4 = new Piece(Color.BLACK, PieceType.BISHOP);
+        game.putPieceOnBoard(3, 1, piece4);
+        game.move(new Coordinates(3, 1), new Coordinates(3, 0));
+        assertEquals(piece4.getId(), game.getBoard().getPiece(3, 0).getId());
+        assertEquals(PieceType.BISHOP, game.getBoard().getPiece(3, 0).getPieceType());
+    }
+
+    @Test
+    void moveWhiteCastling() {
+        castling(Color.WHITE, 0);
+    }
+
+    @Test
+    void moveBlackCastling() {
+        castling(Color.BLACK, 7);
+    }
+
+    private void castling(Color color, int column) {
+        var king = new Piece(color, PieceType.KING);
+        var rook = new Piece(color, PieceType.ROOK);
+
+        //small
+        game.putPieceOnBoard(4, column, king);
+        game.putPieceOnBoard(0, column, rook);
+        game.move(new Coordinates(4, column), new Coordinates(2, column));
+        assertNull(game.getBoard().getPiece(4, column));
+        assertNull(game.getBoard().getPiece(0, column));
+        assertEquals(king, game.getBoard().getPiece(2, column));
+        assertEquals(rook, game.getBoard().getPiece(3, column));
+
+        var game = new Chess(null, null);
+        game.putPieceOnBoard(4, column, rook);
+        game.move(new Coordinates(4, column), new Coordinates(2, column));
+        assertNull(game.getBoard().getPiece(4, column));
+        assertNull(game.getBoard().getPiece(3, column));
+        assertEquals(rook, game.getBoard().getPiece(2, column));
+
+        //big
+        game = new Chess(null, null);
+        game.putPieceOnBoard(4, column, king);
+        game.putPieceOnBoard(7, column, rook);
+        game.move(new Coordinates(4, column), new Coordinates(6, column));
+        assertNull(game.getBoard().getPiece(4, column));
+        assertNull(game.getBoard().getPiece(7, column));
+        assertEquals(king, game.getBoard().getPiece(6, column));
+        assertEquals(rook, game.getBoard().getPiece(5, column));
+
+        game = new Chess(null, null);
+        game.putPieceOnBoard(4, column, rook);
+        game.move(new Coordinates(4, column), new Coordinates(6, column));
+        assertNull(game.getBoard().getPiece(4, column));
+        assertNull(game.getBoard().getPiece(5, column));
+        assertEquals(rook, game.getBoard().getPiece(6, column));
     }
 
     @Test
@@ -171,4 +234,5 @@ class ChessTest {
         game.updateStatus();
         assertEquals(StateOfGame.BLACK_PLAYER_WIN, game.getStateOfGame());
     }
+
 }

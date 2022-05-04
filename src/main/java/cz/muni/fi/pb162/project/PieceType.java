@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Enum represent type of piece.
+ * Enum represents the type of piece.
  *
  * @author Alzbeta Strompova
  */

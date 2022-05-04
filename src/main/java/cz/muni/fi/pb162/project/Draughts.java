@@ -20,7 +20,6 @@ public class Draughts extends Game {
         super(playerOne, playerTwo);
     }
 
-
     @Override
     public void setInitialSet() {
         for (int i = 0; i < Board.SIZE; i += 2) {
@@ -36,7 +35,7 @@ public class Draughts extends Game {
     }
 
     @Override
-    public void move(Coordinate oldPosition, Coordinate newPosition) {
+    public void move(Coordinates oldPosition, Coordinates newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
@@ -44,6 +43,13 @@ public class Draughts extends Game {
             var x = oldPosition.letterNumber() + (newPosition.letterNumber() - oldPosition.letterNumber()) / 2;
             var y = oldPosition.number() + (newPosition.number() - oldPosition.number()) / 2;
             putPieceOnBoard(x, y, null);
+        }
+        // promotion
+        if ((newPosition.number() == 0 && piece.getColor().equals(Color.BLACK)
+                || newPosition.number() == 7 && piece.getColor().equals(Color.WHITE))
+                && piece.getPieceType().equals(PieceType.DRAUGHTS_MAN)) {
+            putPieceOnBoard(newPosition.letterNumber(), newPosition.number(),
+                    new Piece(piece.getColor(), PieceType.DRAUGHTS_KING));
         }
     }
 
@@ -63,7 +69,6 @@ public class Draughts extends Game {
                 .filter(x -> x.getColor().equals(color.getOppositeColor()))
                 .toList()
                 .isEmpty();
-
     }
 
 }

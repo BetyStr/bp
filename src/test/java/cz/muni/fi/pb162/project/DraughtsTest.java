@@ -27,7 +27,7 @@ class DraughtsTest {
 
     @Test
     void inheritance() {
-        assertTrue(Game.class.isAssignableFrom(Draughts.class));
+        BasicRulesTester.testInheritance(Game.class, Draughts.class);
     }
 
     @Test
@@ -88,29 +88,27 @@ class DraughtsTest {
         assertEquals(24, pieces.length);
         assertTrue(Arrays.stream(pieces)
                 .allMatch(x -> x.getPieceType().equals(PieceType.DRAUGHTS_MAN)));
-        IntStream.range(0, 3)
-                .forEach(finalI -> assertTrue(IntStream.range(0, 7)
-                                .filter(x -> x % 2 == finalI % 2)
-                                .mapToObj(x -> game.getBoard().getPiece(x, finalI))
-                                .allMatch(x -> x.getColor().equals(Color.WHITE)),
-                        "Wrong order of pieces on the board in the " + finalI + "st column"));
-        IntStream.range(5, 8)
-                .forEach(finalI -> assertTrue(IntStream.range(0, 7)
-                                .filter(x -> x % 2 == finalI % 2)
-                                .mapToObj(x -> game.getBoard().getPiece(x, finalI))
-                                .allMatch(x -> x.getColor().equals(Color.BLACK)),
-                        "Wrong order of pieces on the board in the " + finalI + "st column"));
+        IntStream.range(0, 3).forEach(i -> columnStream(i, Color.WHITE));
+        IntStream.range(5, 8).forEach(i -> columnStream(i, Color.BLACK));
+    }
+
+    private void columnStream(int finalI, Color white) {
+        assertTrue(IntStream.range(0, 7)
+                        .filter(x -> x % 2 == finalI % 2)
+                        .mapToObj(x -> game.getBoard().getPiece(x, finalI))
+                        .allMatch(x -> x.getColor().equals(white)),
+                "Wrong order of pieces on the board in the " + finalI + ". column");
     }
 
     @Test
     void move() {
         var piece = new Piece(Color.WHITE, PieceType.DRAUGHTS_MAN);
         game.putPieceOnBoard(1, 0, piece);
-        game.move(new Coordinate(1, 0), new Coordinate(3, 2));
+        game.move(new Coordinates(1, 0), new Coordinates(3, 2));
         assertEquals(piece.getId(), game.getBoard().getPiece(3, 2).getId());
         var piece2 = new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN);
         game.putPieceOnBoard(7, 6, piece2);
-        game.move(new Coordinate(7, 6), new Coordinate(3, 2));
+        game.move(new Coordinates(7, 6), new Coordinates(3, 2));
         assertEquals(piece2.getId(), game.getBoard().getPiece(3, 2).getId());
     }
 
@@ -120,10 +118,40 @@ class DraughtsTest {
         var piece2 = new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN);
         game.putPieceOnBoard(3, 3, piece);
         game.putPieceOnBoard(4, 4, piece2);
-        game.move(new Coordinate(3, 3), new Coordinate(5, 5));
+        game.move(new Coordinates(3, 3), new Coordinates(5, 5));
         assertEquals(piece.getId(), game.getBoard().getPiece(5, 5).getId());
         assertEquals(1, game.getBoard().getAllPiecesFromBoard().length);
         assertNull(game.getBoard().getPiece(4, 4));
+    }
+
+    @Test
+    void movePromotionWhiteSize() {
+        var piece = new Piece(Color.WHITE, PieceType.DRAUGHTS_MAN);
+        game.putPieceOnBoard(3, 6, piece);
+        game.move(new Coordinates(3, 6), new Coordinates(2, 7));
+        assertEquals(piece.getColor(), game.getBoard().getColor(2, 7));
+        assertEquals(PieceType.DRAUGHTS_KING, game.getBoard().getPiece(2, 7).getPieceType());
+
+        var piece2 = new Piece(Color.WHITE, PieceType.DRAUGHTS_MAN);
+        game.putPieceOnBoard(7, 4, piece2);
+        game.move(new Coordinates(7, 4), new Coordinates(7, 5));
+        assertEquals(piece2, game.getBoard().getPiece(7, 5));
+        assertEquals(PieceType.DRAUGHTS_MAN, game.getBoard().getPiece(7, 5).getPieceType());
+    }
+
+    @Test
+    void movePromotionBLackSize() {
+        var piece = new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN);
+        game.putPieceOnBoard(3, 1, piece);
+        game.move(new Coordinates(3, 1), new Coordinates(2, 0));
+        assertEquals(piece.getColor(), game.getBoard().getColor(2, 0));
+        assertEquals(PieceType.DRAUGHTS_KING, game.getBoard().getPiece(2, 0).getPieceType());
+
+        var piece2 = new Piece(Color.BLACK, PieceType.DRAUGHTS_MAN);
+        game.putPieceOnBoard(0, 4, piece2);
+        game.move(new Coordinates(0, 4), new Coordinates(0, 5));
+        assertEquals(piece2, game.getBoard().getPiece(0, 5));
+        assertEquals(PieceType.DRAUGHTS_MAN, game.getBoard().getPiece(0, 5).getPieceType());
     }
 
     @Test
