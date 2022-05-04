@@ -25,14 +25,13 @@ class DraughtsPieceFactoryTest {
 
     @Test
     void inheritance() {
-        assertTrue(PieceFactory.class.isAssignableFrom(DraughtsPieceFactory.class));
+        BasicRulesTester.testInheritance(PieceFactory.class, DraughtsPieceFactory.class);
     }
 
     @Test
     void createPiece() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            factory.createPiece(PieceType.QUEEN, Color.WHITE);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> factory.createPiece(PieceType.QUEEN, Color.WHITE));
         var actualMessage = exception.getMessage().toLowerCase(Locale.ROOT);
         assertTrue(actualMessage.contains("unknown"));
         var piece = factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK);
@@ -50,9 +49,8 @@ class DraughtsPieceFactoryTest {
         var actual = factory.createSetOfPrototypes(Set.of(PieceType.DRAUGHTS_MAN, PieceType.DRAUGHTS_KING));
         assertEquals(2, actual.size());
         var input = Set.of(PieceType.DRAUGHTS_MAN, PieceType.QUEEN);
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            factory.createSetOfPrototypes(input);
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class,
+                () -> factory.createSetOfPrototypes(input));
         var actualMessage = exception.getMessage().toLowerCase(Locale.ROOT);
         assertTrue(actualMessage.contains("draught"));
     }

@@ -2,8 +2,6 @@ package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,7 +31,7 @@ class DraughtsTest {
 
     @Test
     void inheritance() {
-        assertTrue(Game.class.isAssignableFrom(Draughts.class));
+        BasicRulesTester.testInheritance(Game.class, Draughts.class);
     }
 
     @Test
@@ -110,11 +108,11 @@ class DraughtsTest {
     void move() {
         var piece = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE);
         game.putPieceOnBoard(1, 0, piece);
-        game.move(new Coordinate(1, 0), new Coordinate(3, 2));
+        game.move(new Coordinates(1, 0), new Coordinates(3, 2));
         assertEquals(piece.getId(), game.getBoard().getPiece(3, 2).getId());
         var piece2 = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK);
         game.putPieceOnBoard(7, 6, piece2);
-        game.move(new Coordinate(7, 6), new Coordinate(3, 2));
+        game.move(new Coordinates(7, 6), new Coordinates(3, 2));
         assertEquals(piece2.getId(), game.getBoard().getPiece(3, 2).getId());
     }
 
@@ -124,7 +122,7 @@ class DraughtsTest {
         var piece2 = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK);
         game.putPieceOnBoard(3, 3, piece);
         game.putPieceOnBoard(4, 4, piece2);
-        game.move(new Coordinate(3, 3), new Coordinate(5, 5));
+        game.move(new Coordinates(3, 3), new Coordinates(5, 5));
         assertEquals(piece.getId(), game.getBoard().getPiece(5, 5).getId());
         assertEquals(1, game.getBoard().getAllPiecesFromBoard().length);
         assertNull(game.getBoard().getPiece(4, 4));
@@ -134,13 +132,13 @@ class DraughtsTest {
     void movePromotionWhiteSize() {
         var piece = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE);
         game.putPieceOnBoard(3, 6, piece);
-        game.move(new Coordinate(3, 6), new Coordinate(2, 7));
-        assertEquals(piece, game.getBoard().getPiece(2, 7));
+        game.move(new Coordinates(3, 6), new Coordinates(2, 7));
+        assertEquals(piece.getColor(), game.getBoard().getColor(2, 7));
         assertEquals(PieceType.DRAUGHTS_KING, game.getBoard().getPiece(2, 7).getPieceType());
 
         var piece2 = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE);
         game.putPieceOnBoard(7, 4, piece2);
-        game.move(new Coordinate(7, 4), new Coordinate(7, 5));
+        game.move(new Coordinates(7, 4), new Coordinates(7, 5));
         assertEquals(piece2, game.getBoard().getPiece(7, 5));
         assertEquals(PieceType.DRAUGHTS_MAN, game.getBoard().getPiece(7, 5).getPieceType());
     }
@@ -149,13 +147,13 @@ class DraughtsTest {
     void movePromotionBLackSize() {
         var piece = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK);
         game.putPieceOnBoard(3, 1, piece);
-        game.move(new Coordinate(3, 1), new Coordinate(2, 0));
-        assertEquals(piece, game.getBoard().getPiece(2, 0));
+        game.move(new Coordinates(3, 1), new Coordinates(2, 0));
+        assertEquals(piece.getColor(), game.getBoard().getColor(2, 0));
         assertEquals(PieceType.DRAUGHTS_KING, game.getBoard().getPiece(2, 0).getPieceType());
 
         var piece2 = FACTORY.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK);
         game.putPieceOnBoard(0, 4, piece2);
-        game.move(new Coordinate(0, 4), new Coordinate(0, 5));
+        game.move(new Coordinates(0, 4), new Coordinates(0, 5));
         assertEquals(piece2, game.getBoard().getPiece(0, 5));
         assertEquals(PieceType.DRAUGHTS_MAN, game.getBoard().getPiece(0, 5).getPieceType());
     }
@@ -249,26 +247,32 @@ class DraughtsTest {
         game.putPieceOnBoard(7, 7, FACTORY.createPiece(PieceType.DRAUGHTS_KING, Color.WHITE));
         game.putPieceOnBoard(5, 5, FACTORY.createPiece(PieceType.DRAUGHTS_KING, Color.BLACK));
         Assertions.assertThat(game.allPossibleMovesByCurrentPlayer())
-                .containsExactly(new Coordinate(6, 6),
-                        new Coordinate(1, 1));
+                .containsOnly(new Coordinates(6, 6),
+                        new Coordinates(1, 1));
         game.setInitialSet();
         Assertions.assertThat(game.allPossibleMovesByCurrentPlayer())
-                .containsExactly(new Coordinate(7,3),
-                        new Coordinate(5, 3),
-                        new Coordinate(3,3),
-                        new Coordinate(1,3));
+                .containsOnly(new Coordinates(7, 3),
+                        new Coordinates(5, 3),
+                        new Coordinates(3, 3),
+                        new Coordinates(1, 3));
         game.getBoard().setRound(1);
         Assertions.assertThat(game.allPossibleMovesByCurrentPlayer())
-                .containsExactly(new Coordinate(6,4),
-                        new Coordinate(4,4),
-                        new Coordinate(2, 4),
-                        new Coordinate(0,4));
+                .containsOnly(new Coordinates(6, 4),
+                        new Coordinates(4, 4),
+                        new Coordinates(2, 4),
+                        new Coordinates(0, 4));
     }
 
     @Test
-    void makeClone() {
-        var clone = game.makeClone();
-        assertEquals(clone, game);
-        assertNotSame(clone, game);
+    void getMementoHistory() {
+        int expectedSize = game.getMementoHistory().size();
+        try {
+            game.getMementoHistory().clear();
+            Assertions.assertThat(game.getMementoHistory())
+                    .as("Method returns modifiable collection - return new or unmodifiable.")
+                    .hasSize(expectedSize);
+        } catch (UnsupportedOperationException e) {
+            // ok (unmodifiable)
+        }
     }
 }

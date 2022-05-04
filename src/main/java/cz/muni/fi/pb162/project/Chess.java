@@ -22,19 +22,9 @@ public class Chess extends Game {
         super(playerOne, playerTwo);
     }
 
-    /**
-     * Private constructor because design pattern prototype
-     *
-     * @param target game to copy
-     */
-    private Chess(Game target) {
-        super(target);
-    }
-
     @Override
     public void setInitialSet() {
         var factory = new ChessPieceFactory();
-
         putPieceOnBoard(4, 0, factory.createPiece(PieceType.KING, Color.WHITE));
         putPieceOnBoard(3, 0, factory.createPiece(PieceType.QUEEN, Color.WHITE));
         putPieceOnBoard(0, 0, factory.createPiece(PieceType.ROOK, Color.WHITE));
@@ -59,32 +49,34 @@ public class Chess extends Game {
         }
     }
 
-    private void checkCastling(Coordinate oldPosition, Coordinate newPosition) {
+    private void checkCastling(Coordinates oldPosition, Coordinates newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         if (!piece.getPieceType().equals(PieceType.KING)) {
             return;
         }
         if (Math.abs(oldPosition.letterNumber() - newPosition.letterNumber()) > 1) {
             if (newPosition.letterNumber() == 2) {
-                move(new Coordinate(0, oldPosition.number()),
-                        new Coordinate(3, oldPosition.number()));
+                move(new Coordinates(0, oldPosition.number()),
+                        new Coordinates(3, oldPosition.number()));
             } else {
-                move(new Coordinate(7, oldPosition.number()),
-                        new Coordinate(5, oldPosition.number()));
+                move(new Coordinates(7, oldPosition.number()),
+                        new Coordinates(5, oldPosition.number()));
             }
         }
     }
 
     @Override
-    public void move(Coordinate oldPosition, Coordinate newPosition) {
+    public void move(Coordinates oldPosition, Coordinates newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         checkCastling(oldPosition, newPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
-        // promotion
+        //promotion
         if ((newPosition.number() == 0 || newPosition.number() == 7)
                 && piece.getPieceType().equals(PieceType.PAWN)) {
             piece.setPieceType(PieceType.QUEEN);
+            putPieceOnBoard(newPosition.letterNumber(), newPosition.number(),
+                    new ChessPieceFactory().createPiece(PieceType.QUEEN, piece.getColor()));
         }
     }
 
@@ -122,15 +114,11 @@ public class Chess extends Game {
                 .map(q -> q.getAllPossibleMoves(this, false))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet())
-                .contains(new Coordinate(letterNumber, number));
+                .contains(new Coordinates(letterNumber, number));
         if (emptyPosition) {
             putPieceOnBoard(letterNumber, number, null);
         }
         return value;
     }
 
-    @Override
-    public Playable makeClone() {
-        return new Chess(this);
-    }
 }

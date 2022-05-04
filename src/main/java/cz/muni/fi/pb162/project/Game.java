@@ -4,17 +4,15 @@ import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
+ * Class representing the board game which has {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
@@ -22,37 +20,34 @@ public abstract class Game implements Playable {
 
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    private Deque<Board> mementoHistory = new LinkedList<>();
-    private Board board;
-    private Player playerOne;
-    private Player playerTwo;
+    private final Deque<Board> mementoHistory = new LinkedList<>();
+    private final Board board;
+    private final Player playerOne;
+    private final Player playerTwo;
     private StateOfGame stateOfGame = StateOfGame.PLAYING;
 
     /**
      * Constructor.
      *
-     * @param playerOne first of two players needed to play board game.
-     * @param playerTwo second of two players needed to play board game.
+     * @param playerOne first of two players playing the board game.
+     * @param playerTwo second of two players playing the board game.
      */
     protected Game(Player playerOne, Player playerTwo) {
-        this.playerOne = playerOne;
-        this.playerTwo = playerTwo;
-        this.board = new Board();
+        this(playerOne, playerTwo, new Board());
     }
 
     /**
-     * Protected constructor because Prototype.
+     * Constructor of design pattern Builder.
+     *
+     * @param playerOne first of two players playing board game.
+     * @param playerTwo second of two players playing board game.
+     * @param board     playing board of the game.
      */
-    protected Game(Game target) {
-        if (target != null) {
-            playerOne = target.playerOne;
-            playerTwo = target.playerTwo;
-            stateOfGame = target.stateOfGame;
-            board = target.board;
-            mementoHistory = target.mementoHistory;
-        }
+    protected Game(Player playerOne, Player playerTwo, Board board) {
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+        this.board = board;
     }
-
 
     public Collection<Board> getMementoHistory() {
         return Collections.unmodifiableCollection(mementoHistory);
@@ -83,17 +78,17 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Method that put piece on board at coordinates {@code letterNumber} and {@code number}.
+     * Method that puts the piece on the board at coordinates {@code letterNumber} and {@code number}.
      *
-     * @param letterNumber first coordinate to put piece 0-7
-     * @param number       second coordinate to put piece 0-7
-     * @param piece        Piece which we want to put on board
+     * @param letterNumber first part of coordinate to put piece in range 0-7.
+     * @param number       second part of coordinate to put piece in range 0-7.
+     * @param piece        piece to put on the board.
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinate getInputFromPlayer() {
+    private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
         var letterNumber = position.charAt(0);
         var number = Integer.parseInt(String.valueOf(position.charAt(1)));
@@ -117,31 +112,22 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Method that control if it needs to be change status of game.
+     * Method that updates the status of game if necessary.
      */
     public abstract void updateStatus();
 
     /**
-     * Method that return ordered set of all possible moves than can do current player.
+     * Method that returns the ordered set of all possible moves available for current player.
      *
-     * @return ordered set of all possible moves than can do current player.
+     * @return ordered set of all possible moves available for current player.
      */
-    public Set<Coordinate> allPossibleMovesByCurrentPlayer() {
-        var inverseComparator = new Comparator<Coordinate>() {
-            @Override
-            public int compare(Coordinate o1, Coordinate o2) {
-                return -1 * o1.compareTo(o2);
-            }
-        };
-        var result = new TreeSet<>(inverseComparator);
-        result.addAll(Arrays.stream(board.getAllPiecesFromBoard())
+    public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
+        return Arrays.stream(board.getAllPiecesFromBoard())
                 .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
                 .map(x -> x.getAllPossibleMoves(this))
                 .flatMap(Collection::stream)
-                .collect(Collectors.toUnmodifiableSet()));
-        return result;
+                .collect(Collectors.toUnmodifiableSet());
     }
-
 
     @Override
     public boolean equals(Object o) {

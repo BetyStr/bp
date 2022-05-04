@@ -20,15 +20,6 @@ public class Draughts extends Game {
         super(playerOne, playerTwo);
     }
 
-    /**
-     * Private constructor because design pattern prototype.
-     *
-     * @param target game to copy.
-     */
-    private Draughts(Game target) {
-        super(target);
-    }
-
     @Override
     public void setInitialSet() {
         var factory = new DraughtsPieceFactory();
@@ -45,7 +36,7 @@ public class Draughts extends Game {
     }
 
     @Override
-    public void move(Coordinate oldPosition, Coordinate newPosition) {
+    public void move(Coordinates oldPosition, Coordinates newPosition) {
         var piece = getBoard().getPiece(oldPosition);
         putPieceOnBoard(newPosition.letterNumber(), newPosition.number(), piece);
         putPieceOnBoard(oldPosition.letterNumber(), oldPosition.number(), null);
@@ -56,9 +47,10 @@ public class Draughts extends Game {
         }
         // promotion
         if ((newPosition.number() == 0 && piece.getColor().equals(Color.BLACK)
-                || newPosition.number() == 7 && piece.getColor().equals(Color.WHITE) )
+                || newPosition.number() == 7 && piece.getColor().equals(Color.WHITE))
                 && piece.getPieceType().equals(PieceType.DRAUGHTS_MAN)) {
-            piece.setPieceType(PieceType.DRAUGHTS_KING);
+            putPieceOnBoard(newPosition.letterNumber(), newPosition.number(),
+                    new DraughtsPieceFactory().createPiece(PieceType.DRAUGHTS_KING, piece.getColor()));
         }
     }
 
@@ -78,11 +70,6 @@ public class Draughts extends Game {
                 .filter(x -> x.getColor().equals(color.getOppositeColor()))
                 .toList()
                 .isEmpty();
-    }
-
-    @Override
-    public Playable makeClone() {
-        return new Draughts(this);
     }
 
 }

@@ -1,27 +1,28 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Interface to help implement board game.
+ * Interface serves as a template, so that every board game has certain methods
+ * without which it would not be playable.
  *
  * @author Alzbeta Strompova
  */
-public interface Playable extends Prototype<Playable>, Caretaker {
+public interface Playable extends Caretaker {
 
     /**
-     * Method that set initial layout for game
+     * Method that sets initial layout for the game.
      */
     void setInitialSet();
 
     /**
-     * Method that do one move in game. Get piece from {@code oldPosition} and put it to {@code newPosition}.
+     * Method that does one move in the game. Get piece from {@code oldPosition} and put it to {@code newPosition}.
      *
-     * @param oldPosition coordinate of piece we want to move.
-     * @param newPosition coordinate of place we want to put this piece.
+     * @param oldPosition coordinates of piece we want to move.
+     * @param newPosition coordinates of place we want to put this piece.
      */
-    void move(Coordinate oldPosition, Coordinate newPosition);
+    void move(Coordinates oldPosition, Coordinates newPosition);
 
     /**
-     * Method that represent playing board game until is finish.
+     * Method that represents playing the board game.
      */
     void play();
 

@@ -1,12 +1,13 @@
 package cz.muni.fi.pb162.project.demo;
 
 import cz.muni.fi.pb162.project.helper.OutputTester;
+import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Testing print output of Demo class.
+ * Testing print output of Main class.
  *
  * @author Alzbeta Strompova
  */
