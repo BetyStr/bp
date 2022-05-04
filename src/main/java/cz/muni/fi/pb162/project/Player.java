@@ -1,7 +1,7 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Class represent player of board game.
+ * Record represents player of board game.
  *
  * @author Alzbeta Strompova
  */
@@ -18,3 +18,4 @@ public class Player {
     }
 
 }
+

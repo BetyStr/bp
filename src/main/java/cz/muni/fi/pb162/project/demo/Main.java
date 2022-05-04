@@ -1,6 +1,6 @@
 package cz.muni.fi.pb162.project.demo;
 
-import cz.muni.fi.pb162.project.Coordinate;
+import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Player;
 
 /**
@@ -21,11 +21,11 @@ public class Main {
         player.setName("Matko");
         System.out.println(player.getName());
 
-        Coordinate one = new Coordinate(1, 7);
-        Coordinate two = new Coordinate(5, 0);
-        System.out.println(one.averageOfCoordinate());
+        Coordinates one = new Coordinates(1, 7);
+        Coordinates two = new Coordinates(5, 0);
+        System.out.println(one.averageOfCoordinates());
 
-        Coordinate result = one.add(two);
+        Coordinates result = one.add(two);
         System.out.println(result.getLetterNumber());
         System.out.println(result.getNumber());
     }
