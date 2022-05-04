@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.moves;
 
 
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Coordinate;
+import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,6 +44,6 @@ public interface Move {
      * @param position position of piece
      * @return Set of allowed moves of specific movement some piece
      */
-    Set<Coordinate> getAllowedMoves(Game game, Coordinate position);
+    Set<Coordinates> getAllowedMoves(Game game, Coordinates position);
 
 }

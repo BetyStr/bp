@@ -2,16 +2,16 @@ package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import java.util.ArrayList;
+import java.util.Locale;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -24,7 +24,8 @@ class BoardTest {
     @Test
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Board.class, 2);
-        BasicRulesTester.methodsAmount(Board.class, 17);
+        BasicRulesTester.methodsAmount(Board.class, 18);
+        BasicRulesTester.attributesFinal(Board.class, 1);
     }
 
     @Test
@@ -49,8 +50,8 @@ class BoardTest {
 
     @Test
     void getPieceCoordinates() {
-        assertNull(board.getPiece(new Coordinate(1, 4)));
-        assertNull(board.getPiece(new Coordinate(5, 2)));
+        assertNull(board.getPiece(new Coordinates(1, 4)));
+        assertNull(board.getPiece(new Coordinates(5, 2)));
         var piece = new Piece(Color.BLACK, PieceType.QUEEN);
         board.putPieceOnBoard(6, 6, piece);
         assertEquals(piece.getId(), board.getPiece(6, 6).getId());
@@ -69,15 +70,27 @@ class BoardTest {
     }
 
     @Test
+    void getColorCoordinates() {
+        assertNull(board.getColor(new Coordinates(9, 0)));
+        assertNull(board.getColor(new Coordinates(4, 2)));
+        var piece = new Piece(Color.WHITE, PieceType.ROOK);
+        var piece2 = new Piece(Color.BLACK, PieceType.ROOK);
+        board.putPieceOnBoard(2, 5, piece);
+        board.putPieceOnBoard(6, 1, piece2);
+        assertEquals(piece.getColor(), board.getColor(new Coordinates(2, 5)));
+        assertEquals(piece2.getColor(), board.getColor(new Coordinates(6, 1)));
+    }
+
+    @Test
     void inRange() {
-        assertTrue(Board.inRange(new Coordinate(2, 4)));
-        assertTrue(Board.inRange(new Coordinate(0, 0)));
-        assertTrue(Board.inRange(new Coordinate(7, 7)));
-        assertTrue(Board.inRange(new Coordinate(6, 1)));
-        assertFalse(Board.inRange(new Coordinate(5, 15)));
-        assertFalse(Board.inRange(new Coordinate(0, 9)));
-        assertFalse(Board.inRange(new Coordinate(8, 0)));
-        assertFalse(Board.inRange(new Coordinate(-4, -7)));
+        assertTrue(Board.inRange(new Coordinates(2, 4)));
+        assertTrue(Board.inRange(new Coordinates(0, 0)));
+        assertTrue(Board.inRange(new Coordinates(7, 7)));
+        assertTrue(Board.inRange(new Coordinates(6, 1)));
+        assertFalse(Board.inRange(new Coordinates(5, 15)));
+        assertFalse(Board.inRange(new Coordinates(0, 9)));
+        assertFalse(Board.inRange(new Coordinates(8, 0)));
+        assertFalse(Board.inRange(new Coordinates(-4, -7)));
     }
 
     @Test
@@ -141,30 +154,30 @@ class BoardTest {
     @Test
     void testToString() {
         var expectedOutput = """
-                        1   2   3   4   5   6   7   8\s
-                      --------------------------------
-                    A |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    B |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    C |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    D |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    E |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    F |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    G |   |   |   |   |   |   |   |   |
-                      --------------------------------
-                    H |   |   |   |   |   |   |   |   |
-                      --------------------------------""".replace("\n", System.lineSeparator());
+                    1   2   3   4   5   6   7   8\s
+                  --------------------------------
+                A |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                B |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                C |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                D |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                E |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                F |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                G |   |   |   |   |   |   |   |   |
+                  --------------------------------
+                H |   |   |   |   |   |   |   |   |
+                  --------------------------------""".replace("\n", System.lineSeparator());
         assertEquals(expectedOutput, board.toString());
     }
 
     @Test
     void save() {
-        board.putPieceOnBoard(2,3, new Piece(Color.WHITE, PieceType.ROOK));
+        board.putPieceOnBoard(2, 3, new Piece(Color.WHITE, PieceType.ROOK));
         var saveBoard = board.save();
         assertEquals(board, saveBoard);
         assertNotSame(board, saveBoard, "You should create new instance.");
@@ -173,7 +186,7 @@ class BoardTest {
 
     @Test
     void restore() {
-        board.putPieceOnBoard(2,3, new Piece(Color.WHITE, PieceType.ROOK));
+        board.putPieceOnBoard(2, 3, new Piece(Color.WHITE, PieceType.ROOK));
         var emptyBoard = new Board();
         emptyBoard.restore(board);
         assertEquals(board, emptyBoard);
@@ -183,6 +196,7 @@ class BoardTest {
         assertEquals(emptyBoard, board);
         assertNotSame(emptyBoard, board, "You should update existence instance.");
     }
+
     @Test
     void testEquals() {
         assertThat(new Board()).isEqualTo(new Board());
@@ -220,4 +234,5 @@ class BoardTest {
         board2.putPieceOnBoard(7, 1, new Piece(Color.BLACK, PieceType.ROOK));
         assertThat(board).doesNotHaveSameHashCodeAs(board2);
     }
+
 }

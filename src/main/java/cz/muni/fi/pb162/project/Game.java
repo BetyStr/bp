@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
+ * Class representing the board game which has {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
@@ -26,8 +26,8 @@ public abstract class Game implements Playable {
     /**
      * Constructor.
      *
-     * @param playerOne first of two players needed to play board game.
-     * @param playerTwo second of two players needed to play board game.
+     * @param playerOne first of two players playing the board game.
+     * @param playerTwo second of two players playing the board game.
      */
     protected Game(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
@@ -64,17 +64,17 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Method that put piece on board at coordinates {@code letterNumber} and {@code number}.
+     * Method that puts the piece on the board at coordinates {@code letterNumber} and {@code number}.
      *
-     * @param letterNumber first coordinate to put piece 0-7
-     * @param number       second coordinate to put piece 0-7
-     * @param piece        Piece which we want to put on board
+     * @param letterNumber first part of coordinate to put piece in range 0-7.
+     * @param number       second part of coordinate to put piece in range 0-7.
+     * @param piece        piece to put on the board.
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinate getInputFromPlayer() {
+    private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
         var letterNumber = position.charAt(0);
         var number = Integer.parseInt(String.valueOf(position.charAt(1)));
@@ -83,6 +83,7 @@ public abstract class Game implements Playable {
 
     @Override
     public void play() {
+        System.out.println(board);
         while (stateOfGame.equals(StateOfGame.PLAYING)) {
             var next = getCurrentPlayer();
             updateStatus();
@@ -97,10 +98,9 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Method that control if it needs to be change status of game.
+     * Method that updates the status of game if necessary.
      */
     public abstract void updateStatus();
-
 
     @Override
     public boolean equals(Object o) {
@@ -128,7 +128,7 @@ public abstract class Game implements Playable {
     @Override
     public void hitUndo() {
         if (!mementoHistory.isEmpty()) {
-            board.restore(mementoHistory.poll());
+            board.restore(mementoHistory.pop());
         }
     }
 
