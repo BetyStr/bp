@@ -33,20 +33,9 @@ public abstract class Game implements Playable {
      * @param playerTwo second of two players playing the board game.
      */
     protected Game(Player playerOne, Player playerTwo) {
-        this(playerOne, playerTwo, new Board());
-    }
-
-    /**
-     * Constructor of design pattern Builder.
-     *
-     * @param playerOne first of two players playing board game.
-     * @param playerTwo second of two players playing board game.
-     * @param board     playing board of the game.
-     */
-    protected Game(Player playerOne, Player playerTwo, Board board) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        this.board = board;
+        this.board = new Board();
     }
 
     public Collection<Board> getMementoHistory() {
