@@ -10,10 +10,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -34,7 +36,7 @@ class ChessTest {
 
     @Test
     void inheritance() {
-        assertTrue(Game.class.isAssignableFrom(Chess.class));
+        BasicRulesTester.testInheritance(Game.class, Chess.class);
     }
 
     @Test
@@ -118,11 +120,11 @@ class ChessTest {
     void move() {
         var piece = FACTORY.createPiece(PieceType.QUEEN, Color.WHITE);
         game.putPieceOnBoard(1, 0, piece);
-        game.move(new Coordinate(1, 0), new Coordinate(3, 2));
+        game.move(new Coordinates(1, 0), new Coordinates(3, 2));
         assertEquals(piece.getId(), game.getBoard().getPiece(3, 2).getId());
         var piece2 = FACTORY.createPiece(PieceType.QUEEN, Color.WHITE);
         game.putPieceOnBoard(7, 6, piece2);
-        game.move(new Coordinate(7, 6), new Coordinate(3, 2));
+        game.move(new Coordinates(7, 6), new Coordinates(3, 2));
         assertEquals(piece2.getId(), game.getBoard().getPiece(3, 2).getId());
         assertEquals(1, game.getBoard().getAllPiecesFromBoard().length);
     }
@@ -131,25 +133,25 @@ class ChessTest {
     void movePromotionWhiteSize() {
         var piece = FACTORY.createPiece(PieceType.PAWN, Color.WHITE);
         game.putPieceOnBoard(7, 6, piece);
-        game.move(new Coordinate(7, 6), new Coordinate(7, 7));
-        assertEquals(piece.getId(), game.getBoard().getPiece(7, 7).getId());
+        game.move(new Coordinates(7, 6), new Coordinates(7, 7));
+        assertEquals(piece.getColor(), game.getBoard().getColor(7, 7));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(7, 7).getPieceType());
 
         var piece2 = FACTORY.createPiece(PieceType.PAWN, Color.WHITE);
         game.putPieceOnBoard(3, 6, piece2);
-        game.move(new Coordinate(3, 6), new Coordinate(3, 7));
-        assertEquals(piece2.getId(), game.getBoard().getPiece(3, 7).getId());
+        game.move(new Coordinates(3, 6), new Coordinates(3, 7));
+        assertEquals(piece2.getColor(), game.getBoard().getColor(3, 7));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(3, 7).getPieceType());
 
         var piece3 = FACTORY.createPiece(PieceType.PAWN, Color.WHITE);
         game.putPieceOnBoard(7, 4, piece3);
-        game.move(new Coordinate(7, 4), new Coordinate(7, 5));
+        game.move(new Coordinates(7, 4), new Coordinates(7, 5));
         assertEquals(piece3.getId(), game.getBoard().getPiece(7, 5).getId());
         assertEquals(PieceType.PAWN, game.getBoard().getPiece(7, 5).getPieceType());
 
         var piece4 = FACTORY.createPiece(PieceType.BISHOP, Color.WHITE);
         game.putPieceOnBoard(3, 6, piece4);
-        game.move(new Coordinate(3, 6), new Coordinate(3, 7));
+        game.move(new Coordinates(3, 6), new Coordinates(3, 7));
         assertEquals(piece4.getId(), game.getBoard().getPiece(3, 7).getId());
         assertEquals(PieceType.BISHOP, game.getBoard().getPiece(3, 7).getPieceType());
     }
@@ -158,25 +160,25 @@ class ChessTest {
     void movePromotionBlackSize() {
         var piece = FACTORY.createPiece(PieceType.PAWN, Color.BLACK);
         game.putPieceOnBoard(7, 1, piece);
-        game.move(new Coordinate(7, 1), new Coordinate(7, 0));
-        assertEquals(piece.getId(), game.getBoard().getPiece(7, 0).getId());
+        game.move(new Coordinates(7, 1), new Coordinates(7, 0));
+        assertEquals(piece.getColor(), game.getBoard().getColor(7, 0));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(7, 0).getPieceType());
 
         var piece2 = FACTORY.createPiece(PieceType.PAWN, Color.BLACK);
         game.putPieceOnBoard(3, 1, piece2);
-        game.move(new Coordinate(3, 1), new Coordinate(3, 0));
-        assertEquals(piece2.getId(), game.getBoard().getPiece(3, 0).getId());
+        game.move(new Coordinates(3, 1), new Coordinates(3, 0));
+        assertEquals(piece2.getColor(), game.getBoard().getColor(3, 0));
         assertEquals(PieceType.QUEEN, game.getBoard().getPiece(3, 0).getPieceType());
 
         var piece3 = FACTORY.createPiece(PieceType.PAWN, Color.BLACK);
         game.putPieceOnBoard(0, 5, piece3);
-        game.move(new Coordinate(0, 5), new Coordinate(0, 4));
+        game.move(new Coordinates(0, 5), new Coordinates(0, 4));
         assertEquals(piece3.getId(), game.getBoard().getPiece(0, 4).getId());
         assertEquals(PieceType.PAWN, game.getBoard().getPiece(0, 4).getPieceType());
 
         var piece4 = FACTORY.createPiece(PieceType.BISHOP, Color.BLACK);
         game.putPieceOnBoard(3, 1, piece4);
-        game.move(new Coordinate(3, 1), new Coordinate(3, 0));
+        game.move(new Coordinates(3, 1), new Coordinates(3, 0));
         assertEquals(piece4.getId(), game.getBoard().getPiece(3, 0).getId());
         assertEquals(PieceType.BISHOP, game.getBoard().getPiece(3, 0).getPieceType());
     }
@@ -199,7 +201,7 @@ class ChessTest {
         //small
         game.putPieceOnBoard(4, column, king);
         game.putPieceOnBoard(0, column, rook);
-        game.move(new Coordinate(4, column), new Coordinate(2, column));
+        game.move(new Coordinates(4, column), new Coordinates(2, column));
         assertNull(game.getBoard().getPiece(4, column));
         assertNull(game.getBoard().getPiece(0, column));
         assertEquals(king, game.getBoard().getPiece(2, column));
@@ -208,7 +210,7 @@ class ChessTest {
         game.hitUndo();
         game.hitSave();
         game.putPieceOnBoard(4, column, rook);
-        game.move(new Coordinate(4, column), new Coordinate(2, column));
+        game.move(new Coordinates(4, column), new Coordinates(2, column));
         assertNull(game.getBoard().getPiece(4, column));
         assertNull(game.getBoard().getPiece(3, column));
         assertEquals(rook, game.getBoard().getPiece(2, column));
@@ -218,7 +220,7 @@ class ChessTest {
         game.hitSave();
         game.putPieceOnBoard(4, column, king);
         game.putPieceOnBoard(7, column, rook);
-        game.move(new Coordinate(4, column), new Coordinate(6, column));
+        game.move(new Coordinates(4, column), new Coordinates(6, column));
         assertNull(game.getBoard().getPiece(4, column));
         assertNull(game.getBoard().getPiece(7, column));
         assertEquals(king, game.getBoard().getPiece(6, column));
@@ -227,7 +229,7 @@ class ChessTest {
         game.hitUndo();
         game.hitSave();
         game.putPieceOnBoard(4, column, rook);
-        game.move(new Coordinate(4, column), new Coordinate(6, column));
+        game.move(new Coordinates(4, column), new Coordinates(6, column));
         assertNull(game.getBoard().getPiece(4, column));
         assertNull(game.getBoard().getPiece(5, column));
         assertEquals(rook, game.getBoard().getPiece(6, column));
@@ -318,11 +320,11 @@ class ChessTest {
         game.putPieceOnBoard(7, 7, FACTORY.createPiece(PieceType.KNIGHT, Color.WHITE));
         game.putPieceOnBoard(5, 1, FACTORY.createPiece(PieceType.QUEEN, Color.BLACK));
         Assertions.assertThat(game.allPossibleMovesByCurrentPlayer())
-                .containsExactly(new Coordinate(6, 5),
-                        new Coordinate(5, 6),
-                        new Coordinate(1, 1),
-                        new Coordinate(1, 0),
-                        new Coordinate(0, 1));
+                .containsExactly(new Coordinates(6, 5),
+                        new Coordinates(5, 6),
+                        new Coordinates(1, 1),
+                        new Coordinates(1, 0),
+                        new Coordinates(0, 1));
         game.setInitialSet();
         var expected = getCoordinatesOfColumn(2);
         expected.addAll(getCoordinatesOfColumn(3));
@@ -333,9 +335,9 @@ class ChessTest {
         Assertions.assertThat(game.allPossibleMovesByCurrentPlayer()).containsAll(expected);
     }
 
-    private Set<Coordinate> getCoordinatesOfColumn(int number) {
+    private Set<Coordinates> getCoordinatesOfColumn(int number) {
         return IntStream.range(8, 0)
-                .mapToObj(x -> new Coordinate(x, number))
+                .mapToObj(x -> new Coordinates(x, number))
                 .collect(Collectors.toSet());
     }
 
@@ -343,12 +345,12 @@ class ChessTest {
     void isInDanger() {
         game.setInitialSet();
         Assertions.assertThat(IntStream.range(0, 8).filter(x -> game.isInDanger(x, 1, Color.BLACK))).isEmpty();
-        assertTrue(game.isInDanger(2,2, Color.WHITE));
-        assertTrue(game.isInDanger(4,4, Color.BLACK));
-        assertTrue(game.isInDanger(3,3, Color.WHITE));
+        assertTrue(game.isInDanger(2, 2, Color.WHITE));
+        assertTrue(game.isInDanger(4, 4, Color.BLACK));
+        assertTrue(game.isInDanger(3, 3, Color.WHITE));
         assertTrue(game.isInDanger(6, 5, Color.BLACK));
-        assertFalse(game.isInDanger(4,6, Color.BLACK));
-        assertFalse(game.isInDanger(4,6, Color.BLACK));
+        assertFalse(game.isInDanger(4, 6, Color.BLACK));
+        assertFalse(game.isInDanger(4, 6, Color.BLACK));
     }
 
     @Test
@@ -361,11 +363,10 @@ class ChessTest {
     @Test
     void builderDifferentNumberOfPlayers() {
         var builder = new Chess.Builder();
-        org.junit.jupiter.api.Assertions.assertThrows(MissingPlayerException.class, builder::build);
-        org.junit.jupiter.api.Assertions.assertThrows(MissingPlayerException.class, () -> {
-            builder.addPlayer(player).build();
-        });
-        org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> {
+        assertThrows(MissingPlayerException.class, builder::build);
+        builder.addPlayer(player);
+        assertThrows(MissingPlayerException.class, builder::build);
+        assertDoesNotThrow(() -> {
             builder.addPlayer(player).addPlayer(player2).addPlayer(player).addPlayer(player2).build();
         });
     }
@@ -380,4 +381,18 @@ class ChessTest {
                 .build();
         org.junit.jupiter.api.Assertions.assertEquals(2, game.getBoard().getAllPiecesFromBoard().length);
     }
+
+    @Test
+    void getMementoHistory() {
+        int expectedSize = game.getMementoHistory().size();
+        try {
+            game.getMementoHistory().clear();
+            Assertions.assertThat(game.getMementoHistory())
+                    .as("Method returns modifiable collection - return new or unmodifiable.")
+                    .hasSize(expectedSize);
+        } catch (UnsupportedOperationException e) {
+            // ok (unmodifiable)
+        }
+    }
+
 }

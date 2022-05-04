@@ -3,7 +3,7 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Alzbeta Strompova
@@ -14,7 +14,7 @@ class PlayerTest {
     void attributesAndMethods() {
         BasicRulesTester.attributesAmount(Player.class, 2);
         BasicRulesTester.methodsAmount(Player.class, 5);
-        BasicRulesTester.attributesFinal(Player.class);
+        BasicRulesTester.attributesFinal(Player.class, 2);
     }
 
     @Test

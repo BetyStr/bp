@@ -39,4 +39,5 @@ public class MissingPlayerException extends RuntimeException {
     public MissingPlayerException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

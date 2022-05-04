@@ -39,4 +39,5 @@ public class NotAllowedMoveException extends Exception {
     public NotAllowedMoveException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

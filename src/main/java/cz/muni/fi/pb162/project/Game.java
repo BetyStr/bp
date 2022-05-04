@@ -17,7 +17,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 /**
- * Class representing board game which have {@code Board.SIZE} x {@code Board.SIZE} squares.
+ * Class representing the board game which has {@code Board.SIZE} x {@code Board.SIZE} squares.
  *
  * @author Alzbeta Strompova
  */
@@ -34,15 +34,15 @@ public abstract class Game implements Playable {
     /**
      * Constructor.
      *
-     * @param playerOne first of two players needed to play board game.
-     * @param playerTwo second of two players needed to play board game.
+     * @param playerOne first of two players playing the board game.
+     * @param playerTwo second of two players playing the board game.
      */
     protected Game(Player playerOne, Player playerTwo) {
         this(playerOne, playerTwo, new Board());
     }
 
     /**
-     * Constructor because of design pattern Builder.
+     * Constructor of design pattern Builder.
      *
      * @param playerOne first of two players playing board game.
      * @param playerTwo second of two players playing board game.
@@ -55,7 +55,9 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Protected constructor because Prototype.
+     * Protected constructor of design pattern Prototype.
+     *
+     * @param target is the game to copy.
      */
     protected Game(Game target) {
         if (target != null) {
@@ -96,23 +98,28 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Method that put piece on board at coordinates {@code letterNumber} and {@code number}.
+     * Method that puts the piece on the board at coordinates {@code letterNumber} and {@code number}.
      *
-     * @param letterNumber first coordinate to put piece 0-7
-     * @param number       second coordinate to put piece 0-7
-     * @param piece        Piece which we want to put on board
+     * @param letterNumber first part of coordinate to put piece in range 0-7.
+     * @param number       second part of coordinate to put piece in range 0-7.
+     * @param piece        piece to put on the board.
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         board.putPieceOnBoard(letterNumber, number, piece);
     }
 
-    private Coordinate getInputFromPlayer() {
+    private Coordinates getInputFromPlayer() {
         var position = SCANNER.next().trim();
         if (position.length() != 2) {
-            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8]");
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8].");
         }
         var letterNumber = position.charAt(0);
-        var number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        int number;
+        try {
+            number = Integer.parseInt(String.valueOf(position.charAt(1)));
+        } catch (NumberFormatException ex) {
+            throw new InvalidFormatOfInputException("Format of input must by [a-h][1-8].", ex);
+        }
         return BoardNotation.getCoordinatesOfNotation(letterNumber, number);
     }
 
@@ -140,19 +147,19 @@ public abstract class Game implements Playable {
     }
 
     /**
-     * Method that control if it needs to be change status of game.
+     * Method that updates the status of game if necessary.
      */
     public abstract void updateStatus();
 
     /**
-     * Method that return ordered set of all possible moves than can do current player.
+     * Method that returns the ordered set of all possible moves available for current player.
      *
-     * @return ordered set of all possible moves than can do current player.
+     * @return ordered set of all possible moves available for current player.
      */
-    public Set<Coordinate> allPossibleMovesByCurrentPlayer() {
-        var inverseComparator = new Comparator<Coordinate>() {
+    public Set<Coordinates> allPossibleMovesByCurrentPlayer() {
+        var inverseComparator = new Comparator<Coordinates>() {
             @Override
-            public int compare(Coordinate o1, Coordinate o2) {
+            public int compare(Coordinates o1, Coordinates o2) {
                 return -1 * o1.compareTo(o2);
             }
         };

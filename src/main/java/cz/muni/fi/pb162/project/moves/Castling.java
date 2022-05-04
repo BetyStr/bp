@@ -3,7 +3,7 @@ package cz.muni.fi.pb162.project.moves;
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Chess;
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Coordinate;
+import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,9 +19,9 @@ import java.util.Set;
 public class Castling implements Move {
 
     @Override
-    public Set<Coordinate> getAllowedMoves(Game game, Coordinate position) {
+    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
         var board = game.getBoard();
-        var result = new HashSet<Coordinate>();
+        var result = new HashSet<Coordinates>();
         var color = board.getPiece(position).getColor().getOppositeColor();
         if (!(game instanceof Chess chess) || chess.isInDanger(position.letterNumber(), position.number(), color) ||
                 pieceMoveAlready(chess.getMementoHistory(), position)) {
@@ -32,7 +32,7 @@ public class Castling implements Move {
         return result;
     }
 
-    private void bigCastling(Coordinate position, Board board, HashSet<Coordinate> result, Color color, Chess chess) {
+    private void bigCastling(Coordinates position, Board board, HashSet<Coordinates> result, Color color, Chess chess) {
         for (int i = 1; i < 4; i++) {
             if (!board.isEmpty(position.letterNumber() - i, position.number()) ||
                     chess.isInDanger(position.letterNumber() - i, position.number(), color)) {
@@ -40,13 +40,13 @@ public class Castling implements Move {
             }
         }
         if (!pieceMoveAlready(chess.getMementoHistory(),
-                new Coordinate(position.letterNumber() - 4, position.number()))) {
-            result.add(new Coordinate(position.letterNumber() - 2, position.number()));
+                new Coordinates(position.letterNumber() - 4, position.number()))) {
+            result.add(new Coordinates(position.letterNumber() - 2, position.number()));
 
         }
     }
 
-    private void smallCastling(Coordinate position, Board board, HashSet<Coordinate> result,
+    private void smallCastling(Coordinates position, Board board, HashSet<Coordinates> result,
                                Color color, Chess chess) {
         for (int i = 1; i < 3; i++) {
             if (!board.isEmpty(position.letterNumber() + i, position.number()) ||
@@ -55,13 +55,13 @@ public class Castling implements Move {
             }
         }
         if (!pieceMoveAlready(chess.getMementoHistory(),
-                new Coordinate(position.letterNumber() + 3, position.number()))) {
-            result.add(new Coordinate(position.letterNumber() + 2, position.number()));
+                new Coordinates(position.letterNumber() + 3, position.number()))) {
+            result.add(new Coordinates(position.letterNumber() + 2, position.number()));
 
         }
     }
 
-    private boolean pieceMoveAlready(Collection<Board> memory, Coordinate position) {
+    private boolean pieceMoveAlready(Collection<Board> memory, Coordinates position) {
         var piece = memory.iterator().next().getPiece(position);
         return !memory.stream().allMatch(board -> piece.equals(board.getPiece(position)));
     }

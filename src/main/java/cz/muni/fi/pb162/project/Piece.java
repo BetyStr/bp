@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
- * Class represent piece of board game
+ * Class represents the piece of the board game.
  *
  * @author Alzbeta Strompova
  */
@@ -24,11 +24,11 @@ public class Piece implements Prototype<Piece> {
     private PieceType pieceType;
 
     /**
-     * Constructor takes color, type and moves of piece and set up uniq id.
+     * Constructor takes {@code color}, {@code type} and {@code moves} of piece and sets up unique {@code id}.
      *
-     * @param color     which our piece will have.
-     * @param pieceType which our piece will have.
-     * @param moves     which our piece will have.
+     * @param color     is the color of the piece.
+     * @param pieceType is the type of the piece.
+     * @param moves     are allowed moves of the piece.
      */
     public Piece(Color color, PieceType pieceType, List<Move> moves) {
         id = ID_COUNTER.getAndIncrement();
@@ -62,16 +62,15 @@ public class Piece implements Prototype<Piece> {
     }
 
     /**
-     * Returns set of coordinates x, y which represent position at board
-     * when the piece can move.
+     * Returns set of coordinates which represent positions on the board
+     * where the piece can move.
      *
-     * @param game         has board which representing actual layout of pieces
-     * @param withCastling boolean decides if result contains castling moves
-     * @return coordinates of all possible move at actual board
+     * @param game         has board which represents the actual layout of pieces.
+     * @param withCastling boolean decides if result contains castling moves.
+     * @return coordinates of all possible moves on the actual board.
      */
-    public Set<Coordinate> getAllPossibleMoves(Game game, Boolean withCastling) {
-        return moves
-                .stream()
+    public Set<Coordinates> getAllPossibleMoves(Game game, Boolean withCastling) {
+        return moves.stream()
                 .filter(x -> withCastling || x.getClass() != Castling.class)
                 .map(strategy -> strategy
                         .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
@@ -81,13 +80,13 @@ public class Piece implements Prototype<Piece> {
     }
 
     /**
-     * Returns set of coordinates x, y which represent position at board
-     * when the piece can move
+     * Returns set of coordinates which represent positions on the board
+     * where the piece can move.
      *
-     * @param game has board which representing actual layout of pieces
-     * @return coordinates of all possible move at actual board
+     * @param game has board which represents the actual layout of pieces.
+     * @return coordinates of all possible moves on the actual board.
      */
-    public Set<Coordinate> getAllPossibleMoves(Game game) {
+    public Set<Coordinates> getAllPossibleMoves(Game game) {
         return getAllPossibleMoves(game, false);
     }
 

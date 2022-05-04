@@ -7,8 +7,6 @@ import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * @author Alzbeta Strompova
  */
@@ -28,10 +26,10 @@ class ExceptionsTest {
 
     @Test
     void inheritance() {
-        assertTrue(RuntimeException.class.isAssignableFrom(InvalidFormatOfInputException.class));
-        assertTrue(RuntimeException.class.isAssignableFrom(MissingPlayerException.class));
-        assertTrue(Exception.class.isAssignableFrom(EmptySquareException.class));
-        assertTrue(Exception.class.isAssignableFrom(NotAllowedMoveException.class));
+        BasicRulesTester.testInheritance(RuntimeException.class, MissingPlayerException.class);
+        BasicRulesTester.testInheritance(RuntimeException.class, MissingPlayerException.class);
+        BasicRulesTester.testInheritance(Exception.class, EmptySquareException.class);
+        BasicRulesTester.testInheritance(Exception.class, NotAllowedMoveException.class);
     }
 
 }

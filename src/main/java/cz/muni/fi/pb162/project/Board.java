@@ -15,7 +15,7 @@ public class Board implements Originator<Board>, Prototype<Board> {
     private int round;
 
     /**
-     * Constructor without parameters
+     * Constructor without parameters.
      */
     public Board() {
     }
@@ -43,12 +43,12 @@ public class Board implements Originator<Board>, Prototype<Board> {
     }
 
     /**
-     * Control if {@code coordinate} is in board.
+     * Control if {@code coordinate} is in the board.
      *
      * @param coordinate to check.
      * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero.
      */
-    public static boolean inRange(Coordinate coordinate) {
+    public static boolean inRange(Coordinates coordinate) {
         return inRange(coordinate.letterNumber(), coordinate.number());
     }
 
@@ -56,15 +56,23 @@ public class Board implements Originator<Board>, Prototype<Board> {
         return round;
     }
 
+    /**
+     * Set round to the Board. If {@code round} is negative then throw {@code IllegalArgumentException}.
+     *
+     * @param round int. If {@code round} is negative then throw {@code IllegalArgumentException}.
+     */
     public void setRound(int round) {
+        if (round < 0) {
+            throw new IllegalArgumentException("Round can not be negative.");
+        }
         this.round = round;
     }
 
     /**
      * Return color of piece at {@code position}.
      *
-     * @param letterNumber first part of coordinate from which we want piece.
-     * @param number       second part of coordinate from which we want piece.
+     * @param letterNumber first part of coordinate from which we want the color of piece.
+     * @param number       second part of coordinate from which we want the color of piece.
      * @return color of piece at {@code position}.
      */
     public Color getColor(int letterNumber, int number) {
@@ -72,6 +80,16 @@ public class Board implements Originator<Board>, Prototype<Board> {
             return null;
         }
         return squares[letterNumber][number].getColor();
+    }
+
+    /**
+     * Return color of piece at {@code position}.
+     *
+     * @param coordinates from which we want the color of piece.
+     * @return color of piece at {@code position}.
+     */
+    public Color getColor(Coordinates coordinates) {
+        return getColor(coordinates.letterNumber(), coordinates.number());
     }
 
     /**
@@ -94,7 +112,7 @@ public class Board implements Originator<Board>, Prototype<Board> {
      * @param position from which we want piece.
      * @return piece at {@code position}.
      */
-    public Piece getPiece(Coordinate position) {
+    public Piece getPiece(Coordinates position) {
         return getPiece(position.letterNumber(), position.number());
     }
 
@@ -112,8 +130,8 @@ public class Board implements Originator<Board>, Prototype<Board> {
     /**
      * Put {@code piece} on board at coordinate ({@code x}, {@code y}).
      *
-     * @param letterNumber first part of coordinate to put piece 0-7.
-     * @param number       second part of coordinate to put piece 0-7.
+     * @param letterNumber part of coordinates to put piece 0-7.
+     * @param number       part of coordinates to put piece 0-7.
      * @param piece        which we want to put on board.
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
@@ -123,17 +141,17 @@ public class Board implements Originator<Board>, Prototype<Board> {
     }
 
     /**
-     * Find coordinate of piece by id. Every piece has uniq id.
-     * If coordinate with {@code id} does not exist return null.
+     * Find coordinates of piece by id. Every piece has unique {@code id}.
+     * If coordinates with {@code id} do not exist then return null.
      *
-     * @param id of piece, we want find.
-     * @return coordinate of piece with {@code id} or if it does not exist return null.
+     * @param id of the piece, we want to find.
+     * @return coordinates of the piece with {@code id} or if it do not exist return null.
      */
-    public Coordinate findCoordinatesOfPieceById(long id) {
+    public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 if (squares[i][j] != null && squares[i][j].getId() == id) {
-                    return new Coordinate(i, j);
+                    return new Coordinates(i, j);
                 }
             }
         }
@@ -219,4 +237,5 @@ public class Board implements Originator<Board>, Prototype<Board> {
     public Board makeClone() {
         return save();
     }
+
 }

@@ -39,4 +39,5 @@ public class InvalidFormatOfInputException extends RuntimeException {
     public InvalidFormatOfInputException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.moves;
 
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Coordinate;
+import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +38,7 @@ public class Diagonal implements Move {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param step        max distance to move
      * @param onlyForward boolean that decide that piece can only move forward
@@ -50,9 +50,9 @@ public class Diagonal implements Move {
 
 
     @Override
-    public Set<Coordinate> getAllowedMoves(Game game, Coordinate position) {
+    public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
         var board = game.getBoard();
-        var result = new HashSet<Coordinate>();
+        var result = new HashSet<Coordinates>();
         var color = board.getPiece(position).getColor();
         Color goal;
 
@@ -62,7 +62,7 @@ public class Diagonal implements Move {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 goal = board.getColor(left, right);
-                var coordinate = new Coordinate(left, right);
+                var coordinate = new Coordinates(left, right);
                 if (!Board.inRange(coordinate)) {
                     break;
                 }

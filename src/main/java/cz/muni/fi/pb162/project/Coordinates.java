@@ -3,29 +3,29 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
 
 /**
- * Record representing coordinate of board.
+ * Record representing coordinates of board.
  *
- * @param letterNumber first coordinate of board.
- * @param number       second coordinate of board.
+ * @param letterNumber first coordinates of board.
+ * @param number       second coordinates of board.
  * @author Alzbeta Strompova
  */
-public record Coordinate(int letterNumber, int number) implements Comparable<Coordinate> {
+public record Coordinates(int letterNumber, int number) implements Comparable<Coordinates> {
 
 
     /**
-     * Addition of two coordinate.
+     * Addition of two coordinates.
      *
-     * @param other is second coordinate.
+     * @param other is second coordinates.
      * @return new coordinates, which is created by adding the {@code other}.
      */
-    public Coordinate add(Coordinate other) {
-        return new Coordinate(letterNumber + other.letterNumber, number + other.number);
+    public Coordinates add(Coordinates other) {
+        return new Coordinates(letterNumber + other.letterNumber, number + other.number);
     }
 
     /**
-     * Compute average of coordinate.
+     * Compute average of coordinates.
      *
-     * @return average of coordinate.
+     * @return average of coordinates.
      */
     public double averageOfCoordinates() {
         return (letterNumber + number) / 2.0;
@@ -37,7 +37,7 @@ public record Coordinate(int letterNumber, int number) implements Comparable<Coo
     }
 
     @Override
-    public int compareTo(Coordinate o) {
+    public int compareTo(Coordinates o) {
         var value = Integer.compare(letterNumber, o.letterNumber);
         return value != 0 ? value : Integer.compare(number, o.number);
     }
