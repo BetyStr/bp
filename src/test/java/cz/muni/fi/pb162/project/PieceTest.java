@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Alzbeta Strompova
@@ -21,11 +20,12 @@ class PieceTest {
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Piece.class, 3);
         BasicRulesTester.methodsAmount(Piece.class, 6);
+        BasicRulesTester.attributesFinal(Piece.class, 2);
     }
 
     @Test
     void inheritance() {
-        assertTrue(Prototype.class.isAssignableFrom(Piece.class));
+        BasicRulesTester.testInheritance(Prototype.class, Piece.class);
     }
 
     @Test
@@ -46,15 +46,15 @@ class PieceTest {
 
     @Test
     void getAndSetTypeOfPiece() {
-        assertEquals(PieceType.KING, piece.getTypeOfPiece());
-        assertEquals(PieceType.QUEEN, piece2.getTypeOfPiece());
-        assertEquals(PieceType.ROOK, piece3.getTypeOfPiece());
-        piece.setTypeOfPiece(PieceType.KNIGHT);
-        piece2.setTypeOfPiece(PieceType.BISHOP);
-        piece3.setTypeOfPiece(PieceType.PAWN);
-        assertEquals(PieceType.KNIGHT, piece.getTypeOfPiece());
-        assertEquals(PieceType.BISHOP, piece2.getTypeOfPiece());
-        assertEquals(PieceType.PAWN, piece3.getTypeOfPiece());
+        assertEquals(PieceType.KING, piece.getPieceType());
+        assertEquals(PieceType.QUEEN, piece2.getPieceType());
+        assertEquals(PieceType.ROOK, piece3.getPieceType());
+        piece.setPieceType(PieceType.KNIGHT);
+        piece2.setPieceType(PieceType.BISHOP);
+        piece3.setPieceType(PieceType.PAWN);
+        assertEquals(PieceType.KNIGHT, piece.getPieceType());
+        assertEquals(PieceType.BISHOP, piece2.getPieceType());
+        assertEquals(PieceType.PAWN, piece3.getPieceType());
     }
 
     @Test
@@ -62,9 +62,9 @@ class PieceTest {
         assertEquals("K", piece.toString());
         assertEquals("Q", piece2.toString());
         assertEquals("R", piece3.toString());
-        piece.setTypeOfPiece(PieceType.KNIGHT);
-        piece2.setTypeOfPiece(PieceType.BISHOP);
-        piece3.setTypeOfPiece(PieceType.PAWN);
+        piece.setPieceType(PieceType.KNIGHT);
+        piece2.setPieceType(PieceType.BISHOP);
+        piece3.setPieceType(PieceType.PAWN);
         assertEquals("K", piece.toString());
         assertEquals("B", piece2.toString());
         assertEquals("P", piece3.toString());
@@ -77,19 +77,20 @@ class PieceTest {
         var piece2Clone = piece2.makeClone();
         var piece3Clone = piece3.makeClone();
         assertEquals(piece.getColor(), pieceClone.getColor());
-        assertEquals(piece.getTypeOfPiece(), pieceClone.getTypeOfPiece());
+        assertEquals(piece.getPieceType(), pieceClone.getPieceType());
         assertNotEquals(piece.getId(), pieceClone.getId());
 
         assertEquals(piece.getColor(), pieceClone2.getColor());
-        assertEquals(piece.getTypeOfPiece(), pieceClone2.getTypeOfPiece());
+        assertEquals(piece.getPieceType(), pieceClone2.getPieceType());
         assertNotEquals(piece.getId(), pieceClone2.getId());
 
         assertEquals(piece2.getColor(), piece2Clone.getColor());
-        assertEquals(piece2.getTypeOfPiece(), piece2Clone.getTypeOfPiece());
+        assertEquals(piece2.getPieceType(), piece2Clone.getPieceType());
         assertNotEquals(piece.getId(), piece2Clone.getId());
 
         assertEquals(piece3.getColor(), piece3Clone.getColor());
-        assertEquals(piece3.getTypeOfPiece(), piece3Clone.getTypeOfPiece());
-        assertNotEquals(piece.getId(), piece3Clone.getId());
+        assertEquals(piece3.getPieceType(), piece3Clone.getPieceType());
+        assertNotEquals(piece3.getId(), piece3Clone.getId());
     }
+
 }

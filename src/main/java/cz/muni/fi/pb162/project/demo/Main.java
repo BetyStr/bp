@@ -2,7 +2,7 @@ package cz.muni.fi.pb162.project.demo;
 
 import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Color;
-import cz.muni.fi.pb162.project.Coordinate;
+import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import cz.muni.fi.pb162.project.Player;
 
@@ -25,7 +25,7 @@ public class Main {
 
         var chess = new Game(player1, player2);
         chess.setInitialSet();
-        chess.move(new Coordinate(1, 1), new Coordinate(1, 2));
+        chess.move(new Coordinates(1, 1), new Coordinates(1, 2));
         for (int i = 0; i < Board.SIZE; i++) {
             System.out.println(chess.getBoard().getPiece(1, i));
         }
