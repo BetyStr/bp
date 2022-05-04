@@ -29,12 +29,18 @@
     - In the class `Builder`, if you call the method `build()`, both players must be added already.
       If not, throw an exception `MissingPlayerException`.
     - Do not forget to write meaningful messages to exceptions.
-4. Modify interface `Prototype` using generics. Replace `Piece` with generic type.
-   Make `Playeble`, `Board`, `Piece` implement `Prototype` and implement method `makeCopy`.
+4. Modify interface `Prototype` using **generics**. Replace `Piece` with generic type.
+   - Make `Board`, `Piece` implement `Prototype` and implement method `makeCopy`.
+      - The method `makeClone` in `Piece` creates a new instance with the same attributes except `id`. 
+      - The method `makeClone` in `Board` has similar functionality as the method `save`. 
+   - Make `Playable` extends `Prototype`.
+     - Create a private constructor in `Game`, `Chess`, and `Draughts` which takes one input parameter of type `Game`.
+     - In `Chess` and `Draughts` constructor call constructor from the superclass.
+     - In the `Game` constructor set all attributes base on the input parameter.
 5. Modify the method `allPossibleMovesByCurrentPlayer` in the `Game`.
-- Create **anonymous** class of interface `Comparator<Coordinate>` and override method `compare`
-  so that it compares exactly in **the reverse order** as the method `compare` in `Coordinates`.
-- Return result in order based on this comparator.
+   - Create **anonymous** class of interface `Comparator<Coordinate>` and override method `compare`
+     so that it compares exactly in **the reverse order** as the method `compare` in `Coordinates`.
+   - Return result in order based on this comparator.
 
 
 <img src="images/game9.png" alt="game9" width="600"/>.
