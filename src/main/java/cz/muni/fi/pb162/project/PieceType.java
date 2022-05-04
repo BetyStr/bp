@@ -5,7 +5,7 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Enum represent type of piece.
+ * Enum represents the type of piece.
  *
  * @author Alzbeta Strompova
  */
@@ -20,11 +20,11 @@ public enum PieceType {
     DRAUGHTS_MAN;
 
     /**
-     * Method than return symbol representing the piece in Unicode base on type and color of piece.
+     * Method than returns the symbol represented in Unicode based on the type and color of piece.
      * Symbols are from {@link <a href="https://www.fileformat.info/info/unicode/index.htm">www.fileformat.info</a>}.
      *
-     * @param color of the piece whose symbol we want to get
-     * @return symbol representing the piece in Unicode base on type and color of piece
+     * @param color of the piece whose symbol we want to get.
+     * @return symbol represented in Unicode based on the type and color of piece.
      */
     public String getSymbol(Color color) {
         Map<Pair<PieceType, Color>, String> figures = new HashMap<>();
@@ -50,4 +50,5 @@ public enum PieceType {
         figures.put(Pair.of(PieceType.DRAUGHTS_KING, Color.BLACK), "\u26C3");
         return figures.getOrDefault(Pair.of(this, color), " ");
     }
+
 }

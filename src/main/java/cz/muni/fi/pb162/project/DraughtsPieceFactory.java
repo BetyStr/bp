@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  */
 public class DraughtsPieceFactory extends PieceFactory {
 
-
     /**
      * Constructor who gives a super class a set of Draughts pieces.
      */
@@ -38,4 +37,5 @@ public class DraughtsPieceFactory extends PieceFactory {
         };
         return new Piece(Color.WHITE, pieceType, listOfMoves);
     }
+
 }

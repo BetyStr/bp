@@ -1,8 +1,8 @@
 package cz.muni.fi.pb162.project;
 
 /**
- * Enum represent color of piece
- * ordinal: {@code WHITE} - 0, {@code BLACK} - 1
+ * Enum represents color of  the piece.
+ * Ordinal values are {@code WHITE} - 0, {@code BLACK} - 1.
  *
  * @author Alzbeta Strompova
  */
@@ -11,9 +11,9 @@ public enum Color {
     BLACK;
 
     /**
-     * Return opposite color
+     * Return opposite color that means
      * {@code WHITE} -> {@code BLACK},
-     * {@code BLACK} -> {@code WHITE}
+     * {@code BLACK} -> {@code WHITE}.
      *
      * @return {@code BLACK} if color is {@code WHITE} and {@code WHITE} if color is {@code BLACK}
      */

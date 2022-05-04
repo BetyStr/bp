@@ -1,8 +1,6 @@
 package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
-import cz.muni.fi.pb162.project.moves.Diagonal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Alzbeta Strompova
@@ -26,11 +23,12 @@ class PieceTest {
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Piece.class, 4);
         BasicRulesTester.methodsAmount(Piece.class, 11);
+        BasicRulesTester.attributesFinal(Piece.class, 3);
     }
 
     @Test
     void inheritance() {
-        assertTrue(Prototype.class.isAssignableFrom(Piece.class));
+        BasicRulesTester.testInheritance(Prototype.class, Piece.class);
     }
 
     @Test
@@ -126,18 +124,15 @@ class PieceTest {
 
     @Test
     void getMoves() {
-        var moves = piece.getMoves();
-        moves = new ArrayList<>();
-        Assertions.assertThat(piece.getMoves()).isNotEmpty();
-
-        moves = piece2.getMoves();
-        var move = new Diagonal(5);
+        int expectedSize = piece.getMoves().size();
         try {
-            moves.add(move);
-        } catch (UnsupportedOperationException ex) {
-            moves = null;
+            piece.getMoves().clear();
+            Assertions.assertThat(piece.getMoves())
+                    .as("Method returns modifiable collection - return new or unmodifiable.")
+                    .hasSize(expectedSize);
+        } catch (UnsupportedOperationException e) {
+            // ok (unmodifiable)
         }
-        Assertions.assertThat(piece2.getMoves()).doesNotContain(move);
     }
 
     @Test
@@ -148,21 +143,42 @@ class PieceTest {
         Assertions.assertThat(whiteKing.getAllPossibleMoves(game)).isEmpty();
         var blackPawn = game.getBoard().getPiece(3, 6);
         Assertions.assertThat(blackPawn.getAllPossibleMoves(game))
-                .containsOnly(new Coordinate(3, 5), new Coordinate(3, 4));
+                .containsOnly(new Coordinates(3, 5), new Coordinates(3, 4));
         var whiteQueen = FACTORY.createPiece(PieceType.QUEEN, Color.WHITE);
         game.putPieceOnBoard(7, 1, whiteQueen);
         Assertions.assertThat(whiteQueen.getAllPossibleMoves(game))
-                .containsOnly(new Coordinate(7, 2),
-                        new Coordinate(7, 3),
-                        new Coordinate(7, 4),
-                        new Coordinate(7, 5),
-                        new Coordinate(7, 6),
-                        new Coordinate(6, 2),
-                        new Coordinate(5, 3),
-                        new Coordinate(4, 4),
-                        new Coordinate(3, 5),
-                        new Coordinate(2, 6));
-        game.move(new Coordinate(3, 1), new Coordinate(3, 3));
-        Assertions.assertThat(whiteKing.getAllPossibleMoves(game)).containsOnly(new Coordinate(3, 1));
+                .containsOnly(new Coordinates(7, 2),
+                        new Coordinates(7, 3),
+                        new Coordinates(7, 4),
+                        new Coordinates(7, 5),
+                        new Coordinates(7, 6),
+                        new Coordinates(6, 2),
+                        new Coordinates(5, 3),
+                        new Coordinates(4, 4),
+                        new Coordinates(3, 5),
+                        new Coordinates(2, 6));
+        game.move(new Coordinates(3, 1), new Coordinates(3, 3));
+        Assertions.assertThat(whiteKing.getAllPossibleMoves(game)).containsOnly(new Coordinates(3, 1));
     }
+
+    @Test
+    void testGetAllPossibleMovesWithCastling() {
+        var game = new Chess(null, null);
+        game.setInitialSet();
+        testCastling(game, 0);
+        testCastling(game, 7);
+    }
+
+    private void testCastling(Chess game, int column) {
+        game.putPieceOnBoard(1, column, null);
+        game.putPieceOnBoard(2, column, null);
+        game.putPieceOnBoard(3, column, null);
+        var whiteKing = game.getBoard().getPiece(4, column);
+        Assertions.assertThat(whiteKing.getAllPossibleMoves(game)).containsOnly(new Coordinates(3, column));
+        game.putPieceOnBoard(5, column, null);
+        game.putPieceOnBoard(6, column, null);
+        Assertions.assertThat(whiteKing.getAllPossibleMoves(game))
+                .containsOnly(new Coordinates(3, column), new Coordinates(5, column));
+    }
+
 }

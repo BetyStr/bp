@@ -2,16 +2,16 @@ package cz.muni.fi.pb162.project;
 
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import java.util.ArrayList;
+import java.util.Locale;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static cz.muni.fi.pb162.project.Color.WHITE;
-import static cz.muni.fi.pb162.project.PieceType.ROOK;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -25,7 +25,8 @@ class BoardTest {
     @Test
     void attributesAndMethodsAmount() {
         BasicRulesTester.attributesAmount(Board.class, 2);
-        BasicRulesTester.methodsAmount(Board.class, 17);
+        BasicRulesTester.methodsAmount(Board.class, 18);
+        BasicRulesTester.attributesFinal(Board.class, 1);
     }
 
     @Test
@@ -37,21 +38,24 @@ class BoardTest {
     void setRound() {
         board.setRound(15);
         assertEquals(15, board.getRound());
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> board.setRound(-3));
+        var actualMessage = exception.getMessage().toLowerCase(Locale.ROOT);
+        assertTrue(actualMessage.contains("negative"));
     }
 
     @Test
     void getPiece() {
         assertNull(board.getPiece(1, 3));
         assertNull(board.getPiece(7, 6));
-        var piece = FACTORY.createPiece(PieceType.KING, WHITE);
+        var piece = FACTORY.createPiece(PieceType.KING, Color.WHITE);
         board.putPieceOnBoard(1, 2, piece);
         assertEquals(piece.getId(), board.getPiece(1, 2).getId());
     }
 
     @Test
     void getPieceCoordinates() {
-        assertNull(board.getPiece(new Coordinate(1, 4)));
-        assertNull(board.getPiece(new Coordinate(5, 2)));
+        assertNull(board.getPiece(new Coordinates(1, 4)));
+        assertNull(board.getPiece(new Coordinates(5, 2)));
         var piece = FACTORY.createPiece(PieceType.QUEEN, Color.BLACK);
         board.putPieceOnBoard(6, 6, piece);
         assertEquals(piece.getId(), board.getPiece(6, 6).getId());
@@ -61,7 +65,7 @@ class BoardTest {
     void getColor() {
         assertNull(board.getColor(4, 3));
         assertNull(board.getColor(7, 1));
-        var piece = FACTORY.createPiece(ROOK, WHITE);
+        var piece = FACTORY.createPiece(PieceType.ROOK, Color.WHITE);
         var piece2 = FACTORY.createPiece(PieceType.ROOK, Color.BLACK);
         board.putPieceOnBoard(5, 5, piece);
         board.putPieceOnBoard(3, 3, piece2);
@@ -70,20 +74,32 @@ class BoardTest {
     }
 
     @Test
+    void getColorCoordinates() {
+        assertNull(board.getColor(new Coordinates(9, 0)));
+        assertNull(board.getColor(new Coordinates(4, 2)));
+        var piece = FACTORY.createPiece(PieceType.ROOK, Color.WHITE);
+        var piece2 = FACTORY.createPiece(PieceType.ROOK, Color.BLACK);
+        board.putPieceOnBoard(2, 5, piece);
+        board.putPieceOnBoard(6, 1, piece2);
+        assertEquals(piece.getColor(), board.getColor(new Coordinates(2, 5)));
+        assertEquals(piece2.getColor(), board.getColor(new Coordinates(6, 1)));
+    }
+
+    @Test
     void inRange() {
-        assertTrue(Board.inRange(new Coordinate(2, 4)));
-        assertTrue(Board.inRange(new Coordinate(0, 0)));
-        assertTrue(Board.inRange(new Coordinate(7, 7)));
-        assertTrue(Board.inRange(new Coordinate(6, 1)));
-        assertFalse(Board.inRange(new Coordinate(5, 15)));
-        assertFalse(Board.inRange(new Coordinate(0, 9)));
-        assertFalse(Board.inRange(new Coordinate(8, 0)));
-        assertFalse(Board.inRange(new Coordinate(-4, -7)));
+        assertTrue(Board.inRange(new Coordinates(2, 4)));
+        assertTrue(Board.inRange(new Coordinates(0, 0)));
+        assertTrue(Board.inRange(new Coordinates(7, 7)));
+        assertTrue(Board.inRange(new Coordinates(6, 1)));
+        assertFalse(Board.inRange(new Coordinates(5, 15)));
+        assertFalse(Board.inRange(new Coordinates(0, 9)));
+        assertFalse(Board.inRange(new Coordinates(8, 0)));
+        assertFalse(Board.inRange(new Coordinates(-4, -7)));
     }
 
     @Test
     void isEmptyAndPutPieceOnBoard() {
-        var piece = FACTORY.createPiece(PieceType.KING, WHITE);
+        var piece = FACTORY.createPiece(PieceType.KING, Color.WHITE);
         board.putPieceOnBoard(3, 4, piece);
         board.putPieceOnBoard(6, 1, piece);
         board.putPieceOnBoard(2, 2, piece);
@@ -101,12 +117,12 @@ class BoardTest {
 
     @Test
     void findCoordinatesOfPieceById() {
-        var piece = FACTORY.createPiece(PieceType.KING, WHITE);
+        var piece = FACTORY.createPiece(PieceType.KING, Color.WHITE);
         board.putPieceOnBoard(5, 5, piece);
         var result = board.findCoordinatesOfPieceById(piece.getId());
         assertEquals(5, result.letterNumber());
         assertEquals(5, result.number());
-        var piece2 = FACTORY.createPiece(PieceType.KING, WHITE);
+        var piece2 = FACTORY.createPiece(PieceType.KING, Color.WHITE);
         board.putPieceOnBoard(2, 7, piece2);
         var result2 = board.findCoordinatesOfPieceById(piece2.getId());
         assertEquals(2, result2.letterNumber());
@@ -121,7 +137,7 @@ class BoardTest {
         var result = new ArrayList<Piece>();
         for (int i = 0; i < 5; i++) {
             for (int j = 1; j < 8; j++) {
-                var piece = FACTORY.createPiece(PieceType.PAWN, WHITE);
+                var piece = FACTORY.createPiece(PieceType.PAWN, Color.WHITE);
                 board.putPieceOnBoard(i, j, piece);
                 result.add(piece);
             }
@@ -129,14 +145,13 @@ class BoardTest {
         assertEquals(result.size(), board.getAllPiecesFromBoard().length);
 
         var board2 = new Board();
-        var piece = FACTORY.createPiece(PieceType.KING, WHITE);
+        var piece = FACTORY.createPiece(PieceType.KING, Color.WHITE);
         board2.putPieceOnBoard(1, 2, piece);
         var piece2 = FACTORY.createPiece(PieceType.QUEEN, Color.BLACK);
         board2.putPieceOnBoard(5, 5, piece2);
         var piece3 = FACTORY.createPiece(PieceType.BISHOP, Color.BLACK);
         board2.putPieceOnBoard(7, 4, piece3);
-        Assertions.assertThat(board2.getAllPiecesFromBoard())
-                .containsOnly(piece, piece2, piece3);
+        Assertions.assertThat(board2.getAllPiecesFromBoard()).containsOnly(piece, piece2, piece3);
     }
 
     @Test
@@ -222,4 +237,5 @@ class BoardTest {
         board2.putPieceOnBoard(7, 1, FACTORY.createPiece(PieceType.ROOK, Color.BLACK));
         assertThat(board).doesNotHaveSameHashCodeAs(board2);
     }
+
 }
