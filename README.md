@@ -1,27 +1,27 @@
 ## Fifth iteration
 
 1. Add `DRAUGHTS_KING` and  `DRAUGHTS_MAN` to `PieceType`.
-2. Create classes `Chess` that will inherit from the class `Game`.
+2. Create class `Chess` that will inherit from the class `Game`.
     - Make `Game` abstract with abstract method `updateStatus`.
     - Move all specific code about chess to `Chess`.
-3. Create class `Draughts`. It will have a different initial set, move, and conditions of ending from `Chess`.
+3. Create class `Draughts`. It will have a different initial set, move, and conditions of ending than the class `Chess`.
     - It will inherit from class `Game`.
-        - Method `setInitialSet` sets the initial layout of draughts pieces.
+        - Method `setInitialSet` sets the initial layout of the draughts pieces.
         - Method `move` will work with two options.
-            - If you move the piece only by 1 square that method put the piece in the new position.
-            - If you move the piece by 2 squares that method removes the piece between the old position and the new position.
+            - If you move the piece only by 1 square, method puts the piece in the new position.
+            - If you move the piece by 2 squares, method removes the piece between the old position and the new position.
               > For example if you move the piece from `(0,0)` to `(2,2)` then you must remove the piece on `(1,1)`.
-            - You Can assume that you get valid input.
+            - You can assume that you get valid input.
     - Method `updateStatus` changes status if a player wins. If there is no piece of one color on the board,
       the player of the other color has won.
 4. Add control of castling in method `move` in `Chess`.
-    - When castling occurs then the input of method `move` will be the old position and the new position of king.
+    - When castling occurs then the input of the method `move` will be the old position and the new position of king.
       You must in this method move rook. (It is not necessary to check whether castling may occur.
       Assume that all conditions are fulfilled.)
 
    <img src="images/castling.jpg" alt="castling" width="600"/>.
 
-5. Add `toString` to `Board`. Return value `toString()` of the board with the initial position of pieces looks like this
+5. Add `toString` to `Board`. Return value `toString()` of the board with the initial position of the pieces looking like this
 ```
    1   2   3   4   5   6   7   8
   --------------------------------
