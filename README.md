@@ -4,26 +4,26 @@
     -  Override method `equals`. Two pieces will be the same if they have the same `id`.
 2. Modify class `Board`.
     - Override method `equals`. Two boards will be the same if they have **all** attributes same.
-    - Make `Board` implement `Originator`.
+    - Make `Board` to implement `Originator`.
     - Add a **private** constructor which takes an integer representing a round and 2-dimensional array of pieces
       as the input parameter. It will be used in `save`.
     - Implement the method from `Originator`.
         - Method `save` that "take snapshot" (create Memento that means the state of class)
-          and save it to the caretaker attribute. Notice that it is needed deep copy.
-        - Method `restore` do step back(undo). Sets the last memorized state, which he gets as the input parameter.
-3. Make `Playable` extends `Caretaker`.
+          and save it to the caretaker attribute. Notice that deep copy is needed.
+        - Method `restore` does step back (undo). It sets the last memorized state, which it gets as the input parameter.
+3. Make `Playable` to extend `Caretaker`.
 4. Update class `Game`.
     - Override method `equals`. Two games will be the same if they have all attributes same.
-    - Add attribute `mementoHistory`. **Choose the type of collection so that you can easily insert new objects
+    - Add attribute `mementoHistory`. **Choose the type of the collection so that you can easily insert new objects
       and select the last inserted ones.**
     - Implement the method from `Caretaker`.
-        - The method `hitSave` save "snapshot" of `Board`.
-        - The method `hitUndo` restore "snapshot" of `Board` if `mementoHistory` is not empty. Otherwise, do nothing.
+        - The method `hitSave` save "snapshot" of the `Board`.
+        - The method `hitUndo` restore "snapshot" of the `Board` if `mementoHistory` is not empty. Otherwise, do nothing.
     - Update method `play` to `hitSave` and print board every round.
-5. Update method `move` in class `Draughts`. If a piece of type `DRAUGHTS_MAN` passes through the whole board
+5. Update method `move` in the class `Draughts`. If a piece of the type `DRAUGHTS_MAN` passes through the whole board
    it will change to `DRAUGHTS_KING`.
 6. Create package `moves`.
-    - In this package base on the pre-prepared interface `Move`(design pattern strategy) create classes `Diagonal`, `Jump`, and `Straight`.
+    - In this package based on the pre-prepared interface `Move`(design pattern strategy) create classes `Diagonal`, `Jump`, and `Straight`.
     - All positions to return must be **empty** or in the case of `Diagonal` and `Straight`
       can be **occupied by a piece of the opposite color**.
         - Class `Diagonal` has two attributes.
@@ -60,8 +60,8 @@ Hints:
   > If two objects are equal according to the equals(Object) method,
   > calling the hashCode() method on each of the two objects must produce the same value.
 - If you want to know more about the **memento** design pattern, you can read pre-prepared interfaces
-  or click on [link](https://refactoring.guru/design-patterns/memento).
+  or click on the [link](https://refactoring.guru/design-patterns/memento).
 - If you want to know more about the **strategy** design pattern, you can read a pre-prepared interface 
-  or click on [link](https://refactoring.guru/design-patterns/strategy).
+  or click on the [link](https://refactoring.guru/design-patterns/strategy).
 - Util class `Arrays` and static method `System.arraycopy` can make your implementation easier.
-- Notice that moving only forward has a different direction base on color.
+- Notice that moving only forward has a different direction based on the color.
