@@ -38,7 +38,7 @@ public class Diagonal implements Move {
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param step        max distance to move
      * @param onlyForward boolean that decide that piece can only move forward
@@ -56,20 +56,24 @@ public class Diagonal implements Move {
         var color = board.getPiece(position).getColor();
         Color goal;
 
-        var coordinates = Move.getDiagonalShift(onlyForward);
+        var coordinates = Move.getDiagonalShift(onlyForward, color);
         for (Pair<Integer, Integer> movement : coordinates) {
             for (int i = 1; i <= step; i++) {
                 var left = position.letterNumber() + i * movement.getLeft();
                 var right = position.number() + i * movement.getRight();
                 goal = board.getColor(left, right);
-                if (goal == null) {
-                    result.add(new Coordinates(left, right));
-                } else {
-                    if (color.getOppositeColor().equals(goal)) {
-                        result.add(new Coordinates(left, right));
-                    }
+                var coordinate = new Coordinates(left, right);
+                if (!Board.inRange(coordinate)) {
                     break;
                 }
+                if (goal == null) {
+                    result.add(coordinate);
+                    continue;
+                }
+                if (color.getOppositeColor().equals(goal)) {
+                    result.add(coordinate);
+                }
+                break;
             }
         }
         return result;

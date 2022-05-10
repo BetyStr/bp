@@ -1,5 +1,7 @@
 package cz.muni.fi.pb162.project;
 
+import java.util.Arrays;
+
 /**
  * Class for representing simplification of board game Draughts.
  * Subclass of abstract class {@code Game}.
@@ -15,13 +17,13 @@ public class Draughts extends Game {
      * @param playerTwo second of two players needed to play draughts.
      */
     public Draughts(Player playerOne, Player playerTwo) {
-        super(playerOne, playerTwo, new Board());
+        super(playerOne, playerTwo);
     }
 
     /**
-     * Private constructor because design pattern prototype
+     * Private constructor because design pattern prototype.
      *
-     * @param target game to copy
+     * @param target game to copy.
      */
     private Draughts(Game target) {
         super(target);
@@ -29,15 +31,16 @@ public class Draughts extends Game {
 
     @Override
     public void setInitialSet() {
+        var factory = new DraughtsPieceFactory();
         for (int i = 0; i < Board.SIZE; i += 2) {
-            getBoard().putPieceOnBoard(i, 0, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 2, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 6, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 0, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE));
+            getBoard().putPieceOnBoard(i, 2, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE));
+            getBoard().putPieceOnBoard(i, 6, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK));
         }
         for (int i = 1; i < Board.SIZE; i += 2) {
-            getBoard().putPieceOnBoard(i, 1, new Piece(Color.WHITE, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 5, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
-            getBoard().putPieceOnBoard(i, 7, new Piece(Color.BLACK, TypeOfPiece.DRAUGHTS_MAN));
+            getBoard().putPieceOnBoard(i, 1, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.WHITE));
+            getBoard().putPieceOnBoard(i, 5, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK));
+            getBoard().putPieceOnBoard(i, 7, factory.createPiece(PieceType.DRAUGHTS_MAN, Color.BLACK));
         }
     }
 
@@ -51,19 +54,31 @@ public class Draughts extends Game {
             var y = oldPosition.number() + (newPosition.number() - oldPosition.number()) / 2;
             putPieceOnBoard(x, y, null);
         }
+        // promotion
+        if ((newPosition.number() == 0 && piece.getColor().equals(Color.BLACK)
+                || newPosition.number() == 7 && piece.getColor().equals(Color.WHITE))
+                && piece.getPieceType().equals(PieceType.DRAUGHTS_MAN)) {
+            putPieceOnBoard(newPosition.letterNumber(), newPosition.number(),
+                    new DraughtsPieceFactory().createPiece(PieceType.DRAUGHTS_KING, piece.getColor()));
+        }
     }
 
     @Override
     public void updateStatus() {
-        if (getBoard().getAllPiecesFromBoard()
-                .stream()
-                .filter(x -> x.getColor().equals(getCurrentPlayer().color()))
-                .toList()
-                .isEmpty()) {
-            setStateOfGame(getCurrentPlayer().color().equals(Color.WHITE)
-                    ? StateOfGame.BLACK_PLAYER_WIN
-                    : StateOfGame.WHITE_PLAYER_WIN);
+        if (checkWinner(Color.WHITE)) {
+            setStateOfGame(StateOfGame.WHITE_PLAYER_WIN);
         }
+        if (checkWinner(Color.BLACK)) {
+            setStateOfGame(StateOfGame.BLACK_PLAYER_WIN);
+        }
+    }
+
+    private boolean checkWinner(Color color) {
+        return Arrays.stream(getBoard()
+                        .getAllPiecesFromBoard())
+                .filter(x -> x.getColor().equals(color.getOppositeColor()))
+                .toList()
+                .isEmpty();
     }
 
     @Override

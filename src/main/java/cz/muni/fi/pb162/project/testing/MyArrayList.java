@@ -8,28 +8,28 @@ import java.util.Collections;
 import java.util.Objects;
 
 /**
- * Basic class designed to practice writing basic tests.
+ * Basic class designed to practice writing simple tests.
  *
  * @author Alzbeta Strompova
  */
-public class MyArray {
+public class MyArrayList {
 
     private final List<Integer> arrayList;
 
     /**
-     * Constructor without parameters
+     * Constructor without parameters.
      */
-    public MyArray() {
+    public MyArrayList() {
         arrayList = new ArrayList<>();
     }
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param arrayList is array of Integers
      */
-    public MyArray(Integer[] arrayList) {
-        this.arrayList = new ArrayList<>(Arrays.asList(arrayList));
+    public MyArrayList(Integer[] arrayList) {
+        this.arrayList = Arrays.asList(arrayList);
     }
 
     public List<Integer> getArrayList() {
@@ -39,7 +39,7 @@ public class MyArray {
     /**
      * Method return average of integers.
      *
-     * @return average of integers.
+     * @return average of integers or 0 if the list is empty.
      */
     public double calculateAverage() {
         var average = arrayList
@@ -50,28 +50,28 @@ public class MyArray {
     }
 
     /**
-     * Method return min of integers.
+     * Method return min of integers or {@code NoSuchElementException} if the list is empty.
      *
-     * @return min of integers.
+     * @return minimum of integers.
      */
     public int getMin() {
         return Collections.min(arrayList);
     }
 
     /**
-     * Method return max of integers.
+     * Method return max of integers or {@code NoSuchElementException} if the list is empty.
      *
-     * @return max of integers.
+     * @return maximum of integers.
      */
     public int getMax() {
         return Collections.max(arrayList);
     }
 
     /**
-     * Method return List of integers that entered by adding {@code number}
+     * Method adds the number to every element of the list and return it.
      *
-     * @param number to add to every item of List
-     * @return new List of integers that entered by adding {@code number}
+     * @param number to add to every item of the list.
+     * @return new list of integers created by adding {@code number}.
      */
     public List<Integer> addNumber(int number) {
         return arrayList
@@ -81,11 +81,11 @@ public class MyArray {
     }
 
     /**
-     * Method return List of integers that entered the condition check.
-     * Condition: item of List > {@code number}.
+     * Method returns the list of integers which consist of element of {@code arrayList} which met the condition.
+     * Condition: an item of list > {@code number}.
      *
-     * @param number with which we compare
-     * @return new List of integers that entered the condition check.
+     * @param number with which we compare.
+     * @return new list of integers created by control the condition.
      */
     public List<Integer> biggerThenNumber(int number) {
         return arrayList
@@ -96,7 +96,7 @@ public class MyArray {
 
     @Override
     public String toString() {
-        return "MyArray is: " + arrayList;
+        return "MyArrayList is: " + arrayList;
     }
 
     @Override
@@ -107,12 +107,13 @@ public class MyArray {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MyArray myArray = (MyArray) o;
-        return Objects.equals(arrayList, myArray.arrayList);
+        MyArrayList other = (MyArrayList) o;
+        return Objects.equals(arrayList, other.arrayList);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(arrayList);
     }
+
 }

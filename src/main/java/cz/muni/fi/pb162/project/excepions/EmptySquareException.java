@@ -39,4 +39,5 @@ public class EmptySquareException extends Exception {
     public EmptySquareException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

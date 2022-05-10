@@ -5,7 +5,7 @@ import cz.muni.fi.pb162.project.Chess;
 import cz.muni.fi.pb162.project.Color;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
-import java.util.Deque;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +22,7 @@ public class Castling implements Move {
     public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
         var board = game.getBoard();
         var result = new HashSet<Coordinates>();
-
         var color = board.getPiece(position).getColor().getOppositeColor();
-
         if (!(game instanceof Chess chess) || chess.isInDanger(position.letterNumber(), position.number(), color) ||
                 pieceMoveAlready(chess.getMementoHistory(), position)) {
             return result;
@@ -63,8 +61,8 @@ public class Castling implements Move {
         }
     }
 
-    private boolean pieceMoveAlready(Deque<Board> memory, Coordinates position) {
-        var piece = memory.peek() != null ? memory.peek().getPiece(position) : null;
-        return !memory.stream().allMatch(board -> board.getPiece(position).equals(piece));
+    private boolean pieceMoveAlready(Collection<Board> memory, Coordinates position) {
+        var piece = memory.iterator().next().getPiece(position);
+        return !memory.stream().allMatch(board -> piece.equals(board.getPiece(position)));
     }
 }

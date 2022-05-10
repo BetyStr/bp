@@ -1,7 +1,6 @@
 package cz.muni.fi.pb162.project;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -9,43 +8,72 @@ import java.util.Objects;
  *
  * @author Alzbeta Strompova
  */
-public class Board implements Originator<Board> {
+public class Board implements Originator<Board>, Prototype<Board> {
 
     public static final int SIZE = 8;
     private Piece[][] squares = new Piece[SIZE][SIZE];
     private int round;
 
     /**
-     * Constructor without parameters
+     * Constructor without parameters.
      */
     public Board() {
     }
 
     /**
-     * Constructor because design pattern Memento
+     * Constructor because design pattern Memento.
      *
-     * @param round   number of rounds played
-     * @param squares 2-dimensional array of Pieces representing board
+     * @param round   number of rounds played.
+     * @param squares 2-dimensional array of Pieces representing board.
      */
     private Board(int round, Piece[][] squares) {
         this.round = round;
         this.squares = squares;
     }
 
+    /**
+     * Control if coordinates({@code x}, {@code y}) is in board.
+     *
+     * @param x first coordinate of coordinates to check.
+     * @param y second coordinate of coordinates to check.
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero.
+     */
+    private static boolean inRange(int x, int y) {
+        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
+    }
+
+    /**
+     * Control if {@code coordinate} is in the board.
+     *
+     * @param coordinate to check.
+     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero.
+     */
+    public static boolean inRange(Coordinates coordinate) {
+        return inRange(coordinate.letterNumber(), coordinate.number());
+    }
+
     public int getRound() {
         return round;
     }
 
+    /**
+     * Set round to the Board. If {@code round} is negative then throw {@code IllegalArgumentException}.
+     *
+     * @param round int. If {@code round} is negative then throw {@code IllegalArgumentException}.
+     */
     public void setRound(int round) {
+        if (round < 0) {
+            throw new IllegalArgumentException("Round can not be negative.");
+        }
         this.round = round;
     }
 
     /**
      * Return color of piece at {@code position}.
      *
-     * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
-     * @return color of piece at {@code position}
+     * @param letterNumber first part of coordinate from which we want the color of piece.
+     * @param number       second part of coordinate from which we want the color of piece.
+     * @return color of piece at {@code position}.
      */
     public Color getColor(int letterNumber, int number) {
         if (isEmpty(letterNumber, number)) {
@@ -55,11 +83,21 @@ public class Board implements Originator<Board> {
     }
 
     /**
+     * Return color of piece at {@code position}.
+     *
+     * @param coordinates from which we want the color of piece.
+     * @return color of piece at {@code position}.
+     */
+    public Color getColor(Coordinates coordinates) {
+        return getColor(coordinates.letterNumber(), coordinates.number());
+    }
+
+    /**
      * Return piece at {@code position}.
      *
-     * @param letterNumber first coordinate of coordinates from which we want piece
-     * @param number second coordinate of coordinates from which we want piece
-     * @return piece at {@code position}
+     * @param letterNumber first part of coordinate from which we want piece.
+     * @param number       second part of coordinate from which we want piece.
+     * @return piece at {@code position}.
      */
     public Piece getPiece(int letterNumber, int number) {
         if (isEmpty(letterNumber, number)) {
@@ -71,51 +109,30 @@ public class Board implements Originator<Board> {
     /**
      * Return piece at {@code position}.
      *
-     * @param position from which we want piece
-     * @return piece at {@code position}
+     * @param position from which we want piece.
+     * @return piece at {@code position}.
      */
     public Piece getPiece(Coordinates position) {
         return getPiece(position.letterNumber(), position.number());
     }
 
     /**
-     * Control if coordinates({@code x}, {@code y}) is in board.
+     * Control if is coordinate ({@code x}, {@code y}) at board empty.
      *
-     * @param x first coordinate of coordinates to check
-     * @param y second coordinate of coordinates to check
-     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
-     */
-    private boolean inRange(int x, int y) {
-        return x < SIZE && y < SIZE && x >= 0 && y >= 0;
-    }
-
-    /**
-     * Control if {@code coordinates} is in board.
-     *
-     * @param coordinates to check.
-     * @return true if is in board, false if is greater then {@code Board.SIZE} or smaller than zero
-     */
-    public boolean inRange(Coordinates coordinates) {
-        return inRange(coordinates.letterNumber(), coordinates.number());
-    }
-
-    /**
-     * Control if is coordinates ({@code x}, {@code y}) at board empty.
-     *
-     * @param x first coordinate of coordinates to check
-     * @param y second coordinate of coordinates to check
-     * @return true if is empty, else id is not empty
+     * @param x first part of coordinate to check.
+     * @param y second part of coordinate to check.
+     * @return true if is empty, else id is not empty.
      */
     public boolean isEmpty(int x, int y) {
         return !inRange(x, y) || squares[x][y] == null;
     }
 
     /**
-     * Put {@code piece} on board at coordinates ({@code x}, {@code y}).
+     * Put {@code piece} on board at coordinate ({@code x}, {@code y}).
      *
-     * @param letterNumber first coordinate to put piece 0-7
-     * @param number       second coordinate to put piece 0-7
-     * @param piece        ChessPiece which we want to put on board
+     * @param letterNumber part of coordinates to put piece 0-7.
+     * @param number       part of coordinates to put piece 0-7.
+     * @param piece        which we want to put on board.
      */
     public void putPieceOnBoard(int letterNumber, int number, Piece piece) {
         if (inRange(letterNumber, number)) {
@@ -124,11 +141,11 @@ public class Board implements Originator<Board> {
     }
 
     /**
-     * Find coordinate of piece by id. Every piece has uniq id.
-     * If coordinate with {@code id} does not exist return null.
+     * Find coordinates of piece by id. Every piece has unique {@code id}.
+     * If coordinates with {@code id} do not exist then return null.
      *
-     * @param id of piece, we want find.
-     * @return coordinate of piece with {@code id} or if it does not exist return null.
+     * @param id of the piece, we want to find.
+     * @return coordinates of the piece with {@code id} or if it do not exist return null.
      */
     public Coordinates findCoordinatesOfPieceById(long id) {
         for (int i = 0; i < SIZE; i++) {
@@ -142,21 +159,26 @@ public class Board implements Originator<Board> {
     }
 
     /**
-     * Return list of all pieces on board.
+     * Return array of all pieces on board.
      *
-     * @return list of all pieces on board.
+     * @return array of all pieces on board.
      */
-    public List<Piece> getAllPiecesFromBoard() {
+    public Piece[] getAllPiecesFromBoard() {
         return Arrays.stream(squares)
                 .flatMap(Arrays::stream)
                 .filter(Objects::nonNull)
-                .toList();
+                .toArray(Piece[]::new);
     }
 
     ///region Originator
     @Override
     public Board save() {
-        return new Board(round, squares);
+        var squaresCopy = new Piece[squares.length][];
+        for (int i = 0; i < squares.length; i++) {
+            squaresCopy[i] = new Piece[squares.length];
+            System.arraycopy(squares[i], 0, squaresCopy[i], 0, squares.length);
+        }
+        return new Board(round, squaresCopy);
     }
 
     @Override
@@ -168,7 +190,7 @@ public class Board implements Originator<Board> {
 
     @Override
     public String toString() {
-        char space = '\u2003';
+        var space = " ";
         char separator = '|';
         var result = new StringBuilder().append(space).append(space);
         // numbers
@@ -178,7 +200,7 @@ public class Board implements Originator<Board> {
         result.append(System.lineSeparator());
         for (int i = 0; i < SIZE; i++) {
             // board
-            result.append(space).append(space).append("-".repeat(47));
+            result.append(space).append(space).append("-".repeat(4 * SIZE));
             result.append(System.lineSeparator());
             // letters
             result.append((char) (65 + i));
@@ -189,7 +211,7 @@ public class Board implements Originator<Board> {
             }
             result.append(space).append(separator).append(System.lineSeparator());
         }
-        return result.append(space).append(space).append("-".repeat(47)).toString();
+        return result.append(space).append(space).append("-".repeat(4 * SIZE)).toString();
     }
 
     @Override
@@ -209,6 +231,11 @@ public class Board implements Originator<Board> {
         int result = Objects.hash(round);
         result = 31 * result + Arrays.deepHashCode(squares);
         return result;
+    }
+
+    @Override
+    public Board makeClone() {
+        return save();
     }
 
 }

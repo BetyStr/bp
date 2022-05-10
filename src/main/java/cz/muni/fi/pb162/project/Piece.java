@@ -3,6 +3,7 @@ package cz.muni.fi.pb162.project;
 import cz.muni.fi.pb162.project.moves.Castling;
 import cz.muni.fi.pb162.project.moves.Move;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
- * Class represent piece of board game
+ * Class represents the piece of the board game.
  *
  * @author Alzbeta Strompova
  */
@@ -18,32 +19,22 @@ public class Piece implements Prototype<Piece> {
 
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final long id;
+    private final List<Move> moves;
     private Color color;
-    private TypeOfPiece typeOfPiece;
-    private List<Move> moves;
+    private PieceType pieceType;
 
     /**
-     * Constructor takes color, type and moves of piece and set up uniq id.
+     * Constructor takes {@code color}, {@code type} and {@code moves} of piece and sets up unique {@code id}.
      *
-     * @param color       which our piece will have.
-     * @param typeOfPiece which our piece will have.
-     * @param moves       which our piece will have.
+     * @param color     is the color of the piece.
+     * @param pieceType is the type of the piece.
+     * @param moves     are allowed moves of the piece.
      */
-    public Piece(Color color, TypeOfPiece typeOfPiece, List<Move> moves) {
-        this(color, typeOfPiece);
-        this.moves = moves;
-    }
-
-    /**
-     * Constructor takes color and type of piece and set up uniq id.
-     *
-     * @param color       which our piece will have.
-     * @param typeOfPiece which our piece will have.
-     */
-    public Piece(Color color, TypeOfPiece typeOfPiece) {
+    public Piece(Color color, PieceType pieceType, List<Move> moves) {
         id = ID_COUNTER.getAndIncrement();
         this.color = color;
-        this.typeOfPiece = typeOfPiece;
+        this.pieceType = pieceType;
+        this.moves = moves;
     }
 
     public long getId() {
@@ -58,48 +49,55 @@ public class Piece implements Prototype<Piece> {
         this.color = color;
     }
 
-    public TypeOfPiece getTypeOfPiece() {
-        return typeOfPiece;
+    public PieceType getPieceType() {
+        return pieceType;
     }
 
-    public void setTypeOfPiece(TypeOfPiece typeOfPiece) {
-        this.typeOfPiece = typeOfPiece;
+    public void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
-    /**
-     * Returns set of coordinates x, y which represent position at board
-     * when the piece can move
-     *
-     * @param game has board which representing actual layout of pieces
-     * @return coordinates of all possible move at actual board
-     */
-    public Set<Coordinates> getAllPossibleMoves(Game game) {
-        return getAllPossibleMoves(game, true);
+    public List<Move> getMoves() {
+        return Collections.unmodifiableList(moves);
     }
 
     /**
-     * Returns set of coordinates x, y which represent position at board
-     * when the piece can move
+     * Returns set of coordinates which represent positions on the board
+     * where the piece can move.
      *
-     * @param game         has board which representing actual layout of pieces
-     * @param withCastling boolean decides if result contains castling moves
-     * @return coordinates of all possible move at actual board
+     * @param game         has board which represents the actual layout of pieces.
+     * @param withCastling boolean decides if result contains castling moves.
+     * @return coordinates of all possible moves on the actual board.
      */
     public Set<Coordinates> getAllPossibleMoves(Game game, Boolean withCastling) {
-        return moves
-                .stream()
+        return moves.stream()
                 .filter(x -> withCastling || x.getClass() != Castling.class)
                 .map(strategy -> strategy
                         .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
-                .filter(game.getBoard()::inRange)
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Returns set of coordinates which represent positions on the board
+     * where the piece can move.
+     *
+     * @param game has board which represents the actual layout of pieces.
+     * @return coordinates of all possible moves on the actual board.
+     */
+    public Set<Coordinates> getAllPossibleMoves(Game game) {
+        return getAllPossibleMoves(game, false);
     }
 
     @Override
     public String toString() {
-        return getTypeOfPiece().getSymbol(getColor());
+        return pieceType.getSymbol(color);
+    }
+
+    @Override
+    public Piece makeClone() {
+        return new Piece(color, pieceType, moves);
     }
 
     @Override
@@ -107,7 +105,7 @@ public class Piece implements Prototype<Piece> {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() == o.getClass()) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Piece piece = (Piece) o;
@@ -119,8 +117,4 @@ public class Piece implements Prototype<Piece> {
         return Objects.hash(id);
     }
 
-    @Override
-    public Piece makeClone() {
-        return new Piece(color, typeOfPiece, moves);
-    }
 }

@@ -1,5 +1,6 @@
 package cz.muni.fi.pb162.project.moves;
 
+import cz.muni.fi.pb162.project.Board;
 import cz.muni.fi.pb162.project.Coordinates;
 import cz.muni.fi.pb162.project.Game;
 import java.util.HashSet;
@@ -36,17 +37,18 @@ public class Jump implements Move {
     public Set<Coordinates> getAllowedMoves(Game game, Coordinates position) {
         var board = game.getBoard();
         var result = new HashSet<Coordinates>();
-        var coordinates = Move.getDiagonalShift(onlyForward);
+        var color = board.getColor(position.letterNumber(), position.number());
+        var coordinates = Move.getDiagonalShift(onlyForward, color);
 
         for (Pair<Integer, Integer> movement : coordinates) {
             var leftToJump = position.letterNumber() + movement.getLeft();
             var rightToJump = position.number() + movement.getRight();
             var leftGoal = leftToJump + movement.getLeft();
             var rightGoal = rightToJump + movement.getRight();
-            if (board.getColor(position.letterNumber(), position.number())
-                    .getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
-                    && board.getColor(leftGoal, rightGoal) == null) {
-                result.add(new Coordinates(leftToJump, rightToJump));
+            if (color.getOppositeColor().equals(board.getColor(leftToJump, rightToJump))
+                    && board.getPiece(leftGoal, rightGoal) == null
+                    && Board.inRange(new Coordinates(leftGoal, rightGoal))) {
+                result.add(new Coordinates(leftGoal, rightGoal));
             }
         }
         return result;

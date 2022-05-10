@@ -10,6 +10,7 @@ import java.io.InputStream;
  * Format of file (Board.Size x Board.Size):
  * [typeOfPiece],[colorOfPiece];[typeOfPiece],[colorOfPiece];...
  * ...
+ *
  * @author Alzbeta Strompova
  **/
 public interface GameReadable {
@@ -17,18 +18,18 @@ public interface GameReadable {
     /**
      * Read Game data from input stream.
      *
-     * @param is input stream
-     * @return the object with info from the data
-     * @throws IOException on read error
+     * @param is input stream.
+     * @return the object with info from the data.
+     * @throws IOException on read error.
      */
     GameReadable read(InputStream is) throws IOException;
 
     /**
      * Read Game data from input stream.
      *
-     * @param is        input stream
-     * @param hasHeader is true if steam has hasHeader
-     * @return the object with info from the data
+     * @param is        input stream.
+     * @param hasHeader is true if the stream has header.
+     * @return the object with info from the data.
      * @throws IOException on read error
      */
     GameReadable read(InputStream is, boolean hasHeader) throws IOException;
@@ -36,19 +37,20 @@ public interface GameReadable {
     /**
      * Read Game data from input file.
      *
-     * @param file input file
-     * @return the object with info from the data
-     * @throws IOException on read error
+     * @param file input file.
+     * @return the object with info from the data.
+     * @throws IOException on read error.
      */
     GameReadable read(File file) throws IOException;
 
     /**
      * Read Game data from input file.
      *
-     * @param file input file
-     * @return the object with info from the data
-     * @throws IOException on read error
+     * @param file input file.
+     * @param hasHeader is true if the stream has header.
+     * @return the object with info from the data.
+     * @throws IOException on read error.
      */
-    GameReadable read(File file, boolean header) throws IOException;
+    GameReadable read(File file, boolean hasHeader) throws IOException;
 
 }

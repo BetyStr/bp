@@ -10,6 +10,7 @@ import java.io.Writer;
 
 /**
  * Interface for data export.
+ *
  * @author Alzbeta Strompova
  */
 public interface GameWritable {
@@ -19,16 +20,16 @@ public interface GameWritable {
     /**
      * Write data to the output stream.
      *
-     * @param os the stream we want to write into
-     * @throws IOException on write error
+     * @param os the stream we want to write into.
+     * @throws IOException on write error.
      */
     void write(OutputStream os) throws IOException;
 
     /**
      * Write data to the output file.
      *
-     * @param file the file we want to write into
-     * @throws IOException on write error
+     * @param file the file we want to write into.
+     * @throws IOException on write error.
      */
     void write(File file) throws IOException;
 
@@ -36,8 +37,8 @@ public interface GameWritable {
      * Default method of interface.
      * Write data to the output stream in Json formatting.
      *
-     * @param os     the stream we want to write into
-     * @param object data to write
+     * @param os     the stream we want to write into.
+     * @param object data to write.
      * @throws IOException on write error
      */
     default void writeJson(OutputStream os, Object object) throws IOException {

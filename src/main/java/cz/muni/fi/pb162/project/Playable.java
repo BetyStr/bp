@@ -4,31 +4,32 @@ import cz.muni.fi.pb162.project.excepions.EmptySquareException;
 import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 
 /**
- * Interface to help implement game
+ * Interface serves as a template, so that every board game has certain methods
+ * without which it would not be playable.
  *
  * @author Alzbeta Strompova
  */
 public interface Playable extends Prototype<Playable>, Caretaker {
 
     /**
-     * Method that set initial layout for game
+     * Method that sets initial layout for the game.
      */
     void setInitialSet();
 
     /**
-     * Method that do one move in game. Get piece from {@code oldPosition} and put it to {@code newPosition}.
+     * Method that does one move in the game. Get piece from {@code oldPosition} and put it to {@code newPosition}.
      *
-     * @param oldPosition coordinates of piece we want to move
-     * @param newPosition coordinates of place we want to put this piece
+     * @param oldPosition coordinates of piece we want to move.
+     * @param newPosition coordinates of place we want to put this piece.
      */
     void move(Coordinates oldPosition, Coordinates newPosition);
 
     /**
-     * Method that represent playing board game until is finish.
+     * Method that represents playing the board game.
      *
      * @throws EmptySquareException    if we want to move piece from empty square on board.
      * @throws NotAllowedMoveException if we want to do illegal move.
      */
-    void play() throws EmptySquareException, NotAllowedMoveException;
+    void play() throws NotAllowedMoveException, EmptySquareException;
 
 }
