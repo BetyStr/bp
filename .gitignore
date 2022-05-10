@@ -8,7 +8,7 @@
 !*.java
 !.gitignore
 !README.md
-!pb162_codestyle.xml
+!pb162_code_style.xml
 !pom.xml
 !.gitlab-ci.yml
 
