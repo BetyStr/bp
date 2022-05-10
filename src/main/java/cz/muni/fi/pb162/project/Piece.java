@@ -1,13 +1,9 @@
 package cz.muni.fi.pb162.project;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 /**
- * Class represent piece of board game
+ * Class represents the piece of the board game.
  *
  * @author Alzbeta Strompova
  */
@@ -16,18 +12,18 @@ public class Piece {
     private static final AtomicLong ID_COUNTER = new AtomicLong();
     private final long id;
     private final Color color;
-    private TypeOfPiece typeOfPiece;
+    private PieceType pieceType;
 
     /**
-     * Constructor takes color and type of piece and set up uniq id
+     * Constructor takes {@code color}, {@code type} and {@code moves} of piece and sets up unique {@code id}.
      *
-     * @param color       which our piece will have
-     * @param typeOfPiece which our piece will have
+     * @param pieceType is the type of the piece.
+     * @param color     is the color of the piece.
      */
-    public Piece(Color color, TypeOfPiece typeOfPiece) {
+    public Piece(Color color, PieceType pieceType) {
         id = ID_COUNTER.getAndIncrement();
         this.color = color;
-        this.typeOfPiece = typeOfPiece;
+        this.pieceType = pieceType;
     }
 
     public long getId() {
@@ -38,53 +34,17 @@ public class Piece {
         return color;
     }
 
-    public TypeOfPiece getTypeOfPiece() {
-        return typeOfPiece;
+    public PieceType getPieceType() {
+        return pieceType;
     }
 
-    public void setTypeOfPiece(TypeOfPiece typeOfPiece) {
-        this.typeOfPiece = typeOfPiece;
-    }
-
-    /**
-     * Returns set of coordinates x, y which represent position at board
-     * when the piece can move
-     *
-     * @param game has board which representing actual layout of pieces
-     * @return coordinates of all possible move at actual board
-     */
-    public Set<Coordinates> getAllPossibleMoves(Game game) {
-        return typeOfPiece
-                .getMoves()
-                .stream()
-                .map(strategy -> strategy
-                        .getAllowedMoves(game, game.getBoard().findCoordinatesOfPieceById(getId())))
-                .filter(Objects::nonNull)
-                .flatMap(Collection::stream)
-                .filter(game.getBoard()::inRange)
-                .collect(Collectors.toSet());
+    public void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
     }
 
     @Override
     public String toString() {
-        return getTypeOfPiece().getSymbol(getColor());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() == o.getClass()) {
-            return false;
-        }
-        Piece piece = (Piece) o;
-        return id == piece.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+        return String.valueOf(pieceType.name().charAt(0));
     }
 
 }
