@@ -1,5 +1,5 @@
 ## Second iteration
-This iteration serves to practise work with immutable objects, constants, arrays and character conversion to numbers and vice versa.
+This iteration serves to practice work with immutable objects, constants, arrays and character conversion to numbers and vice versa.
 
 
 1. Create a package `utils` and a **utility class** `BoardNotation` in it.
