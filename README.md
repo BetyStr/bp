@@ -1,12 +1,13 @@
 ## Tenth iteration
+This iteration serves to practice creating tests and working with input and output.
 
 1. **Modify** the `Chess.Builder` class to implement the `GameReadable` interface.
-   - The `read(InputStream)` method takes **an open input** containing the board, reads the board,
-     and transforms it to.
-   - The overloaded method takes except `InputStream` also boolean representing if the file has `header`.
-   - For any input/output error or input data format error, **the method must fail** and throw an `IOException`.
-     The input data format is as follows for initial layout with players "Mat" and " Pat"(first row is **header**):
-    ```java
+    - The `read(InputStream)` method takes **an open input** containing the board, reads the board,
+      and transforms it.
+    - The overloaded method takes except `InputStream` also boolean representing if the file has `header`.
+    - For any input/output error or input data format error, **the method must fail** and throw an `IOException`.
+      The input data format is as follows for the initial layout with players "Mat" and " Pat"(the first row is **header**):
+    ```
         Mat-WHITE;Pat-BLACK
         ROOK,WHITE;PAWN,WHITE;_;_;_;_;PAWN,BLACK;ROOK,BLACK
         KNIGHT,WHITE;PAWN,WHITE;_;_;_;_;PAWN,BLACK;KNIGHT,BLACK
@@ -17,19 +18,19 @@
         KNIGHT,WHITE;PAWN,WHITE;_;_;_;_;PAWN,BLACK;KNIGHT,BLACK
         ROOK,WHITE;PAWN,WHITE;_;_;_;_;PAWN,BLACK;ROOK,BLACK
     ```
-   - Each row is on one line.
-   - Each piece is separate from the other in a row by `;` and `_` is representing null value.
+    - Each row is on one line.
+    - Each piece is separate from the other in a row by `;` and `_` representing the null value.
 2. **Modify** the `Chess` class to implement the `GameWritable` interface.
-   - The `write(OutputStream)` method writes the board to a given output stream. 
-     The output format is the same as for the previous method.
+    - The `write(OutputStream)` method writes the board to a given output stream.
+      The output format is the same as for the previous method.
 3. Write basic **tests** to class `MyArray`.
-   - This part is not covered by tests. Your teacher will control it.
+    - Tests do not cover this part. Your teacher will control it.
 
 
 Hints:
-- **Do not duplicate code** rather call one method from another.
+- Avoid duplicated code by calling one method from the other one.
 - Only **close** streams/files that you have opened.
-- Use `try with resources`.
+- Use try with resources.
 - Study the methods `Writer#flush()`, `Reader#ready()`.
 - You can create a file using `new File("soubor.txt")`.
 - `Main.main` can throw `IOException`.
