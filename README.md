@@ -20,13 +20,13 @@ This iteration serves to practice work with enumeration type, strings, overridin
 6. **Create** class `Game`.
    - Add attributes `playerOne`, `playerTwo` of type `Player`, 
      `board` of type `Board` and `stateOfGame`of type `StateOfGame`.
-     Add a keyword ` final` to the appropriate attribute/s.
+      Mark as `final` all attributes that can be final.
    - Add constructor which takes two players as an input parameter.
    - Add getters and setter/s to attributes.
    - Add methods `getCurrentPlayer` and `putPieceOnBoard`.
-      - The method `getCurrentPlayer` returns the player who is on the turn based on the current `round`
-        and the `color` of the players. **Always starts the player with white color.**
-      - The method `putPieceOnBoard` takes `Piece` as an input parameter and adds it to `board`.
+      - The method `getCurrentPlayer` returns the player who is on the turn, based on the current `round`
+        and the `color` of the players. **The white player always starts.**
+      - The method `putPieceOnBoard` takes `Piece` as an input parameter and adds it to the `board`.
 7. Edit the executable class Main.
    - Create two players with **opposite colors**.
    - Create an instance of `Game` and put `Queen` at position `(1,5)`.
