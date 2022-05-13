@@ -1,7 +1,9 @@
 ## Third iteration
 
+This iteration serves to practice work with enumeration type, strings, overriding method `toString()`, and communication between classes.
+
 1. Create an **enumeration type** `PieceType` and define all chess pieces **in the singular**.
-2. Create an **enumeration type** `StateOfGame`. It will contain 4 values.
+2. Create an **enumeration type** `StateOfGame`. It will contain four values representing the possible game state between two players.
    - `WHITE_PLAYER_WIN`, `BLACK_PLAYER_WIN`, `PAT`, `PLAYING`
 3. Create an **enumeration type** `Color` and define **two** colors. Add the method `getOppositeColor()`,
    which returns opposite color. \
@@ -13,12 +15,14 @@
 5. **Modify** `Piece` class.
    - Add attribute `color` of type `Color`.
    - Add attribute `pieceType` of type `pieceType`.
-   - Update constructor to take all attributes expect `id`.
+   - Update the constructor to instantiate a piece with user-defined color and piece type. 
+     A unique ID is set automatically.
 6. **Create** class `Game`.
-   - Add **final** attributes `playerOne`, `playerTwo` of type `Player` and `board` of type `Board`.
-   - Add **not final** attribute `stateOfGame`of type `StateOfGame`.
+   - Add attributes `playerOne`, `playerTwo` of type `Player`, 
+     `board` of type `Board` and `stateOfGame`of type `StateOfGame`.
+     Add a keyword ` final` to the appropriate attribute/s.
    - Add constructor which takes two players as an input parameter.
-   - Add getters and **setter** to attributes.
+   - Add getters and setter/s to attributes.
    - Add methods `getCurrentPlayer` and `putPieceOnBoard`.
       - The method `getCurrentPlayer` returns the player who is on the turn based on the current `round`
         and the `color` of the players. **Always starts the player with white color.**
@@ -31,3 +35,4 @@
 Hints:
 - [Type of chess pieces](https://en.wikipedia.org/wiki/Chess_piece)
 - Enumeration type has methods `ordinal()`.
+
