@@ -44,7 +44,7 @@ H | R | P |   |   |   |   | P | R |
   --------------------------------
 ```
 
-<img src="images/game5.jpg" alt="game5" width="600"/>.
+<img src="images/game5.png" alt="game5" width="600"/>.
 
 Hints:
 - Use `StringBuilder` instead of adding strings using the plus sign.
