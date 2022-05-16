@@ -1,7 +1,9 @@
 ## Eighth iteration
 In this iteration, you will get to practice ordered collections and anonymous classes.
 
-1. Define the **natural order** on the `Coordinates` class according to the `equals` method, i.e., it is sorted according to the `letterNumber` in ascending order, and in case of a match, it is sorted by `number` in ascending order.
+1. Define the **natural order** on the `Coordinates` class according to the `equals` method, i.e., 
+   it is sorted according to the `letterNumber` in ascending order, and in case of a match, 
+   it is sorted by `number` in ascending order.
    > for example a1 < a6 < c0 < f5
 2. Update method `allPossibleMovesByCurrentPlayer` in the `Game`.
    - Create an **anonymous class** of the interface `Comparator<Coordinates>` and override the method `compare`
@@ -23,6 +25,7 @@ In this iteration, you will get to practice ordered collections and anonymous cl
       - Do not forget that we have **big** and **small** castling.
 
      <img src="images/castling.jpg" alt="castling" width="600"/>.
+
 5. **Overload** and modify the method `getAllPossibleMoves` in the `Piece`.
    - The overloaded method also takes a parameter of the type boolean that decides if the result contains castling moves.
    - In the original method, the default value of this parameter is `false`.
@@ -30,7 +33,7 @@ In this iteration, you will get to practice ordered collections and anonymous cl
    - Create a private static method without a return value that takes one input parameter of the type `Collection`.
      In the method add 10 000 random Coordinates to the collection.
      After that remove 1 000 random Coordinates from the collection.
-   - Print the duration of the method when input parameter is `HashSet` and `ArrayList`
+   - Print the **duration** of the method when input parameter is `HashSet` and `ArrayList`
      in the format `<timeOfHashSet> < <timeOfArrayList>` and on the next line print result of the expression.
 
 
