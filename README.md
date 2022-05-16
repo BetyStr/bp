@@ -1,7 +1,7 @@
 ## Third iteration
 
-This iteration  aims to practice the work with enumeration type, strings, 
-overriding method `toString()`, and communication between classes.
+This iteration aims to practice the work with enumeration types, strings, 
+overriding method `toString()`, and the communication between classes.
 
 1. Create an **enumeration type** `PieceType` and define all chess pieces **in the singular**.
 2. Create an **enumeration type** `StateOfGame`. It will contain four values 
@@ -13,7 +13,7 @@ overriding method `toString()`, and communication between classes.
 5. Modify the `Player` class.
    - Change this class to **record**.
    - Add the attribute `color` of type `Color`.
-   - Override the `toString` method to return the string at the format `<name>-<color>`.
+   - Override the `toString` method to return the string int the following format: `<name>-<color>`.
 6. Modify the `Piece` class.
    - Add the attribute `color` of type `Color`.
    - Add the attribute `pieceType` of type `pieceType`.
@@ -22,11 +22,11 @@ overriding method `toString()`, and communication between classes.
 7. **Create** a new class `Game`.
    - Add attributes `playerOne`, `playerTwo` of type `Player`, 
      `board` of type `Board`, and `stateOfGame`of type `StateOfGame`.
-      **Mark as `final` all attributes that can be final**.
-   - Add a constructor taking two players as input parameters.
-   - Add getters and setter/s to attributes.
+      **Mark all attributes that can be final with the keyword `final`**.
+   - Add a constructor taking two players as the input parameters.
+   - Add getters and setter/s for the attributes.
    - Add methods `getCurrentPlayer` and `putPieceOnBoard`.
-      - The method `getCurrentPlayer` returns the player who is on the turn, based on the current `round`
+      - The method `getCurrentPlayer` returns the player whose turn it is, based on the current `round`
         and the `color` of the players. **The white player always starts.**
       - The method `putPieceOnBoard` takes `Piece` as an input parameter and adds it to the `board`.
 8. Edit the executable class Main.
