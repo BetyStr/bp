@@ -1,16 +1,16 @@
 ## Ninth iteration
-This iteration serves to practice exceptions, generic types, and inner classes.
+In this iteration, you will practice exceptions, generic types, and inner classes.
 
 1. Create exceptions `EmptySquareException`, `InvalidFormatOfInputException`,
    `MissingPlayerException` and `NotAllowedMoveException`.
     - `EmptySquareException` and `NotAllowedMoveException` are **checked** exceptions.
     - `InvalidFormatOfInputException` and `MissingPlayerException` are **unchecked** exceptions.
-    - In each class create at least **two constructors** which call constructor from the super class.
+    - In each class create at least **two constructors** which call the constructor from the super class.
 2. Create a **nested utility class** [`Builder`](https://refactoring.guru/design-patterns/builder) in the `Chess`, that is `Chess.Builder` which implements interface `Buildable`.
     - This class takes care of creating the game.
     - The method `addPlayer` takes the player as an input parameter. The first player is added on the first call,
       and the second call of this method adds the second player.
-    - The method `addPieceToBoard` takes the piece and the position **in chess notation** as an input parameters. It puts a piece on the board.
+    - The method `addPieceToBoard` takes a piece and a position **in the chess notation** as input parameters. It puts the piece on the board.
     - Both methods return an instance of the buildable so that you can chain calls of methods sequentially.
     - The `build` method returns a new `Chess` instance filled with the players and the board with pieces.
     - Usage:
