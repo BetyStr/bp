@@ -1,5 +1,5 @@
 ## Fifth iteration
-This iteration serves to practice inheritance, abstract classes, and work with strings in a loop.
+In this iteration, you will practice inheritance, abstract classes, and work with strings in a loop.
 
 1. Add `DRAUGHTS_KING` and  `DRAUGHTS_MAN` to `PieceType`.
 2. Create class `Chess` that will inherit from the class `Game`.
@@ -12,7 +12,7 @@ This iteration serves to practice inheritance, abstract classes, and work with s
             - If you move the piece only by one square, the method puts the piece in a new position.
             - If you move the piece by two squares, the method removes the piece between the old and the new position.
               > For example, if you move the piece from `(0,0)` to `(2,2)`, then you must remove the piece on `(1,1)`.
-            - You can assume that you get valid input.
+            - You can assume that you get a valid input.
     - The method `updateStatus` changes status if a player wins. If there is no piece of one color on the board,
       the player of the other color has won.
 4. Add control of castling in method `move` in `Chess`.
