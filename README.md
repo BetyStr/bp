@@ -22,21 +22,21 @@ In this iteration, you will practice exceptions, generic types, and inner classe
                  .addPieceToBoard(new ChessPieceFactory().createPiece(PieceType.KING, Color.WHITE), 'e', 1)
              .build();
         ```
-4. **Update implementation using exceptions**.
+4. **Update the implementation with the use of exceptions**.
     - The method `play` in the `Game` throws:
         - `EmptySquareException` if the user wants to move a piece from the empty position
           or the position is not on the board.
         - `NotAllowedMoveException` if the user wants to make an illegal move.
         - `InvalidFormatOfInputException` if the user's input is in the wrong format.
             - Input must be `<char><int> <char><int>`.
-    - In the class `Builder`, if you call the method `build()`, both players must be already added.
-      If not, throw an exception `MissingPlayerException`.
+    - In the class `Builder`, if you call the method `build()`, both players must already be added.
+      If they are not, throw an exception `MissingPlayerException`.
     - Do not forget to write **meaningful messages** to exceptions.
-5. Modify interface `Prototype` using **generics**. Replace `Piece` with the generic type.
-    - Make `Board`, `Piece` to implement `Prototype` and method `makeCopy`.
+5. Modify the interface `Prototype` using **generics**. Replace `Piece` with the generic type.
+    - Make `Board`, `Piece` to implement `Prototype` and a method `makeClone`.
         - The method `makeClone` in `Piece` creates a new instance with the same attributes except for `id`.
         - The method `makeClone` in `Board` has similar functionality as the method `save`.
-    - Make the interface `Playable` extending the interface `Prototype`.
+    - Make the interface `Playable` extend the interface `Prototype`.
         - Create a private constructor in the `Game`, `Chess`, and `Draughts` 
           which takes one input parameter of the type `Game`.
         - In the `Chess` and `Draughts` constructors call the constructor from the superclass.
@@ -47,7 +47,7 @@ In this iteration, you will practice exceptions, generic types, and inner classe
 
 
 Hints:
-- You can use regions to organize your code better.
+- You can use regions to better organize your code.
   ```
      ///region Buildable 
          code
