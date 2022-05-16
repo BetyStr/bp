@@ -1,5 +1,5 @@
 ## Tenth iteration
-This iteration serves to practice creating tests and working with input and output.
+In this iteration, you will practice creating tests and working with input and output.
 
 1. **Modify** the `Chess.Builder` class to implement the `GameReadable` interface.
     - The `read(InputStream)` method takes **an open input** containing the board, reads the board,
@@ -18,13 +18,13 @@ This iteration serves to practice creating tests and working with input and outp
         KNIGHT,WHITE;PAWN,WHITE;_;_;_;_;PAWN,BLACK;KNIGHT,BLACK
         ROOK,WHITE;PAWN,WHITE;_;_;_;_;PAWN,BLACK;ROOK,BLACK
     ```
-    - Each row is on one line.
-    - Each piece is separate from the other in a row by `;` and `_` representing the null value.
+    - Each row is a separate line.
+    - Pieces are separated from one another by `;` and `_` representing the null value.
 2. **Modify** the `Chess` class to implement the `GameWritable` interface.
     - The `write(OutputStream)` method writes the board to a given output stream.
       The output format is the same as for the previous method.
 3. Write basic **tests** to class `MyArray`.
-    - Tests do not cover this part. Your teacher will control it.
+    - Tests do not cover this part. Your teacher will review it.
 
 
 Hints:
