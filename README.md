@@ -35,7 +35,7 @@ The first iteration aims to get acquainted with objects, encapsulation, and work
 Hints:
 - Do not forget to write the documentation.
     - Every class must contain `@author <YourName>`, e.g., `@author Jan Hrasko`.
-    - Every public method must include its documentation (except getters, setters, and override methods).
+    - Every public method must include its documentation (except getters, setters, and overriden methods).
         - If the method has an input parameter, `@param <nameOfParameter>` with a description must be in the documentation.
         - If the method has a return value, `@returns` with a description must be in the documentation.
     - If you type `/**` above the method and press enter, the IDE will automatically generate tags that
