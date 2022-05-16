@@ -1,5 +1,5 @@
 ## Sixth iteration
-This iteration serves to practice equality and basic collections.
+This iteration aims at getting you acquainted with equality and basic collections.
 
 1. Modify class `Piece` so that two pieces are considered the same if they have the same `id`.
 2. Use the [Memento](https://refactoring.guru/design-patterns/memento) design pattern to add functionality
@@ -10,7 +10,7 @@ This iteration serves to practice equality and basic collections.
         - The method `restore` does step back (recovers previously stored state).
           It sets the last memorized state, which it gets as the input parameter.
     - Make `Playable` to extend `Caretaker` and update class `Game`.
-        - Add attribute `mementoHistory`. **Choose the type of the collection so that you can easily insert new objects
+        - Add attribute `mementoHistory`. **Choose the type of collection so that you can easily insert new objects
           and select the last inserted ones.**
         - Implement the method from `Caretaker`.
             - The method `hitSave` saves a "snapshot" of the `Board`.
@@ -30,12 +30,12 @@ This iteration serves to practice equality and basic collections.
       can be **occupied by a piece of the opposite color**.
         - Class `Diagonal` has two attributes.
             - The first argument represents the length of a maximal possible move of the piece
-              (for  example, Chess King can only move by one square) with default value size of the board.
+              (for  example, Chess King can only move by one square) with the default value size of the board.
             - The second argument represents if the piece can move only forward with the default value false.
             - Do not forget to create constructors.
-                - First constructor without parameters.
-                - The second constructor takes an integer representing the length of the step.
-                - The third constructor takes an integer representing the length of the step and
+                - Add the first constructor without parameters.
+                - Add a second constructor, that takes an integer representing the length of the step.
+                - Add a third constructor, that takes an integer representing the length of the step and
                   a boolean representing if a piece can move only forward.
             - Method `getAllowedMoves` returns all possible positions for the piece at a given `position` in a given `game`.
               You can use the pre-prepared static method `getDiagonalShift` from interface `Move`.
