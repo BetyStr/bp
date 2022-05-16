@@ -13,7 +13,7 @@ overriding method `toString()`, and the communication between classes.
 5. Modify the `Player` class.
    - Change this class to **record**.
    - Add the attribute `color` of type `Color`.
-   - Override the `toString` method to return the string int the following format: `<name>-<color>`.
+   - Override the `toString` method to return the string in the following format: `<name>-<color>`.
 6. Modify the `Piece` class.
    - Add the attribute `color` of type `Color`.
    - Add the attribute `pieceType` of type `pieceType`.
