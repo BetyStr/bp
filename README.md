@@ -1,5 +1,5 @@
 ## Fourth iteration
-This iteration is focused on practicing the work with user input, 
+This iteration is focused on practicing the work with the user input, 
 overriding methods, and implementing and creating interfaces.
 
 
@@ -15,7 +15,7 @@ overriding methods, and implementing and creating interfaces.
     - The method `getColor` returns the piece's color on the board at the position of the input integers.
       If there is no piece at the input position or position is out of the board, it returns null.
     - **Avoid code duplication of overloaded methods by calling each other.**
-4. Create a new **interface** `Playable`.
+3. Create a new **interface** `Playable`.
     - **The interface must be well-documented**.
     - The interface introduces methods with the following meaning and signatures:
         - the method `setInitialSet` sets the initial layout of the pieces on the board.
@@ -32,17 +32,18 @@ overriding methods, and implementing and creating interfaces.
           ```
           a2 a3
           ```
-5. **Modify** the class `Game`.
+4. **Modify** the class `Game`.
     - Make the class `Game` to implement the **interface** `Playable`.
     - Implement methods from the interface `Playable`.
     - Add method `updateStatus`, which controls whether there are still two kings on the board. If one king is missing, 
       change the status of the game. The winner of the game is a player with the king on the board.
-6. Edit the executable class Main.
+5. Edit the executable class Main.
     - Create two players with **opposite colors**.
     - Create an instance of the game.
-    - Set initial set to the game.
+    - Set the initial layout of the game.
     - Make a move from `a2` to `a3`
-    - Print all pieces from the row, which were moved on separate lines.
+    - Print the second row of the board as 8 separate lines. Each line represents one tile from the row and should 
+      either be a piece (e.g. `K`, `P`...) or `null` if the tile does not contain any piece.
 
 
 Hints:
