@@ -1,8 +1,8 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.EmptySquareException;
-import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
+import cz.muni.fi.pb162.project.exceptions.EmptySquareException;
+import cz.muni.fi.pb162.project.exceptions.InvalidFormatOfInputException;
+import cz.muni.fi.pb162.project.exceptions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.utils.BoardNotation;
 import java.util.Arrays;
 import java.util.Collection;

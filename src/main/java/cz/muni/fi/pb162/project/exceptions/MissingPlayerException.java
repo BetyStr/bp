@@ -1,4 +1,4 @@
-package cz.muni.fi.pb162.project.excepions;
+package cz.muni.fi.pb162.project.exceptions;
 
 /**
  * Exception is thrown when you do not have enough players to play game. <p>

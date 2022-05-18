@@ -1,9 +1,5 @@
 package cz.muni.fi.pb162.project.exceptions;
 
-import cz.muni.fi.pb162.project.excepions.EmptySquareException;
-import cz.muni.fi.pb162.project.excepions.InvalidFormatOfInputException;
-import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
-import cz.muni.fi.pb162.project.excepions.NotAllowedMoveException;
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import org.junit.jupiter.api.Test;
 

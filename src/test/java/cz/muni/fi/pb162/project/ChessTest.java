@@ -1,6 +1,6 @@
 package cz.muni.fi.pb162.project;
 
-import cz.muni.fi.pb162.project.excepions.MissingPlayerException;
+import cz.muni.fi.pb162.project.exceptions.MissingPlayerException;
 import cz.muni.fi.pb162.project.helper.BasicRulesTester;
 import java.util.List;
 import java.util.Set;
